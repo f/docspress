@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="Docspress logo" width="420">
+</p>
+
 # Docspress
 
 [![npm version](https://img.shields.io/npm/v/docspress.svg)](https://www.npmjs.com/package/docspress)

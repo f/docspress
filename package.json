@@ -12,6 +12,7 @@
     "README.md",
     "LICENSE",
     "action.yml",
+    "assets/",
     "bin/",
     "dist/",
     "scripts/",
