@@ -5,6 +5,17 @@
   "description": "Sync Markdown docs to WordPress Pages as Gutenberg content from GitHub Actions.",
   "type": "module",
   "main": "dist/index.js",
+  "bin": {
+    "docspress": "./bin/docspress.mjs"
+  },
+  "files": [
+    "README.md",
+    "action.yml",
+    "bin/",
+    "dist/",
+    "scripts/",
+    "src/"
+  ],
   "scripts": {
     "build": "ncc build src/index.js -o dist --source-map --license licenses.txt",
     "lint": "eslint .",

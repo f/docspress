@@ -72,10 +72,10 @@ For personal projects or demos that only access your own WordPress.com site, use
 
    The redirect URL must match the local callback URL used by the token helper below.
 
-2. Run the local token helper from the Docspress checkout. The helper requests WordPress.com's `global` OAuth scope because the WP v2 Pages API requires it for listing, creating, updating, and deleting pages.
+2. Run the token helper with `npx`. The helper requests WordPress.com's `global` OAuth scope because the WP v2 Pages API requires it for listing, creating, updating, and deleting pages.
 
 ```bash
-npm run token -- \
+npx docspress token \
   --client-id YOUR_CLIENT_ID \
   --client-secret YOUR_CLIENT_SECRET \
   --site fkadev.blog \
@@ -97,7 +97,7 @@ Paste the token when prompted, then press `Ctrl-D`.
 You can also let the helper store the secret directly:
 
 ```bash
-npm run token -- \
+npx docspress token \
   --client-id YOUR_CLIENT_ID \
   --client-secret YOUR_CLIENT_SECRET \
   --site fkadev.blog \

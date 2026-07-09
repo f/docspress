@@ -3,7 +3,7 @@ export default [
     ignores: ["dist/**", "coverage/**", "node_modules/**"]
   },
   {
-    files: ["src/**/*.js", "test/**/*.js", "scripts/**/*.mjs"],
+    files: ["src/**/*.js", "test/**/*.js", "scripts/**/*.mjs", "bin/**/*.mjs"],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: "module",

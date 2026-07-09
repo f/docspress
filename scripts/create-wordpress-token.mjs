@@ -229,7 +229,7 @@ function printHelp() {
   console.log(`Create a WordPress.com OAuth token for Docspress.
 
 Usage:
-  npm run token -- --client-id CLIENT_ID --client-secret CLIENT_SECRET --site fkadev.blog --repo f/docspress-demo
+  npx docspress token --client-id CLIENT_ID --client-secret CLIENT_SECRET --site fkadev.blog --repo f/docspress-demo
 
 Options:
   --client-id       WordPress.com app client ID.
