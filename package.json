@@ -1,6 +1,6 @@
 {
   "name": "docspress",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": false,
   "description": "Sync Markdown docs to WordPress Pages as Gutenberg content from GitHub Actions.",
   "type": "module",

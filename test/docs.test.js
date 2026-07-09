@@ -69,40 +69,6 @@ describe("collectDesiredPages", () => {
     })).rejects.toThrow(/same docs page/);
   });
 
-  it("infers docs versions from version folders when versioning is enabled", async () => {
-    const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "docspress-"));
-    await fs.mkdir(path.join(cwd, "docs", "v1", "guides"), { recursive: true });
-    await fs.mkdir(path.join(cwd, "docs", "v2"), { recursive: true });
-    await fs.writeFile(path.join(cwd, "docs", "index.md"), "# Docs");
-    await fs.writeFile(path.join(cwd, "docs", "v1", "index.md"), "# Version 1");
-    await fs.writeFile(path.join(cwd, "docs", "v1", "guides", "install.md"), "# Install");
-    await fs.writeFile(path.join(cwd, "docs", "v2", "index.md"), "# Version 2");
-
-    const pages = await collectDesiredPages({
-      cwd,
-      docsDir: "docs",
-      rootSlug: "docs",
-      rootTitle: "Docs",
-      status: "draft",
-      versioning: true
-    });
-
-    expect(pages.map((page) => page.key)).toEqual([
-      "docs",
-      "docs/v1",
-      "docs/v2",
-      "docs/v1/guides",
-      "docs/v1/guides/install"
-    ]);
-    expect(pages.find((page) => page.key === "docs")?.docsVersion).toBeNull();
-    expect(pages.find((page) => page.key === "docs/v1")?.docsVersion).toMatchObject({ slug: "v1", name: "v1" });
-    expect(pages.find((page) => page.key === "docs/v1/guides")?.docsVersion).toMatchObject({ slug: "v1", name: "v1" });
-    expect(readSentinel(pages.find((page) => page.key === "docs/v1/guides/install")?.content)).toMatchObject({
-      key: "docs/v1/guides/install",
-      docsVersion: "v1"
-    });
-  });
-
   it("rewrites local Markdown links and appends edit links", async () => {
     const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "docspress-"));
     await fs.mkdir(path.join(cwd, "docs", "guides"), { recursive: true });

@@ -57,48 +57,6 @@ describe("WordPressClient", () => {
     expect(calls).toHaveLength(2);
   });
 
-  it("normalizes configured taxonomy fields on pages", async () => {
-    const client = new WordPressClient({
-      baseUrl: "https://public-api.wordpress.com",
-      site: "fkadev.blog",
-      token: "token",
-      taxonomies: ["docspress_version"],
-      fetchImpl: async () => jsonResponse([
-        { id: 1, slug: "v1", parent: 0, content: { raw: "" }, title: { raw: "" }, docspress_version: [12, "13"] }
-      ], {
-        headers: { "x-wp-totalpages": "1" }
-      })
-    });
-
-    const pages = await client.listPages();
-
-    expect(pages[0].terms.docspress_version).toEqual([12, 13]);
-  });
-
-  it("lists and creates terms through the configured taxonomy endpoint", async () => {
-    const calls = [];
-    const client = new WordPressClient({
-      baseUrl: "https://public-api.wordpress.com",
-      site: "fkadev.blog",
-      token: "token",
-      fetchImpl: async (url, init) => {
-        calls.push({ url: String(url), init });
-        if (init.method === "GET") {
-          return jsonResponse([], { headers: { "x-wp-totalpages": "1" } });
-        }
-        return jsonResponse({ id: 12, slug: "v1", name: "v1" });
-      }
-    });
-
-    const term = await client.ensureTerm("docspress_version", { slug: "v1", name: "v1" });
-
-    expect(term).toEqual({ id: 12, slug: "v1", name: "v1" });
-    expect(calls[0].url).toContain("/wp/v2/sites/fkadev.blog/docspress_version");
-    expect(calls[0].url).toContain("hide_empty=false");
-    expect(calls[1].init.method).toBe("POST");
-    expect(JSON.parse(calls[1].init.body)).toEqual({ slug: "v1", name: "v1" });
-  });
-
   it("raises WordPress API errors", async () => {
     const client = new WordPressClient({
       baseUrl: "https://public-api.wordpress.com",

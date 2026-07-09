@@ -32,12 +32,11 @@ function existingPage(id, key, options = {}) {
     parent: options.parent || 0,
     content,
     title: key,
-    status: options.status || "draft",
-    terms: options.terms || {}
+    status: options.status || "draft"
   };
 }
 
-function mockClient(pages = [], terms = {}) {
+function mockClient(pages = []) {
   const calls = [];
   let nextId = 100;
 
@@ -57,11 +56,6 @@ function mockClient(pages = [], terms = {}) {
     async deletePage(id, options) {
       calls.push(["delete", id, options]);
       return { id, deleted: true };
-    },
-    async ensureTerm(taxonomy, term) {
-      calls.push(["ensureTerm", taxonomy, term]);
-      const termsForTaxonomy = terms[taxonomy] || {};
-      return termsForTaxonomy[term.slug] || { id: Object.keys(termsForTaxonomy).length + 1, ...term };
     }
   };
 }
@@ -133,64 +127,5 @@ describe("syncPages", () => {
 
     expect(result.deleted).toBe(1);
     expect(client.calls).toContainEqual(["delete", 2, { force: true }]);
-  });
-
-  it("creates version terms and assigns them to versioned pages", async () => {
-    const client = mockClient([], {
-      docspress_version: {
-        v1: { id: 12, slug: "v1", name: "v1" }
-      }
-    });
-    const result = await syncPages({
-      desiredPages: [
-        desiredPage("docs"),
-        desiredPage("docs/v1", { docsVersion: { slug: "v1", name: "v1" } })
-      ],
-      client,
-      dryRun: false,
-      rootSlug: "docs",
-      versioning: true,
-      versionTaxonomy: "docspress_version",
-      logger: { info() {} }
-    });
-
-    expect(result.created).toBe(2);
-    expect(client.calls).toContainEqual(["ensureTerm", "docspress_version", { slug: "v1", name: "v1" }]);
-    expect(client.calls.find((call) => call[0] === "create" && call[1].slug === "docs")?.[1]).toMatchObject({
-      docspress_version: []
-    });
-    expect(client.calls.find((call) => call[0] === "create" && call[1].slug === "v1")?.[1]).toMatchObject({
-      docspress_version: [12]
-    });
-  });
-
-  it("updates a managed page when its version taxonomy assignment changed", async () => {
-    const existing = [
-      existingPage(1, "docs"),
-      existingPage(2, "docs/v1", {
-        parent: 1,
-        terms: { docspress_version: [] }
-      })
-    ];
-    const client = mockClient(existing, {
-      docspress_version: {
-        v1: { id: 12, slug: "v1", name: "v1" }
-      }
-    });
-    const result = await syncPages({
-      desiredPages: [
-        desiredPage("docs"),
-        desiredPage("docs/v1", { docsVersion: { slug: "v1", name: "v1" } })
-      ],
-      client,
-      dryRun: false,
-      rootSlug: "docs",
-      versioning: true,
-      versionTaxonomy: "docspress_version",
-      logger: { info() {} }
-    });
-
-    expect(result.updated).toBe(1);
-    expect(client.calls).toContainEqual(["update", 2, expect.objectContaining({ docspress_version: [12] })]);
   });
 });

@@ -66810,12 +66810,11 @@ async function collectDesiredPages(options) {
   const context = createContext(options);
   const byRoute = options.manifestFile
     ? await collectManifestPages(context, options)
-    : await collectFilePages(context, options);
+    : await collectFilePages(context);
 
   ensurePlaceholderHierarchy(byRoute, options.rootTitle);
   await applyRedirects(byRoute, options, context);
   ensurePlaceholderHierarchy(byRoute, options.rootTitle);
-  applyVersionMetadata(byRoute, options);
   const linkResolver = createLinkResolver(byRoute, context, options);
   convertMarkdownPages(byRoute, options, linkResolver);
 
@@ -66838,7 +66837,7 @@ function createContext(options) {
   };
 }
 
-async function collectFilePages(context, options) {
+async function collectFilePages(context) {
   const files = await out(["**/*.md", "**/*.markdown"], {
     cwd: context.absoluteDocsDir,
     onlyFiles: true,
@@ -66865,8 +66864,7 @@ async function collectFilePages(context, options) {
       routeKey,
       routeSegments,
       sourcePath,
-      sourceMarkdown: markdown,
-      docsVersion: docsVersionForRelativeSource(file, options)
+      sourceMarkdown: markdown
     });
   }
 
@@ -66913,8 +66911,7 @@ async function collectManifestPages(context, options) {
         routeSegments,
         sourcePath,
         sourceMarkdown: markdown,
-        titleOverride: entry.title,
-        docsVersion: docsVersionForSourcePath(sourcePath, context, options)
+        titleOverride: entry.title
       });
       continue;
     }
@@ -67004,68 +67001,6 @@ function routeSegmentsForFile(file) {
   }
 
   return [...dirSegments, baseSlug];
-}
-
-function docsVersionForRelativeSource(file, options) {
-  if (!normalizeBoolean(options.versioning)) {
-    return null;
-  }
-
-  const parts = normalizeAlias(file)?.split("/").filter(Boolean) || [];
-  if (parts.length < 2) {
-    return null;
-  }
-
-  return docsVersionFromSegment(parts[0]);
-}
-
-function docsVersionForSourcePath(sourcePath, context, options) {
-  if (!normalizeBoolean(options.versioning)) {
-    return null;
-  }
-
-  const sourceRelative = docsRelativeSource(sourcePath, context.docsDirForSource);
-  return docsVersionForRelativeSource(sourceRelative, options);
-}
-
-function docsVersionFromSegment(segment) {
-  const name = String(segment || "").trim();
-  const slug = slugify(name, "");
-
-  if (!slug) {
-    return null;
-  }
-
-  return {
-    name: name || slug,
-    slug
-  };
-}
-
-function applyVersionMetadata(byRoute, options) {
-  if (!normalizeBoolean(options.versioning)) {
-    return;
-  }
-
-  const versionsBySlug = new Map();
-  for (const page of byRoute.values()) {
-    if (page.docsVersion?.slug && !versionsBySlug.has(page.docsVersion.slug)) {
-      versionsBySlug.set(page.docsVersion.slug, page.docsVersion);
-    }
-  }
-
-  for (const page of byRoute.values()) {
-    if (page.docsVersion?.slug || page.routeSegments.length === 0) {
-      continue;
-    }
-
-    if (page.kind === "file") {
-      continue;
-    }
-
-    const versionSlug = page.routeSegments[0];
-    page.docsVersion = versionsBySlug.get(versionSlug) || docsVersionFromSegment(versionSlug);
-  }
 }
 
 function fallbackTitleForRoute(routeSegments, rootTitle) {
@@ -67323,14 +67258,12 @@ function finalizePage(page, options) {
     slug,
     parentKey,
     status,
-    body,
-    docsVersion: page.docsVersion?.slug || null
+    body
   };
   const hash = sha256(stableJson(stablePayload));
   const content = prependSentinel(body, {
     key,
     source: page.sourcePath,
-    docsVersion: page.docsVersion?.slug || null,
     hash
   });
 
@@ -67341,7 +67274,6 @@ function finalizePage(page, options) {
     slug,
     status,
     body,
-    docsVersion: page.docsVersion || null,
     hash,
     content,
     depth: fullSegments.length
@@ -67373,8 +67305,6 @@ async function syncPages(options) {
     dryRun = false,
     deleteMode = "trash",
     rootSlug = "docs",
-    versioning = false,
-    versionTaxonomy = "docspress_version",
     logger = console
   } = options;
 
@@ -67383,9 +67313,6 @@ async function syncPages(options) {
   const desiredKeys = new Set(desiredPages.map((page) => page.key));
   const result = createResult(dryRun);
   const idByKey = new Map();
-  const versionTermIds = versioning && !dryRun
-    ? await ensureVersionTerms({ desiredPages, client, versionTaxonomy })
-    : new Map();
   let syntheticId = -1;
 
   for (const [key, page] of indexed.managedByKey.entries()) {
@@ -67407,20 +67334,10 @@ async function syncPages(options) {
     }
 
     const parentId = desired.parentKey ? idByKey.get(desired.parentKey) : 0;
-    const versionTermId = versionTermIdForPage(desired, versionTermIds);
-    const payload = pagePayload(desired, parentId, {
-      versioning,
-      versionTaxonomy,
-      versionTermId
-    });
+    const payload = pagePayload(desired, parentId);
 
     if (managed) {
-      const taxonomyMatches = !versioning || dryRun || termsMatch(
-        managed.terms?.[versionTaxonomy],
-        versionTermId ? [versionTermId] : []
-      );
-
-      if (managed.sentinel?.hash === desired.hash && managed.parent === parentId && taxonomyMatches) {
+      if (managed.sentinel?.hash === desired.hash && managed.parent === parentId) {
         result.unchanged += 1;
         result.operations.push({ action: "unchanged", key: desired.key, id: managed.id });
         continue;
@@ -67466,32 +67383,7 @@ async function syncPages(options) {
   return result;
 }
 
-async function ensureVersionTerms({ desiredPages, client, versionTaxonomy }) {
-  const versionsBySlug = new Map();
-
-  for (const page of desiredPages) {
-    if (page.docsVersion?.slug && !versionsBySlug.has(page.docsVersion.slug)) {
-      versionsBySlug.set(page.docsVersion.slug, page.docsVersion);
-    }
-  }
-
-  const termIds = new Map();
-  for (const version of versionsBySlug.values()) {
-    const term = await client.ensureTerm(versionTaxonomy, {
-      name: version.name || version.slug,
-      slug: version.slug
-    });
-    termIds.set(version.slug, term.id);
-  }
-
-  return termIds;
-}
-
-function versionTermIdForPage(page, versionTermIds) {
-  return page.docsVersion?.slug ? versionTermIds.get(page.docsVersion.slug) : null;
-}
-
-function pagePayload(page, parentId, options = {}) {
+function pagePayload(page, parentId) {
   const payload = {
     title: page.title,
     content: page.content,
@@ -67499,10 +67391,6 @@ function pagePayload(page, parentId, options = {}) {
     status: page.status,
     parent: parentId || 0
   };
-
-  if (options.versioning) {
-    payload[options.versionTaxonomy] = options.versionTermId ? [options.versionTermId] : [];
-  }
 
   return payload;
 }
@@ -67528,28 +67416,6 @@ function addConflict(result, key, reason) {
 
 function isUnderRoot(key, rootSlug) {
   return key === rootSlug || key?.startsWith(`${rootSlug}/`);
-}
-
-function termsMatch(actual, expected) {
-  const actualIds = normalizeTermIds(actual);
-  const expectedIds = normalizeTermIds(expected);
-
-  if (actualIds.length !== expectedIds.length) {
-    return false;
-  }
-
-  return actualIds.every((id, index) => id === expectedIds[index]);
-}
-
-function normalizeTermIds(value) {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value
-    .map((id) => Number(id))
-    .filter((id) => Number.isInteger(id) && id > 0)
-    .sort((a, b) => a - b);
 }
 
 function indexExistingPages(pages) {
@@ -67599,7 +67465,6 @@ class WordPressClient {
     this.site = options.site;
     this.token = options.token;
     this.fetchImpl = options.fetchImpl || fetch;
-    this.taxonomies = options.taxonomies || [];
   }
 
   restEndpoint(collection) {
@@ -67617,10 +67482,6 @@ class WordPressClient {
 
   pagesEndpoint() {
     return this.restEndpoint("pages");
-  }
-
-  termsEndpoint(taxonomy) {
-    return this.restEndpoint(taxonomy);
   }
 
   async listPages() {
@@ -67642,17 +67503,17 @@ class WordPressClient {
       page += 1;
     } while (page <= totalPages);
 
-    return pages.map((pageData) => normalizePage(pageData, { taxonomies: this.taxonomies }));
+    return pages.map(normalizePage);
   }
 
   async createPage(payload) {
     const response = await this.request("POST", this.pagesEndpoint(), { body: payload });
-    return normalizePage(response.data, { taxonomies: this.taxonomies });
+    return normalizePage(response.data);
   }
 
   async updatePage(id, payload) {
     const response = await this.request("POST", `${this.pagesEndpoint()}/${id}`, { body: payload });
-    return normalizePage(response.data, { taxonomies: this.taxonomies });
+    return normalizePage(response.data);
   }
 
   async deletePage(id, options = {}) {
@@ -67660,47 +67521,6 @@ class WordPressClient {
       query: options.force ? { force: "true" } : {}
     });
     return response.data;
-  }
-
-  async listTerms(taxonomy) {
-    const terms = [];
-    let page = 1;
-    let totalPages = 1;
-
-    do {
-      const response = await this.request("GET", this.termsEndpoint(taxonomy), {
-        query: {
-          per_page: "100",
-          page: String(page),
-          context: "edit",
-          hide_empty: "false"
-        }
-      });
-      terms.push(...response.data);
-      totalPages = Number(response.headers.get("x-wp-totalpages") || totalPages || 1);
-      page += 1;
-    } while (page <= totalPages);
-
-    return terms.map(normalizeTerm);
-  }
-
-  async createTerm(taxonomy, payload) {
-    const response = await this.request("POST", this.termsEndpoint(taxonomy), { body: payload });
-    return normalizeTerm(response.data);
-  }
-
-  async ensureTerm(taxonomy, term) {
-    const slug = term.slug;
-    const existing = (await this.listTerms(taxonomy)).find((candidate) => candidate.slug === slug);
-
-    if (existing) {
-      return existing;
-    }
-
-    return this.createTerm(taxonomy, {
-      name: term.name || slug,
-      slug
-    });
   }
 
   async request(method, url, options = {}) {
@@ -67753,18 +67573,11 @@ function formatApiError(data, method, requestUrl, status) {
   return message;
 }
 
-function normalizePage(page, options = {}) {
+function normalizePage(page) {
   const id = page.id ?? page.ID;
   const rawContent = typeof page.content === "string" ? page.content : page.content?.raw ?? page.content?.rendered ?? "";
   const renderedTitle = typeof page.title === "string" ? page.title : page.title?.raw ?? page.title?.rendered ?? "";
   const parent = typeof page.parent === "number" ? page.parent : page.parent?.ID ?? page.parent?.id ?? 0;
-  const terms = {};
-
-  for (const taxonomy of options.taxonomies || []) {
-    terms[taxonomy] = Array.isArray(page[taxonomy])
-      ? page[taxonomy].map((termId) => Number(termId)).filter((termId) => Number.isInteger(termId) && termId > 0)
-      : [];
-  }
 
   return {
     id,
@@ -67773,16 +67586,7 @@ function normalizePage(page, options = {}) {
     title: renderedTitle,
     content: rawContent,
     status: page.status,
-    link: page.link ?? page.URL ?? "",
-    terms
-  };
-}
-
-function normalizeTerm(term) {
-  return {
-    id: term.id ?? term.ID,
-    slug: term.slug,
-    name: term.name ?? term.title ?? ""
+    link: page.link ?? page.URL ?? ""
   };
 }
 
@@ -67803,8 +67607,6 @@ async function main() {
     redirectsFile: getInput("redirects-file") || "",
     rootSlug: getInput("root-slug") || "docs",
     rootTitle: getInput("root-title") || "Docs",
-    versioning: normalizeBoolean(getInput("versioning") || "false"),
-    versionTaxonomy: getInput("version-taxonomy") || "docspress_version",
     createH1: normalizeBoolean(getInput("create-h1") || "false"),
     rewriteLinks: normalizeBoolean(getInput("rewrite-links") || "true"),
     editLink: normalizeBoolean(getInput("edit-link") || "false"),
@@ -67824,7 +67626,6 @@ async function main() {
     redirectsFile: config.redirectsFile,
     rootSlug: config.rootSlug,
     rootTitle: config.rootTitle,
-    versioning: config.versioning,
     createH1: config.createH1,
     rewriteLinks: config.rewriteLinks,
     editLink: config.editLink,
@@ -67840,8 +67641,7 @@ async function main() {
   const client = new WordPressClient({
     baseUrl: config.baseUrl,
     site: config.site,
-    token: config.token,
-    taxonomies: config.versioning ? [config.versionTaxonomy] : []
+    token: config.token
   });
 
   const result = await syncPages({
@@ -67850,8 +67650,6 @@ async function main() {
     dryRun: config.dryRun,
     deleteMode: config.deleteMode,
     rootSlug: config.rootSlug,
-    versioning: config.versioning,
-    versionTaxonomy: config.versionTaxonomy,
     logger: core_namespaceObject
   });
 

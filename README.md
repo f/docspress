@@ -15,7 +15,7 @@ It is built for teams that want GitHub to remain the source of truth for develop
 - Convert Markdown into Gutenberg core blocks instead of one large HTML blob.
 - Protect manual WordPress content with managed-page sentinels.
 - Review planned changes with `dry-run` before writing to WordPress.
-- Support manifests, redirects, version taxonomies, rewritten local links, and edit links.
+- Support manifests, redirects, rewritten local links, and edit links.
 
 ## Project status
 
@@ -99,8 +99,6 @@ The secret name is `WP_ACCESS_TOKEN`. Use it in your workflow as `${{ secrets.WP
 | `redirects-file` | empty | Optional JSON map of old docs paths to new docs paths or external URLs. Creates managed moved-page placeholders. |
 | `root-slug` | `docs` | Managed root page slug. |
 | `root-title` | `Docs` | Managed root page title when no root `index.md` exists. |
-| `versioning` | `false` | Infer docs versions from `docs/{version}/**/*.md`, create missing version terms, and assign synced pages to them. |
-| `version-taxonomy` | `docspress_version` | REST base and page field for the registered WordPress docs version taxonomy. |
 | `create-h1` | `false` | Add the page title as an H1 block at the top of generated content. |
 | `rewrite-links` | `true` | Rewrite local Markdown links to generated WordPress page URLs. |
 | `edit-link` | `false` | Append an "Edit this page on GitHub" link to Markdown-backed pages. |
@@ -218,30 +216,6 @@ Use `redirects-file` to keep old docs paths alive after renames. On WordPress.co
 ```
 
 Relative destinations are resolved under `root-slug`; absolute URLs are used as-is.
-
-## Versioning
-
-Set `versioning: true` when your docs live under version folders:
-
-```text
-docs/
-  v1/
-    index.md
-    guides/getting-started.md
-  v2/
-    index.md
-```
-
-Docspress keeps the version folder in the page path, so `docs/v1/guides/getting-started.md` becomes `/docs/v1/guides/getting-started/`. It also creates missing terms in the configured version taxonomy and assigns every page under `docs/{version}/` to that term, including generated placeholder pages.
-
-The taxonomy must already be registered on the WordPress site for Pages and exposed through the REST API. By default Docspress uses `docspress_version` as both the term endpoint and the page payload field:
-
-```yaml
-versioning: true
-version-taxonomy: docspress_version
-```
-
-Docspress does not delete version terms when folders are removed, because those terms may be shared with other content.
 
 ## Link rewriting
 
