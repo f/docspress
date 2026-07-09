@@ -15,7 +15,7 @@ import {
   separatorBlock,
   tableBlock
 } from "./gutenberg.js";
-import { escapeAttribute, escapeHtml } from "./utils.js";
+import { escapeAttribute, escapeHtml, normalizeBoolean } from "./utils.js";
 
 const parser = unified().use(remarkParse).use(remarkGfm);
 
@@ -62,14 +62,22 @@ export function titleFromMarkdown(markdown, fallbackTitle) {
 
 export function markdownToBlocks(markdown, options = {}) {
   const fallbackTitle = options.fallbackTitle || "Docs";
+  const createH1 = normalizeBoolean(options.createH1);
   const parsed = titleFromMarkdown(markdown, fallbackTitle);
-  const children = parsed.removeFirstHeading
-    ? removeFirstHeading(parsed.tree.children)
-    : parsed.tree.children;
+  const children = createH1
+    ? removeFirstMatchingHeading(parsed.tree.children, parsed.title)
+    : parsed.removeFirstHeading
+      ? removeFirstHeading(parsed.tree.children)
+      : parsed.tree.children;
+  const blocks = renderBlocks(children);
+
+  if (createH1) {
+    blocks.unshift(headingBlock(1, escapeHtml(parsed.title)));
+  }
 
   return {
     title: parsed.title,
-    blocks: renderBlocks(children).join("\n\n"),
+    blocks: blocks.join("\n\n"),
     data: parsed.data
   };
 }
@@ -84,6 +92,24 @@ function removeFirstHeading(children) {
 
     return true;
   });
+}
+
+function removeFirstMatchingHeading(children, title) {
+  let removed = false;
+  const normalizedTitle = normalizeHeadingText(title);
+
+  return children.filter((node) => {
+    if (!removed && node.type === "heading" && node.depth === 1 && normalizeHeadingText(mdastToString(node)) === normalizedTitle) {
+      removed = true;
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function normalizeHeadingText(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 function renderBlocks(nodes) {

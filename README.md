@@ -29,6 +29,7 @@ jobs:
           docs-dir: docs
           root-slug: docs
           root-title: Docs
+          create-h1: false
           status: draft
           dry-run: true
 ```
@@ -43,7 +44,8 @@ jobs:
 | `docs-dir` | `docs` | Markdown docs directory. |
 | `root-slug` | `docs` | Managed root page slug. |
 | `root-title` | `Docs` | Managed root page title when no root `index.md` exists. |
-| `status` | `publish` | Status for created or updated pages. |
+| `create-h1` | `false` | Add the page title as an H1 block at the top of generated content. |
+| `status` | `publish` | Status for created or updated pages. Use `draft` for private review or `publish` for public pages. |
 | `delete-mode` | `trash` | Use `trash` or `force` for removed Markdown files. |
 | `dry-run` | `false` | Plan changes without writing to WordPress. |
 
@@ -113,6 +115,8 @@ Docspress sends the resulting OAuth token to WordPress.com as `Authorization: Be
 - Missing parent sections are created as managed placeholder pages.
 
 The page title comes from frontmatter `title`, then the first H1, then the filename. When the first H1 is used as the title, it is removed from the body to avoid duplication.
+
+Set `create-h1: true` if you want Docspress to add the WordPress page title as the first H1 block in the generated content. When the Markdown already starts with the same H1, Docspress reuses that title and avoids creating a duplicate.
 
 ## Development
 

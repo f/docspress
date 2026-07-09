@@ -25,8 +25,12 @@ inputs:
     description: Title for the managed root page when no root index document supplies one.
     required: false
     default: Docs
+  create-h1:
+    description: Add the page title as an H1 block at the top of generated WordPress content.
+    required: false
+    default: "false"
   status:
-    description: WordPress status for created or updated pages.
+    description: WordPress status for created or updated pages, such as draft or publish.
     required: false
     default: publish
   delete-mode:

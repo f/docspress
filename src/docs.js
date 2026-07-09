@@ -1,9 +1,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import fg from "fast-glob";
+import { headingBlock } from "./gutenberg.js";
 import { markdownToBlocks } from "./markdown.js";
 import { prependSentinel } from "./sentinel.js";
-import { sha256, slugify, stableJson, titleFromSlug, toPosixPath } from "./utils.js";
+import { escapeHtml, normalizeBoolean, sha256, slugify, stableJson, titleFromSlug, toPosixPath } from "./utils.js";
 
 const INDEX_FILENAMES = new Set(["index", "readme"]);
 
@@ -33,7 +34,10 @@ export async function collectDesiredPages(options) {
     }
 
     const fallbackTitle = fallbackTitleForRoute(routeSegments, options.rootTitle);
-    const converted = markdownToBlocks(markdown, { fallbackTitle });
+    const converted = markdownToBlocks(markdown, {
+      fallbackTitle,
+      createH1: options.createH1
+    });
     const sourcePath = `${docsDirForSource}/${toPosixPath(file)}`;
 
     byRoute.set(routeKey, {
@@ -111,6 +115,10 @@ function finalizePage(page, options) {
   const parentKey = parentSegments.length > 0 ? parentSegments.join("/") : null;
   const slug = fullSegments.at(-1);
   const status = options.status || "publish";
+  const createH1 = normalizeBoolean(options.createH1);
+  const body = createH1 && page.kind === "placeholder"
+    ? `${headingBlock(1, escapeHtml(page.title))}\n\n${page.body}`
+    : page.body;
   const stablePayload = {
     key,
     sourcePath: page.sourcePath,
@@ -118,10 +126,10 @@ function finalizePage(page, options) {
     slug,
     parentKey,
     status,
-    body: page.body
+    body
   };
   const hash = sha256(stableJson(stablePayload));
-  const content = prependSentinel(page.body, {
+  const content = prependSentinel(body, {
     key,
     source: page.sourcePath,
     hash
@@ -133,6 +141,7 @@ function finalizePage(page, options) {
     parentKey,
     slug,
     status,
+    body,
     hash,
     content,
     depth: fullSegments.length

@@ -43989,6 +43989,145 @@ const promises_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.ur
 const external_node_path_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("node:path");
 // EXTERNAL MODULE: ./node_modules/fast-glob/out/index.js
 var out = __nccwpck_require__(5648);
+// EXTERNAL MODULE: external "node:crypto"
+var external_node_crypto_ = __nccwpck_require__(7598);
+;// CONCATENATED MODULE: ./src/utils.js
+
+
+
+function normalizeBoolean(value) {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  return ["1", "true", "yes", "on"].includes(String(value || "").trim().toLowerCase());
+}
+
+function stripTrailingSlash(value) {
+  return String(value || "").replace(/\/+$/, "");
+}
+
+function utils_toPosixPath(value) {
+  return String(value).split(external_node_path_namespaceObject.sep).join("/");
+}
+
+function slugify(value, fallback = "page") {
+  const slug = String(value || "")
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return slug || fallback;
+}
+
+function titleFromSlug(slug) {
+  return String(slug || "")
+    .split(/[-_]+/)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ") || "Docs";
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function escapeAttribute(value) {
+  return escapeHtml(value).replace(/`/g, "&#96;");
+}
+
+function sha256(value) {
+  return external_node_crypto_.createHash("sha256").update(String(value)).digest("hex");
+}
+
+function stableJson(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((item) => stableJson(item)).join(",")}]`;
+  }
+
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(",")}}`;
+  }
+
+  return JSON.stringify(value);
+}
+
+;// CONCATENATED MODULE: ./src/gutenberg.js
+
+
+const VOID_BLOCKS = new Set(["core/more", "core/nextpage"]);
+
+function serializeBlock(name, attrs, html) {
+  const serializedAttrs = attrs && Object.keys(attrs).length > 0 ? ` ${JSON.stringify(attrs)}` : "";
+
+  if (VOID_BLOCKS.has(name)) {
+    return `<!-- wp:${name.replace(/^core\//, "")}${serializedAttrs} /-->`;
+  }
+
+  return `<!-- wp:${name.replace(/^core\//, "")}${serializedAttrs} -->\n${html}\n<!-- /wp:${name.replace(/^core\//, "")} -->`;
+}
+
+function paragraphBlock(html) {
+  return serializeBlock("core/paragraph", null, `<p>${html}</p>`);
+}
+
+function headingBlock(level, html) {
+  const safeLevel = Math.min(Math.max(Number(level) || 2, 1), 6);
+  const attrs = safeLevel === 2 ? null : { level: safeLevel };
+  return serializeBlock("core/heading", attrs, `<h${safeLevel}>${html}</h${safeLevel}>`);
+}
+
+function listBlock(html, ordered = false) {
+  const tag = ordered ? "ol" : "ul";
+  const attrs = ordered ? { ordered: true } : null;
+  return serializeBlock("core/list", attrs, `<${tag}>${html}</${tag}>`);
+}
+
+function quoteBlock(html) {
+  return serializeBlock("core/quote", null, `<blockquote class="wp-block-quote">${html}</blockquote>`);
+}
+
+function codeBlock(value, lang) {
+  const className = lang ? ` class="language-${escapeAttribute(lang)}"` : "";
+  return serializeBlock("core/code", null, `<pre class="wp-block-code"><code${className}>${escapeHtml(value)}</code></pre>`);
+}
+
+function preformattedBlock(value) {
+  return serializeBlock("core/preformatted", null, `<pre class="wp-block-preformatted">${escapeHtml(value)}</pre>`);
+}
+
+function separatorBlock() {
+  return serializeBlock("core/separator", null, '<hr class="wp-block-separator has-alpha-channel-opacity"/>');
+}
+
+function htmlBlock(value) {
+  return serializeBlock("core/html", null, String(value || ""));
+}
+
+function imageBlock(node) {
+  const url = node.url || "";
+  const alt = node.alt || "";
+  const title = node.title || "";
+  const attrs = { url, alt };
+  const caption = title ? `<figcaption class="wp-element-caption">${escapeHtml(title)}</figcaption>` : "";
+  return serializeBlock(
+    "core/image",
+    attrs,
+    `<figure class="wp-block-image"><img src="${escapeAttribute(url)}" alt="${escapeAttribute(alt)}"/>${caption}</figure>`
+  );
+}
+
+function tableBlock(html) {
+  return serializeBlock("core/table", null, `<figure class="wp-block-table"><table>${html}</table></figure>`);
+}
+
 // EXTERNAL MODULE: ./node_modules/gray-matter/index.js
 var gray_matter = __nccwpck_require__(9599);
 ;// CONCATENATED MODULE: ./node_modules/mdast-util-to-string/lib/index.js
@@ -66265,145 +66404,6 @@ function lib_isUint8Array(value) {
   )
 }
 
-// EXTERNAL MODULE: external "node:crypto"
-var external_node_crypto_ = __nccwpck_require__(7598);
-;// CONCATENATED MODULE: ./src/utils.js
-
-
-
-function normalizeBoolean(value) {
-  if (typeof value === "boolean") {
-    return value;
-  }
-
-  return ["1", "true", "yes", "on"].includes(String(value || "").trim().toLowerCase());
-}
-
-function stripTrailingSlash(value) {
-  return String(value || "").replace(/\/+$/, "");
-}
-
-function utils_toPosixPath(value) {
-  return String(value).split(external_node_path_namespaceObject.sep).join("/");
-}
-
-function slugify(value, fallback = "page") {
-  const slug = String(value || "")
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-
-  return slug || fallback;
-}
-
-function titleFromSlug(slug) {
-  return String(slug || "")
-    .split(/[-_]+/)
-    .filter(Boolean)
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ") || "Docs";
-}
-
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function escapeAttribute(value) {
-  return escapeHtml(value).replace(/`/g, "&#96;");
-}
-
-function sha256(value) {
-  return external_node_crypto_.createHash("sha256").update(String(value)).digest("hex");
-}
-
-function stableJson(value) {
-  if (Array.isArray(value)) {
-    return `[${value.map((item) => stableJson(item)).join(",")}]`;
-  }
-
-  if (value && typeof value === "object") {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(",")}}`;
-  }
-
-  return JSON.stringify(value);
-}
-
-;// CONCATENATED MODULE: ./src/gutenberg.js
-
-
-const VOID_BLOCKS = new Set(["core/more", "core/nextpage"]);
-
-function serializeBlock(name, attrs, html) {
-  const serializedAttrs = attrs && Object.keys(attrs).length > 0 ? ` ${JSON.stringify(attrs)}` : "";
-
-  if (VOID_BLOCKS.has(name)) {
-    return `<!-- wp:${name.replace(/^core\//, "")}${serializedAttrs} /-->`;
-  }
-
-  return `<!-- wp:${name.replace(/^core\//, "")}${serializedAttrs} -->\n${html}\n<!-- /wp:${name.replace(/^core\//, "")} -->`;
-}
-
-function paragraphBlock(html) {
-  return serializeBlock("core/paragraph", null, `<p>${html}</p>`);
-}
-
-function headingBlock(level, html) {
-  const safeLevel = Math.min(Math.max(Number(level) || 2, 1), 6);
-  const attrs = safeLevel === 2 ? null : { level: safeLevel };
-  return serializeBlock("core/heading", attrs, `<h${safeLevel}>${html}</h${safeLevel}>`);
-}
-
-function listBlock(html, ordered = false) {
-  const tag = ordered ? "ol" : "ul";
-  const attrs = ordered ? { ordered: true } : null;
-  return serializeBlock("core/list", attrs, `<${tag}>${html}</${tag}>`);
-}
-
-function quoteBlock(html) {
-  return serializeBlock("core/quote", null, `<blockquote class="wp-block-quote">${html}</blockquote>`);
-}
-
-function codeBlock(value, lang) {
-  const className = lang ? ` class="language-${escapeAttribute(lang)}"` : "";
-  return serializeBlock("core/code", null, `<pre class="wp-block-code"><code${className}>${escapeHtml(value)}</code></pre>`);
-}
-
-function preformattedBlock(value) {
-  return serializeBlock("core/preformatted", null, `<pre class="wp-block-preformatted">${escapeHtml(value)}</pre>`);
-}
-
-function separatorBlock() {
-  return serializeBlock("core/separator", null, '<hr class="wp-block-separator has-alpha-channel-opacity"/>');
-}
-
-function htmlBlock(value) {
-  return serializeBlock("core/html", null, String(value || ""));
-}
-
-function imageBlock(node) {
-  const url = node.url || "";
-  const alt = node.alt || "";
-  const title = node.title || "";
-  const attrs = { url, alt };
-  const caption = title ? `<figcaption class="wp-element-caption">${escapeHtml(title)}</figcaption>` : "";
-  return serializeBlock(
-    "core/image",
-    attrs,
-    `<figure class="wp-block-image"><img src="${escapeAttribute(url)}" alt="${escapeAttribute(alt)}"/>${caption}</figure>`
-  );
-}
-
-function tableBlock(html) {
-  return serializeBlock("core/table", null, `<figure class="wp-block-table"><table>${html}</table></figure>`);
-}
-
 ;// CONCATENATED MODULE: ./src/markdown.js
 
 
@@ -66458,14 +66458,22 @@ function titleFromMarkdown(markdown, fallbackTitle) {
 
 function markdownToBlocks(markdown, options = {}) {
   const fallbackTitle = options.fallbackTitle || "Docs";
+  const createH1 = normalizeBoolean(options.createH1);
   const parsed = titleFromMarkdown(markdown, fallbackTitle);
-  const children = parsed.removeFirstHeading
-    ? removeFirstHeading(parsed.tree.children)
-    : parsed.tree.children;
+  const children = createH1
+    ? removeFirstMatchingHeading(parsed.tree.children, parsed.title)
+    : parsed.removeFirstHeading
+      ? removeFirstHeading(parsed.tree.children)
+      : parsed.tree.children;
+  const blocks = renderBlocks(children);
+
+  if (createH1) {
+    blocks.unshift(headingBlock(1, escapeHtml(parsed.title)));
+  }
 
   return {
     title: parsed.title,
-    blocks: renderBlocks(children).join("\n\n"),
+    blocks: blocks.join("\n\n"),
     data: parsed.data
   };
 }
@@ -66480,6 +66488,24 @@ function removeFirstHeading(children) {
 
     return true;
   });
+}
+
+function removeFirstMatchingHeading(children, title) {
+  let removed = false;
+  const normalizedTitle = normalizeHeadingText(title);
+
+  return children.filter((node) => {
+    if (!removed && node.type === "heading" && node.depth === 1 && normalizeHeadingText(lib_toString(node)) === normalizedTitle) {
+      removed = true;
+      return false;
+    }
+
+    return true;
+  });
+}
+
+function normalizeHeadingText(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 function renderBlocks(nodes) {
@@ -66670,6 +66696,7 @@ function stripSentinel(content) {
 
 
 
+
 const INDEX_FILENAMES = new Set(["index", "readme"]);
 
 async function collectDesiredPages(options) {
@@ -66698,7 +66725,10 @@ async function collectDesiredPages(options) {
     }
 
     const fallbackTitle = fallbackTitleForRoute(routeSegments, options.rootTitle);
-    const converted = markdownToBlocks(markdown, { fallbackTitle });
+    const converted = markdownToBlocks(markdown, {
+      fallbackTitle,
+      createH1: options.createH1
+    });
     const sourcePath = `${docsDirForSource}/${utils_toPosixPath(file)}`;
 
     byRoute.set(routeKey, {
@@ -66776,6 +66806,10 @@ function finalizePage(page, options) {
   const parentKey = parentSegments.length > 0 ? parentSegments.join("/") : null;
   const slug = fullSegments.at(-1);
   const status = options.status || "publish";
+  const createH1 = normalizeBoolean(options.createH1);
+  const body = createH1 && page.kind === "placeholder"
+    ? `${headingBlock(1, escapeHtml(page.title))}\n\n${page.body}`
+    : page.body;
   const stablePayload = {
     key,
     sourcePath: page.sourcePath,
@@ -66783,10 +66817,10 @@ function finalizePage(page, options) {
     slug,
     parentKey,
     status,
-    body: page.body
+    body
   };
   const hash = sha256(stableJson(stablePayload));
-  const content = prependSentinel(page.body, {
+  const content = prependSentinel(body, {
     key,
     source: page.sourcePath,
     hash
@@ -66798,6 +66832,7 @@ function finalizePage(page, options) {
     parentKey,
     slug,
     status,
+    body,
     hash,
     content,
     depth: fullSegments.length
@@ -67106,6 +67141,7 @@ async function main() {
     docsDir: getInput("docs-dir") || "docs",
     rootSlug: getInput("root-slug") || "docs",
     rootTitle: getInput("root-title") || "Docs",
+    createH1: normalizeBoolean(getInput("create-h1") || "false"),
     status: getInput("status") || "publish",
     deleteMode: getInput("delete-mode") || "trash",
     dryRun: normalizeBoolean(getInput("dry-run") || "false")
@@ -67116,6 +67152,7 @@ async function main() {
     docsDir: config.docsDir,
     rootSlug: config.rootSlug,
     rootTitle: config.rootTitle,
+    createH1: config.createH1,
     status: config.status
   });
 

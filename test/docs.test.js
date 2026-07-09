@@ -34,6 +34,26 @@ describe("collectDesiredPages", () => {
     });
   });
 
+  it("adds title h1 blocks to files and placeholders when requested", async () => {
+    const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "docspress-"));
+    await fs.mkdir(path.join(cwd, "docs", "guides"), { recursive: true });
+    await fs.writeFile(path.join(cwd, "docs", "index.md"), "# Product Docs\n\nWelcome.");
+    await fs.writeFile(path.join(cwd, "docs", "guides", "install.md"), "# Install\n\nUse it.");
+
+    const pages = await collectDesiredPages({
+      cwd,
+      docsDir: "docs",
+      rootSlug: "docs",
+      rootTitle: "Docs",
+      status: "draft",
+      createH1: true
+    });
+
+    expect(pages.find((page) => page.key === "docs")?.content).toContain("<h1>Product Docs</h1>");
+    expect(pages.find((page) => page.key === "docs/guides")?.content).toContain("<h1>Guides</h1>");
+    expect(pages.find((page) => page.key === "docs/guides/install")?.content.match(/<h1>Install<\/h1>/g)).toHaveLength(1);
+  });
+
   it("rejects files that map to the same page", async () => {
     const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "docspress-"));
     await fs.mkdir(path.join(cwd, "docs"), { recursive: true });

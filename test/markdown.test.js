@@ -40,6 +40,32 @@ Body.
     expect(result.blocks).toContain("<h1>Visible Heading</h1>");
   });
 
+  it("can create a title h1 without duplicating the source h1", () => {
+    const result = markdownToBlocks(`# Hello Docs
+
+Body.
+`, {
+      fallbackTitle: "Fallback",
+      createH1: true
+    });
+
+    expect(result.title).toBe("Hello Docs");
+    expect(result.blocks.match(/<h1>Hello Docs<\/h1>/g)).toHaveLength(1);
+    expect(parse(result.blocks).map((block) => block.blockName).filter(Boolean)[0]).toBe("core/heading");
+  });
+
+  it("does not create a title h1 when createH1 is the string false", () => {
+    const result = markdownToBlocks(`# Hello Docs
+
+Body.
+`, {
+      fallbackTitle: "Fallback",
+      createH1: "false"
+    });
+
+    expect(result.blocks).not.toContain("<h1>Hello Docs</h1>");
+  });
+
   it("renders docs blocks for code, quote, image, table, separator, and html", () => {
     const result = markdownToBlocks(`> Keep source in Git.
 

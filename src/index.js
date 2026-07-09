@@ -12,6 +12,7 @@ async function main() {
     docsDir: core.getInput("docs-dir") || "docs",
     rootSlug: core.getInput("root-slug") || "docs",
     rootTitle: core.getInput("root-title") || "Docs",
+    createH1: normalizeBoolean(core.getInput("create-h1") || "false"),
     status: core.getInput("status") || "publish",
     deleteMode: core.getInput("delete-mode") || "trash",
     dryRun: normalizeBoolean(core.getInput("dry-run") || "false")
@@ -22,6 +23,7 @@ async function main() {
     docsDir: config.docsDir,
     rootSlug: config.rootSlug,
     rootTitle: config.rootTitle,
+    createH1: config.createH1,
     status: config.status
   });
 
