@@ -51,7 +51,7 @@ jobs:
 
 WordPress.com API writes require an OAuth bearer token. Create that token on WordPress.com, then store it as a GitHub Actions secret.
 
-For personal projects or demos that only access your own WordPress.com site:
+For personal projects or demos that only access your own WordPress.com site, use the authorization-code flow. This works with two-factor authentication because you authorize in the browser instead of sending your WordPress.com password to the token endpoint.
 
 1. Create an app at [WordPress.com Apps](https://developer.wordpress.com/apps/) and copy its `client_id` and `client_secret`.
 
@@ -62,28 +62,27 @@ For personal projects or demos that only access your own WordPress.com site:
    | Name | `Docspress Demo` |
    | Description | `Sync Markdown docs from GitHub to WordPress Pages as Gutenberg content.` |
    | Website URL | `https://github.com/f/docspress-demo` |
-   | Redirect URLs | `https://github.com/f/docspress-demo` |
+   | Redirect URLs | `http://localhost:8787/callback` |
    | Javascript Origins | Leave blank |
    | Type | `Web` |
    | Follow Developer blog | Optional; leave unchecked unless you want the emails |
    | Owner | Use your personal owner, such as `fatihkadirakin`, for personal/demo apps |
 
-   The redirect URL is not used by Docspress when you use the token exchange command below, but WordPress.com requires a valid URL when creating the app.
+   The redirect URL must match the local callback URL used by the token helper below.
 
-2. Create a WordPress.com Application Password from your account security settings. This is recommended when two-factor authentication is enabled, and it avoids using your normal account password in scripts.
-3. Exchange the app credentials and Application Password for an OAuth token:
+2. Run the local token helper from the Docspress checkout:
 
 ```bash
-curl -sS -X POST "https://public-api.wordpress.com/oauth2/token" \
-  -d "client_id=YOUR_CLIENT_ID" \
-  -d "client_secret=YOUR_CLIENT_SECRET" \
-  -d "grant_type=password" \
-  -d "username=YOUR_WORDPRESS_COM_USERNAME" \
-  --data-urlencode "password=YOUR_APPLICATION_PASSWORD" \
-  | jq -r '.access_token'
+npm run token -- \
+  --client-id YOUR_CLIENT_ID \
+  --client-secret YOUR_CLIENT_SECRET \
+  --site fkadev.blog \
+  --repo f/docspress-demo
 ```
 
-4. Store the returned access token as `WP_ACCESS_TOKEN` in the repository that runs Docspress:
+The helper opens WordPress.com in your browser, waits for the `http://localhost:8787/callback` redirect, exchanges the authorization code for an access token, and prints the token.
+
+3. Store the returned access token as `WP_ACCESS_TOKEN` in the repository that runs Docspress:
 
 ```bash
 gh secret set WP_ACCESS_TOKEN --repo OWNER/REPO
@@ -91,7 +90,18 @@ gh secret set WP_ACCESS_TOKEN --repo OWNER/REPO
 
 Paste the token when prompted, then press `Ctrl-D`.
 
-Application Passwords are only used with the OAuth2 token endpoint. Docspress itself sends the resulting OAuth token to WordPress.com as `Authorization: Bearer ...`.
+You can also let the helper store the secret directly:
+
+```bash
+npm run token -- \
+  --client-id YOUR_CLIENT_ID \
+  --client-secret YOUR_CLIENT_SECRET \
+  --site fkadev.blog \
+  --repo f/docspress-demo \
+  --set-secret
+```
+
+Docspress sends the resulting OAuth token to WordPress.com as `Authorization: Bearer ...`.
 
 ## Docs mapping
 
