@@ -2,14 +2,17 @@
   <img src="assets/logo.png" alt="Docspress logo and wordmark" width="680">
 </p>
 
-# Docspress
+<p align="center">
+  <a href="https://www.npmjs.com/package/docspress"><img alt="npm version" src="https://img.shields.io/npm/v/docspress.svg"></a>
+  <a href="LICENSE"><img alt="License: GPL-3.0-or-later" src="https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg"></a>
+</p>
 
-[![npm version](https://img.shields.io/npm/v/docspress.svg)](https://www.npmjs.com/package/docspress)
-[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
+<p align="center">
+  <strong>Markdown in GitHub. WordPress as the publishing surface.</strong><br>
+  Sync Markdown documentation into WordPress Pages as Gutenberg-compatible block content.
+</p>
 
-Docspress syncs Markdown documentation from GitHub into WordPress Pages as Gutenberg-compatible block content.
-
-It is built for teams that want GitHub to remain the source of truth for developer docs while WordPress remains the publishing surface. Commit Markdown, run a GitHub Action, and Docspress creates, updates, or removes managed WordPress Pages through the REST API.
+Docspress is built for teams that want GitHub to remain the source of truth for developer docs while WordPress remains the publishing surface. Commit Markdown, run a GitHub Action, and Docspress creates, updates, or removes managed WordPress Pages through the REST API.
 
 ## Why Docspress?
 
