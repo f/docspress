@@ -6,7 +6,7 @@
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "docspress": "./bin/docspress.mjs"
+    "docspress": "bin/docspress.mjs"
   },
   "files": [
     "README.md",
