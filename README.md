@@ -49,11 +49,33 @@ jobs:
 
 ## WordPress.com authentication
 
-WordPress.com API writes require an OAuth bearer token. Store it as a GitHub Actions secret:
+WordPress.com API writes require an OAuth bearer token. Create that token on WordPress.com, then store it as a GitHub Actions secret.
+
+For personal projects or demos that only access your own WordPress.com site:
+
+1. Create an app at [WordPress.com Apps](https://developer.wordpress.com/apps/) and copy its `client_id` and `client_secret`.
+2. Create a WordPress.com Application Password from your account security settings. This is recommended when two-factor authentication is enabled, and it avoids using your normal account password in scripts.
+3. Exchange the app credentials and Application Password for an OAuth token:
 
 ```bash
-gh secret set WP_ACCESS_TOKEN --repo f/docspress-demo --body "YOUR_WORDPRESS_COM_OAUTH_TOKEN"
+curl -sS -X POST "https://public-api.wordpress.com/oauth2/token" \
+  -d "client_id=YOUR_CLIENT_ID" \
+  -d "client_secret=YOUR_CLIENT_SECRET" \
+  -d "grant_type=password" \
+  -d "username=YOUR_WORDPRESS_COM_USERNAME" \
+  --data-urlencode "password=YOUR_APPLICATION_PASSWORD" \
+  | jq -r '.access_token'
 ```
+
+4. Store the returned access token as `WP_ACCESS_TOKEN` in the repository that runs Docspress:
+
+```bash
+gh secret set WP_ACCESS_TOKEN --repo OWNER/REPO
+```
+
+Paste the token when prompted, then press `Ctrl-D`.
+
+Application Passwords are only used with the OAuth2 token endpoint. Docspress itself sends the resulting OAuth token to WordPress.com as `Authorization: Bearer ...`.
 
 ## Docs mapping
 
