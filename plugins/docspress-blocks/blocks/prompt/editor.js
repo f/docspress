@@ -12,6 +12,7 @@
 	const modeLabels = { chat: 'Chat', code: 'Code', ask: 'Ask', plan: 'Plan' };
 
 	function contextKind( label ) {
+		if ( label.startsWith( '$' ) ) return 'skill';
 		if ( label.startsWith( '@' ) ) return 'mention';
 		if ( label.startsWith( '#' ) ) return 'image';
 		if ( /^https?:\/\//i.test( label ) ) return 'url';
@@ -30,11 +31,11 @@
 		icon,
 		keywords: [ __( 'AI', 'docspress-blocks' ), __( 'LLM', 'docspress-blocks' ), __( 'composer', 'docspress-blocks' ) ],
 		attributes: {
-			prompt: { type: 'string', default: 'Review this synchronization logic and propose a safer retry strategy. Return a short plan before writing code.' },
+			prompt: { type: 'string', default: 'Use $docspress-install to review this repository\'s documentation setup. Return a short plan before writing code.' },
 			model: { type: 'string', default: 'GPT-5' },
 			mode: { type: 'string', default: 'code' },
 			thinking: { type: 'boolean', default: true },
-			context: { type: 'string', default: '@repository, src/sync.js, docs/' },
+			context: { type: 'string', default: '$docspress-install, @repository, src/sync.js, docs/' },
 			caption: { type: 'string', default: 'Prompt example' }
 		},
 		supports: { anchor: true, html: false },
@@ -78,7 +79,7 @@
 						} ),
 						el( TextControl, {
 							label: __( 'Context', 'docspress-blocks' ),
-							help: __( 'Comma-separated @mentions, #images, URLs, or file paths.', 'docspress-blocks' ),
+							help: __( 'Comma-separated $skill-name references, @mentions, #images, URLs, or file paths.', 'docspress-blocks' ),
 							value: attributes.context,
 							onChange: ( context ) => setAttributes( { context } )
 						} ),

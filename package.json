@@ -22,6 +22,7 @@
     "build": "ncc build src/index.js -o dist --source-map --license licenses.txt",
     "lint": "eslint .",
     "package": "npm run lint && npm test && npm run build",
+    "playground:docs": "node scripts/build-playground-docs.mjs",
     "test": "vitest run",
     "token": "node scripts/create-wordpress-token.mjs"
   },

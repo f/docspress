@@ -1,0 +1,4 @@
+interface:
+  display_name: "Generate Docs from Source"
+  short_description: "Build verified docs with DocsPress blocks"
+  default_prompt: "Use $generate-docs-from-source to inspect this repository, generate verified documentation with the appropriate DocsPress Gutenberg blocks, and configure DocsPress."

@@ -36,13 +36,13 @@ npx @wp-playground/cli@latest start \
   --port=9400
 ```
 
-Playground mounts and activates the theme and DocsPress Blocks, installs Jetpack, creates two editable navigation menus and a complete documentation tree, logs you into WordPress, and opens the Kitchen Sink at:
+Playground mounts and activates the theme and DocsPress Blocks, installs Jetpack, creates two editable navigation menus and the source-backed documentation tree, logs you into WordPress, and opens the DocsPress introduction at:
 
 ```text
-http://127.0.0.1:9400/docs/kitchen-sink/
+http://127.0.0.1:9400/docs/
 ```
 
-The Kitchen Sink is an acceptance page rather than a static screenshot. It builds its component inventory from the running WordPress installation, so every plugin installed by the blueprint appears with its version and activation state. Grouped sections exercise all eight DocsPress blocks, every semantic state, meaningful configuration combinations, all three inserter patterns, and the native Gutenberg blocks used by the seed. Use it to compare presets and light/dark mode without hunting through separate Pages.
+The Playground content is generated from the repository's `docs/` tree with `npm run playground:docs`, so local preview and production synchronization use the same converted Gutenberg content. The Kitchen Sink remains available at `http://127.0.0.1:9400/docs/reference/kitchen-sink/`; it appends a live component inventory and exercises all eight DocsPress blocks, every semantic state, and meaningful configuration combinations.
 
 To rebuild the persisted Playground site from scratch, add `--reset`. To keep it from opening a browser automatically, add `--skip-browser`.
 
@@ -64,12 +64,12 @@ Open **Appearance → Customize → DocsPress Theme**. Settings are grouped by j
 
 The preset selector applies a complete, editable recipe. Selecting a preset updates the individual color, typography, and corner controls; changing any of those values afterward changes the selector to **Custom** without discarding the rest of the recipe.
 
-- **DocsPress** follows the project wordmark: its sampled `#005CB3` blue, `#FEC408` Wapuu yellow, `#FE8301` orange, deep `#232323` ink, rounded typography, and friendly pill-shaped brand details.
+- **DocsPress** follows the project wordmark: its sampled `#005CB3` blue, `#FEC408` Wapuu yellow, `#FE8301` orange, deep `#232323` ink, Nunito Sans typography, and friendly pill-shaped brand details.
 - **WordPress.org** follows the current [WordPress.org](https://wordpress.org/) visual system: WordPress blue, neutral gray surfaces, Inter interface and body copy, EB Garamond headings, lighter heading weights, and crisp corners.
 - **WordPress.com** follows the current [WordPress.com](https://wordpress.com/) marketing system: WordPress blue, Studio neutral surfaces, Inter interface and body copy, Recoleta display headings, and compact corners.
 - **Jetpack** follows the current [Jetpack.com](https://jetpack.com/) visual system: Jetpack green, bright neutral surfaces, Inter interface and body copy, Recoleta display headings, and compact corners.
 
-The DocsPress preset uses the browser’s local rounded UI family with Arial Rounded, Avenir, and Trebuchet fallbacks. Inter and EB Garamond are bundled as variable WOFF2 fonts so the reference presets render consistently. The WordPress.com and Jetpack presets load Recoleta from WordPress.com's production font endpoint, with EB Garamond and Georgia as fallbacks.
+The DocsPress preset uses bundled Nunito Sans with a Trebuchet fallback so its friendly rounded typography is consistent from the first render. Inter and EB Garamond are also bundled as variable WOFF2 fonts so the reference presets render consistently. The WordPress.com and Jetpack presets load Recoleta from WordPress.com's production font endpoint, with EB Garamond and Georgia as fallbacks.
 
 Preset code lives under `inc/design-presets/`, with one automatically discovered folder per preset. Each folder contains its setting recipe and can include scoped CSS refinements. To add another preset, create one new folder; the loader adds it to the Customizer, live recipe controller, body-class validation, and stylesheet queue without a central registry edit. See [`inc/design-presets/README.md`](inc/design-presets/README.md) for the manifest contract.
 
@@ -180,7 +180,7 @@ On a public production site, connect Jetpack to WordPress.com and enable **Jetpa
 ```text
 .
 ├── assets/images/docspress-hybrid-logo.png # Default header mark
-├── assets/fonts/            # Bundled Inter and EB Garamond WOFF2 subsets
+├── assets/fonts/            # Bundled Nunito Sans, Inter, and EB Garamond WOFF2 subsets
 ├── assets/js/docs.js       # Command search, navigation, dark mode, TOC, copy buttons
 ├── assets/js/customizer-controls.js # Applies discovered preset recipes
 ├── assets/js/customizer-preview.js

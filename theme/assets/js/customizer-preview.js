@@ -3,6 +3,7 @@
 
 	const customizerStyle = document.querySelector('#docspress-customizer-css');
 	const fontStacks = {
+		nunito: '"Nunito Sans", "Trebuchet MS", sans-serif',
 		rounded: 'ui-rounded, "Arial Rounded MT Bold", "Avenir Next", "Trebuchet MS", sans-serif',
 		avenir: '"Avenir Next", Avenir, "Century Gothic", Futura, sans-serif',
 		inter: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
@@ -159,7 +160,7 @@
 
 	wp.customize('docspress_ui_font', function (value) {
 		value.bind(function (next) {
-			const stack = fontStacks[next] || fontStacks.avenir;
+			const stack = fontStacks[next] || fontStacks.nunito;
 			setRuleVariable(0, '--dp-font-ui', stack);
 			if (wp.customize('docspress_content_font').get() === 'sans') {
 				setRuleVariable(0, '--dp-font-copy', stack);
@@ -173,7 +174,7 @@
 	wp.customize('docspress_content_font', function (value) {
 		value.bind(function (next) {
 			const currentUi = wp.customize('docspress_ui_font').get();
-			const stack = next === 'sans' ? (fontStacks[currentUi] || fontStacks.avenir) : (fontStacks[next] || fontStacks.charter);
+			const stack = next === 'sans' ? (fontStacks[currentUi] || fontStacks.nunito) : (fontStacks[next] || fontStacks.charter);
 			setRuleVariable(0, '--dp-font-copy', stack);
 		});
 	});
@@ -181,7 +182,7 @@
 	wp.customize('docspress_heading_font', function (value) {
 		value.bind(function (next) {
 			const currentUi = wp.customize('docspress_ui_font').get();
-			const stack = next === 'interface' ? (fontStacks[currentUi] || fontStacks.avenir) : (fontStacks[next] || fontStacks.avenir);
+			const stack = next === 'interface' ? (fontStacks[currentUi] || fontStacks.nunito) : (fontStacks[next] || fontStacks.nunito);
 			setRuleVariable(0, '--dp-font-heading', stack);
 		});
 	});

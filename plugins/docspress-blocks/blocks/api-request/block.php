@@ -58,16 +58,16 @@ function docspress_blocks_api_payload( $label, $content, $class, $format = 'raw'
 function docspress_blocks_render_api_request( $attributes ) {
 	wp_enqueue_script( 'docspress-blocks-view' );
 
-	$method        = strtoupper( docspress_blocks_allowed_value( isset( $attributes['method'] ) ? $attributes['method'] : '', array( 'get', 'post', 'put', 'patch', 'delete' ), 'get' ) );
-	$endpoint      = isset( $attributes['endpoint'] ) ? trim( (string) $attributes['endpoint'] ) : '/wp-json/wp/v2/pages';
-	$headers       = isset( $attributes['headers'] ) ? (string) $attributes['headers'] : '';
-	$request_body  = isset( $attributes['requestBody'] ) ? (string) $attributes['requestBody'] : '';
-	$response_body = isset( $attributes['responseBody'] ) ? (string) $attributes['responseBody'] : '';
-	$request_format = docspress_blocks_allowed_value( isset( $attributes['requestBodyFormat'] ) ? $attributes['requestBodyFormat'] : '', array( 'json', 'raw' ), 'json' );
+	$method          = strtoupper( docspress_blocks_allowed_value( isset( $attributes['method'] ) ? $attributes['method'] : '', array( 'get', 'post', 'put', 'patch', 'delete' ), 'get' ) );
+	$endpoint        = isset( $attributes['endpoint'] ) ? trim( (string) $attributes['endpoint'] ) : '/wp-json/wp/v2/pages';
+	$headers         = isset( $attributes['headers'] ) ? (string) $attributes['headers'] : '';
+	$request_body    = isset( $attributes['requestBody'] ) ? (string) $attributes['requestBody'] : '';
+	$response_body   = isset( $attributes['responseBody'] ) ? (string) $attributes['responseBody'] : '';
+	$request_format  = docspress_blocks_allowed_value( isset( $attributes['requestBodyFormat'] ) ? $attributes['requestBodyFormat'] : '', array( 'json', 'raw' ), 'json' );
 	$response_format = docspress_blocks_allowed_value( isset( $attributes['responseBodyFormat'] ) ? $attributes['responseBodyFormat'] : '', array( 'json', 'raw' ), 'json' );
-	$status        = isset( $attributes['responseStatus'] ) ? sanitize_text_field( $attributes['responseStatus'] ) : '200 OK';
-	$endpoint_id   = wp_unique_id( 'docspress-api-endpoint-' );
-	$wrapper       = get_block_wrapper_attributes(
+	$status          = isset( $attributes['responseStatus'] ) ? sanitize_text_field( $attributes['responseStatus'] ) : '200 OK';
+	$endpoint_id     = wp_unique_id( 'docspress-api-endpoint-' );
+	$wrapper         = get_block_wrapper_attributes(
 		array(
 			'class'       => 'docspress-api',
 			'data-method' => strtolower( $method ),
@@ -119,13 +119,13 @@ function docspress_blocks_register_api_request() {
 			'editor_style'    => 'docspress-api-request-editor-style',
 			'render_callback' => 'docspress_blocks_render_api_request',
 			'attributes'      => array(
-				'method'         => array( 'type' => 'string', 'default' => 'GET' ),
-				'endpoint'       => array( 'type' => 'string', 'default' => '/wp-json/wp/v2/pages' ),
-				'headers'        => array( 'type' => 'string', 'default' => "Accept: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN" ),
-				'requestBody'    => array( 'type' => 'string', 'default' => '' ),
+				'method'            => array( 'type' => 'string', 'default' => 'GET' ),
+				'endpoint'          => array( 'type' => 'string', 'default' => '/wp-json/wp/v2/pages' ),
+				'headers'           => array( 'type' => 'string', 'default' => "Accept: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN" ),
+				'requestBody'       => array( 'type' => 'string', 'default' => '' ),
 				'requestBodyFormat' => array( 'type' => 'string', 'default' => 'json' ),
-				'responseStatus' => array( 'type' => 'string', 'default' => '200 OK' ),
-				'responseBody'   => array( 'type' => 'string', 'default' => "{\n  \"id\": 42,\n  \"slug\": \"getting-started\"\n}" ),
+				'responseStatus'    => array( 'type' => 'string', 'default' => '200 OK' ),
+				'responseBody'      => array( 'type' => 'string', 'default' => "{\n  \"id\": 42,\n  \"slug\": \"getting-started\"\n}" ),
 				'responseBodyFormat' => array( 'type' => 'string', 'default' => 'json' ),
 			),
 			'supports'        => array( 'anchor' => true, 'html' => false ),

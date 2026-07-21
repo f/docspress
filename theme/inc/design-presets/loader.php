@@ -95,6 +95,45 @@ function docspress_design_presets() {
 }
 
 /**
+ * Return a setting's value from the active preset when no saved theme mod exists.
+ *
+ * This keeps a fresh theme activation visually identical to selecting the same
+ * preset in the Customizer. Saved values always continue to take precedence.
+ *
+ * @param string $setting_id Setting identifier.
+ * @param mixed  $fallback   Fallback when the active preset does not define it.
+ * @return mixed
+ */
+function docspress_design_preset_default( $setting_id, $fallback = null ) {
+	$preset    = get_theme_mod( 'docspress_design_preset', 'docspress' );
+	$manifests = docspress_design_preset_manifests();
+
+	if (
+		'custom' !== $preset &&
+		isset( $manifests[ $preset ]['values'] ) &&
+		array_key_exists( $setting_id, $manifests[ $preset ]['values'] )
+	) {
+		return $manifests[ $preset ]['values'][ $setting_id ];
+	}
+
+	return $fallback;
+}
+
+/**
+ * Read a saved design setting, falling back to the active preset recipe.
+ *
+ * @param string $setting_id Setting identifier.
+ * @param mixed  $fallback   Final fallback value.
+ * @return mixed
+ */
+function docspress_get_design_setting( $setting_id, $fallback = null ) {
+	return get_theme_mod(
+		$setting_id,
+		docspress_design_preset_default( $setting_id, $fallback )
+	);
+}
+
+/**
  * Return translated preset labels for the Customizer select control.
  *
  * @return array<string,string>

@@ -12,13 +12,30 @@
   Sync Markdown documentation into WordPress Pages as Gutenberg-compatible block content.
 </p>
 
+## Install with an AI coding agent
+
+DocsPress includes two repository-aware skills. Choose the path that matches the target project:
+
+- **The repository already has Markdown documentation:** use [`docspress-install`](.claude/skills/docspress-install/SKILL.md) to inspect the existing docs, configure the GitHub Action and WordPress authentication, and verify a safe draft dry run.
+- **The repository does not have usable documentation:** use [`generate-docs-from-source`](.claude/skills/generate-docs-from-source/SKILL.md) to derive a verified `docs/` tree with the appropriate DocsPress Gutenberg blocks from source code, tests, examples, and configuration, then hand off to the installer skill.
+
+Install both skills into the target repository with the Skills CLI:
+
+```bash
+npx skills add Automattic/docspress --all --full-depth
+```
+
+Then give the coding agent one of these instructions:
+
+```text
+Use $docspress-install to publish this repository's existing documentation to WordPress. Start with a draft dry run and do not expose credentials.
+```
+
+```text
+Use $generate-docs-from-source to inspect this repository, generate and verify DocsPress-compatible documentation with the appropriate Gutenberg blocks from the source code, and configure the GitHub Action if it is missing.
+```
+
 Docspress is built for teams that want GitHub to remain the source of truth for developer docs while WordPress remains the publishing surface. Commit Markdown, run a GitHub Action, and Docspress creates, updates, or removes managed WordPress Pages through the REST API.
-
-## Theme preview
-
-![DocsPress WordPress theme showing the Kitchen Sink documentation page](theme/screenshot.png)
-
-The companion WordPress theme provides a Docusaurus-style documentation shell, configurable design presets, command search, nested navigation, page actions, light and dark modes, and documentation-focused Gutenberg blocks.
 
 ## Why Docspress?
 
@@ -36,7 +53,8 @@ Docspress is early software. The core sync loop works, and the first-class targe
 
 ## Repository layout
 
-- `src/`, `bin/`, and `scripts/` contain the GitHub Action and npm package.
+- `src/`, `bin/`, and `scripts/` contain the GitHub Action, npm package, and Playground docs generator.
+- [`docs/`](docs/) contains the source-backed DocsPress product documentation published by the Action and previewed in Playground.
 - [`theme/`](theme/) contains the installable DocsPress WordPress theme and its local Playground blueprint.
 - [`plugins/docspress-blocks/`](plugins/docspress-blocks/) provides documentation-focused Gutenberg blocks and starter patterns.
 
@@ -182,7 +200,7 @@ Docspress maps common Markdown to Gutenberg-compatible core blocks:
 | Images | `core/image` |
 | Horizontal rules | `core/separator` |
 | Raw HTML | `core/html` |
-| Serialized Gutenberg block comments | Preserved as-is |
+| Serialized Gutenberg block comments | Preserved, with WordPress-safe attribute escaping |
 
 Serialized Gutenberg block comments are an escape hatch for blocks Docspress does not map yet:
 

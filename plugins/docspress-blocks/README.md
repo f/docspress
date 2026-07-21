@@ -11,7 +11,7 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 - **Terminal Session** — a copyable command separated from its read-only output, with editable prompt, shell, and title labels.
 - **Result** — a compact success, neutral, warning, or error outcome for builds, checks, and verification steps.
 - **File Tree** — an indentation-aware repository view with accessible file and folder entries.
-- **Prompt** — a first-class, copyable AI prompt with model, mode, optional Thinking state, classified context chips, and an editable caption.
+- **Prompt** — a first-class, copyable AI prompt with model, mode, optional Thinking state, highlighted `$skill-name` references, classified context chips, and an editable caption.
 
 The inserter also includes **Documentation page starter**, **API request example**, and **AI prompt example** patterns under the **DocsPress** category.
 
@@ -92,7 +92,7 @@ File trees use two spaces per nesting level and a trailing slash for folders:
 Prompts remain readable, crawlable HTML instead of screenshots or iframes:
 
 ```html
-<!-- wp:docspress/prompt {"prompt":"Review this synchronization logic and propose the smallest safe patch.","model":"GPT-5","mode":"code","thinking":true,"context":"@repository, src/sync.js, test/sync.test.js","caption":"Synchronization review prompt"} /-->
+<!-- wp:docspress/prompt {"prompt":"Use $docspress-install to review this synchronization logic and propose the smallest safe patch.","model":"GPT-5","mode":"code","thinking":true,"context":"$docspress-install, @repository, src/sync.js, test/sync.test.js","caption":"Synchronization review prompt"} /-->
 ```
 
 The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML and uses all eight blocks. Its Kitchen Sink Page covers every semantic state and meaningful configuration combination, while its live component table lists every plugin installed by the blueprint.

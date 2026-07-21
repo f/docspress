@@ -16,6 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function docspress_blocks_prompt_context_kind( $item ) {
+	if ( '$' === substr( $item, 0, 1 ) ) {
+		return 'skill';
+	}
 	if ( '@' === substr( $item, 0, 1 ) ) {
 		return 'mention';
 	}
@@ -27,6 +30,25 @@ function docspress_blocks_prompt_context_kind( $item ) {
 	}
 
 	return 'file';
+}
+
+/**
+ * Render prompt text with first-class $skill-name references.
+ *
+ * Skill names use the portable lowercase slug form. Escaping happens before
+ * the fixed presentation spans are inserted.
+ *
+ * @param string $prompt Raw prompt text.
+ * @return string
+ */
+function docspress_blocks_render_prompt_text( $prompt ) {
+	$escaped = esc_html( $prompt );
+
+	return preg_replace(
+		'/(?<![a-zA-Z0-9_-])(\$[a-z][a-z0-9-]*)\b/',
+		'<span class="docspress-prompt__skill-ref">$1</span>',
+		$escaped
+	);
 }
 
 /**
@@ -85,7 +107,7 @@ function docspress_blocks_render_prompt( $attributes ) {
 			<?php if ( $thinking ) : ?><span class="docspress-prompt__thinking"><span aria-hidden="true">✦</span><?php esc_html_e( 'Thinking', 'docspress-blocks' ); ?></span><?php endif; ?>
 		</header>
 		<div class="docspress-prompt__composer">
-			<div id="<?php echo esc_attr( $prompt_id ); ?>" class="docspress-prompt__text"><?php echo esc_html( $prompt ); ?></div>
+			<div id="<?php echo esc_attr( $prompt_id ); ?>" class="docspress-prompt__text"><?php echo docspress_blocks_render_prompt_text( $prompt ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Prompt is escaped before fixed spans are inserted. ?></div>
 			<?php if ( $context ) : ?>
 				<div class="docspress-prompt__context" aria-label="<?php esc_attr_e( 'Prompt context', 'docspress-blocks' ); ?>">
 					<?php foreach ( $context as $item ) : ?>
@@ -94,7 +116,9 @@ function docspress_blocks_render_prompt( $attributes ) {
 				</div>
 			<?php endif; ?>
 			<footer class="docspress-prompt__footer">
-				<?php if ( $caption ) : ?><span class="docspress-prompt__caption"><?php echo $caption; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span><?php endif; ?>
+				<?php if ( $caption ) : ?>
+					<span class="docspress-prompt__caption"><?php echo $caption; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				<?php endif; ?>
 				<button class="docspress-prompt__copy" type="button" data-docspress-copy data-docspress-copy-target="<?php echo esc_attr( $prompt_id ); ?>" aria-label="<?php esc_attr_e( 'Copy prompt', 'docspress-blocks' ); ?>">
 					<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="7" y="7" width="9" height="9" rx="1.5"/><path d="M13 7V5.5A1.5 1.5 0 0 0 11.5 4h-7A1.5 1.5 0 0 0 3 5.5v7A1.5 1.5 0 0 0 4.5 14H7"/></svg>
 					<b><?php esc_html_e( 'Copy prompt', 'docspress-blocks' ); ?></b>
@@ -125,11 +149,11 @@ function docspress_blocks_register_prompt() {
 			'editor_style'    => 'docspress-prompt-editor-style',
 			'render_callback' => 'docspress_blocks_render_prompt',
 			'attributes'      => array(
-				'prompt'   => array( 'type' => 'string', 'default' => 'Review this synchronization logic and propose a safer retry strategy. Return a short plan before writing code.' ),
+				'prompt'   => array( 'type' => 'string', 'default' => 'Use $docspress-install to review this repository\'s documentation setup. Return a short plan before writing code.' ),
 				'model'    => array( 'type' => 'string', 'default' => 'GPT-5' ),
 				'mode'     => array( 'type' => 'string', 'default' => 'code' ),
 				'thinking' => array( 'type' => 'boolean', 'default' => true ),
-				'context'  => array( 'type' => 'string', 'default' => '@repository, src/sync.js, docs/' ),
+				'context'  => array( 'type' => 'string', 'default' => '$docspress-install, @repository, src/sync.js, docs/' ),
 				'caption'  => array( 'type' => 'string', 'default' => 'Prompt example' ),
 			),
 			'supports'        => array( 'anchor' => true, 'html' => false ),

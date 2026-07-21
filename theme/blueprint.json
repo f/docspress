@@ -13,7 +13,7 @@
 		"JETPACK_DEV_DEBUG": true,
 		"WP_ENVIRONMENT_TYPE": "development"
 	},
-	"landingPage": "/docs/kitchen-sink/",
+	"landingPage": "/docs/",
 	"login": true,
 	"steps": [
 		{

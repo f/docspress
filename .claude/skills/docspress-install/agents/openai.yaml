@@ -1,0 +1,4 @@
+interface:
+  display_name: "Install DocsPress"
+  short_description: "Connect GitHub docs to WordPress safely"
+  default_prompt: "Use $docspress-install to publish this repository documentation to WordPress."

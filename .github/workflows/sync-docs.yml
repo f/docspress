@@ -1,0 +1,26 @@
+name: Sync DocsPress documentation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: Automattic/docspress@7db37bca3a10c67d923012606d39d1925c2277ef
+        with:
+          wordpress-site: fkadev.blog
+          wordpress-access-token: ${{ secrets.WP_ACCESS_TOKEN }}
+          docs-dir: docs
+          root-slug: docs
+          root-title: DocsPress documentation
+          create-h1: false
+          rewrite-links: true
+          edit-link: false
+          status: draft
+          delete-mode: trash
+          dry-run: true

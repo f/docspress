@@ -115,11 +115,11 @@ function docspress_blocks_register_patterns() {
 				. docspress_blocks_serialize(
 					'docspress/prompt',
 					array(
-						'prompt'   => "Review the synchronization logic for failure modes.\n\nReturn a short risk list, then propose the smallest safe patch.",
+						'prompt'   => "Use \$docspress-install to review the synchronization logic for failure modes.\n\nReturn a short risk list, then propose the smallest safe patch.",
 						'model'    => 'GPT-5',
 						'mode'     => 'code',
 						'thinking' => true,
-						'context'  => '@repository, src/sync.js, test/sync.test.js',
+						'context'  => '$docspress-install, @repository, src/sync.js, test/sync.test.js',
 						'caption'  => 'Synchronization review prompt',
 					)
 				)

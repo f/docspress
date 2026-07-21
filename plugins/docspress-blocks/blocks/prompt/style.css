@@ -96,9 +96,19 @@
 .docspress-prompt__text {
 	min-height: 3.1em;
 	color: var(--dp-ink, #171a22);
-	font: 520 0.96rem/1.65 var(--dp-font-body, Georgia, serif);
+	font: 520 0.96rem/1.65 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
 	white-space: pre-wrap;
 	word-break: break-word;
+}
+
+.docspress-prompt__skill-ref {
+	padding: 0.06em 0.26em;
+	border-radius: max(3px, calc(var(--dp-radius, 10px) - 6px));
+	background: color-mix(in srgb, var(--db-prompt-accent) 10%, transparent);
+	color: var(--db-prompt-accent);
+	font-family: var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+	font-size: 0.92em;
+	font-weight: 720;
 }
 
 .docspress-prompt__context {
@@ -128,6 +138,13 @@
 	border-color: color-mix(in srgb, var(--db-prompt-accent) 25%, var(--db-prompt-border));
 	background: color-mix(in srgb, var(--db-prompt-accent) 9%, var(--dp-paper, #fff));
 	color: var(--db-prompt-accent);
+}
+
+.docspress-prompt__chip--skill {
+	border-color: color-mix(in srgb, var(--db-prompt-accent) 36%, var(--db-prompt-border));
+	background: color-mix(in srgb, var(--db-prompt-accent) 13%, var(--dp-paper, #fff));
+	color: var(--db-prompt-accent);
+	font-weight: 720;
 }
 
 .docspress-prompt__chip--image {

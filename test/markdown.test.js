@@ -125,6 +125,18 @@ console.log("hi");
     expect(blockNames).toContain("core/separator");
   });
 
+  it("serializes HTML attributes in custom blocks safely for WordPress", () => {
+    const result = markdownToBlocks(`<!-- wp:docspress/callout {"tone":"tip","content":"<p>Use <code>dry-run</code> first.</p>"} /-->`, {
+      fallbackTitle: "Fallback"
+    });
+
+    expect(result.blocks).toContain('"content":"\\u003cp\\u003eUse \\u003ccode\\u003edry-run\\u003c/code\\u003e first.\\u003c/p\\u003e"');
+
+    const [block] = parse(result.blocks);
+    expect(block.blockName).toBe("docspress/callout");
+    expect(block.attrs.content).toBe("<p>Use <code>dry-run</code> first.</p>");
+  });
+
   it("rewrites links through a supplied resolver", () => {
     const result = markdownToBlocks("[Guide](guides/start.md) and [external](https://example.com).", {
       fallbackTitle: "Fallback",

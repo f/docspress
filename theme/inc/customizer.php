@@ -676,14 +676,15 @@ function docspress_customize_register( $wp_customize ) {
 			'type' => 'checkbox',
 		),
 		'docspress_ui_font' => array(
-			'default' => 'avenir',
+			'default' => 'nunito',
 			'sanitize_callback' => 'docspress_sanitize_choice',
 			'sanitize_js_callback' => 'sanitize_text_field',
 			'section' => 'docspress_typography',
 			'label' => __( 'Interface font', 'docspress' ),
-			'description' => __( 'Includes a local rounded system stack, bundled Inter and EB Garamond, and the WordPress.com Recoleta option.', 'docspress' ),
+			'description' => __( 'Includes bundled Nunito Sans and Inter, a local rounded system stack, and the WordPress.com Recoleta option.', 'docspress' ),
 			'type' => 'select',
 			'choices' => array(
+				'nunito' => __( 'Nunito Sans / Trebuchet', 'docspress' ),
 				'rounded' => __( 'Rounded system / Arial Rounded', 'docspress' ),
 				'avenir' => __( 'Avenir / Century Gothic', 'docspress' ),
 				'inter' => __( 'Inter / system sans', 'docspress' ),
@@ -808,6 +809,8 @@ function docspress_customize_register( $wp_customize ) {
 	);
 
 	foreach ( $fields as $setting_id => $field ) {
+		$field['default'] = docspress_design_preset_default( $setting_id, $field['default'] );
+
 		$wp_customize->add_setting(
 			$setting_id,
 			array(
@@ -858,10 +861,12 @@ function docspress_customize_register( $wp_customize ) {
 	);
 
 	foreach ( $color_fields as $setting_id => $color ) {
+		$default = docspress_design_preset_default( $setting_id, $color[0] );
+
 		$wp_customize->add_setting(
 			$setting_id,
 			array(
-				'default'           => $color[0],
+				'default'           => $default,
 				'sanitize_callback' => 'sanitize_hex_color',
 				'transport'         => 'postMessage',
 			)
@@ -887,6 +892,7 @@ add_action( 'customize_register', 'docspress_customize_register' );
  */
 function docspress_font_stacks() {
 	return array(
+		'nunito'    => '"Nunito Sans", "Trebuchet MS", sans-serif',
 		'rounded'   => 'ui-rounded, "Arial Rounded MT Bold", "Avenir Next", "Trebuchet MS", sans-serif',
 		'avenir'    => '"Avenir Next", Avenir, "Century Gothic", Futura, sans-serif',
 		'inter'     => 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif',
@@ -906,10 +912,10 @@ function docspress_font_stacks() {
  */
 function docspress_customizer_css() {
 	$fonts        = docspress_font_stacks();
-	$ui_key       = get_theme_mod( 'docspress_ui_font', 'avenir' );
-	$content_key  = get_theme_mod( 'docspress_content_font', 'charter' );
-	$heading_key  = get_theme_mod( 'docspress_heading_font', 'interface' );
-	$ui_font      = isset( $fonts[ $ui_key ] ) ? $fonts[ $ui_key ] : $fonts['avenir'];
+	$ui_key       = docspress_get_design_setting( 'docspress_ui_font', 'nunito' );
+	$content_key  = docspress_get_design_setting( 'docspress_content_font', 'sans' );
+	$heading_key  = docspress_get_design_setting( 'docspress_heading_font', 'interface' );
+	$ui_font      = isset( $fonts[ $ui_key ] ) ? $fonts[ $ui_key ] : $fonts['nunito'];
 	$content_font = 'sans' === $content_key ? $ui_font : ( isset( $fonts[ $content_key ] ) ? $fonts[ $content_key ] : $fonts['charter'] );
 	$heading_font = 'interface' === $heading_key ? $ui_font : ( isset( $fonts[ $heading_key ] ) ? $fonts[ $heading_key ] : $ui_font );
 	$search_width = min( 900, max( 480, absint( get_theme_mod( 'docspress_search_width', 680 ) ) ) );
@@ -947,9 +953,9 @@ function docspress_customizer_css() {
 		'--dp-content-width:' . absint( get_theme_mod( 'docspress_article_width', 800 ) ) . 'px',
 		'--dp-sidebar-width:' . absint( get_theme_mod( 'docspress_sidebar_width', 300 ) ) . 'px',
 		'--dp-toc-width:' . absint( get_theme_mod( 'docspress_toc_width', 220 ) ) . 'px',
-		'--dp-content-font-size:' . absint( get_theme_mod( 'docspress_content_font_size', 17 ) ) . 'px',
-		'--dp-heading-weight:' . absint( get_theme_mod( 'docspress_heading_weight', 750 ) ),
-		'--dp-radius:' . absint( get_theme_mod( 'docspress_border_radius', 10 ) ) . 'px',
+		'--dp-content-font-size:' . absint( docspress_get_design_setting( 'docspress_content_font_size', 17 ) ) . 'px',
+		'--dp-heading-weight:' . absint( docspress_get_design_setting( 'docspress_heading_weight', 750 ) ),
+		'--dp-radius:' . absint( docspress_get_design_setting( 'docspress_border_radius', 10 ) ) . 'px',
 		'--dp-search-width:' . $search_width . 'px',
 		'--dp-search-height:' . $search_height . 'px',
 		'--dp-search-radius:' . ( 'custom' === $search_radius_mode ? $search_radius . 'px' : 'var(--dp-radius)' ),
@@ -961,13 +967,13 @@ function docspress_customizer_css() {
 	);
 
 	foreach ( $colors as $variable => $color ) {
-		$value        = sanitize_hex_color( get_theme_mod( $color[0], $color[1] ) );
+		$value        = sanitize_hex_color( docspress_get_design_setting( $color[0], $color[1] ) );
 		$root_rules[] = $variable . ':' . ( $value ? $value : $color[1] );
 	}
 
 	$dark_rules = array();
 	foreach ( $dark_colors as $variable => $color ) {
-		$value        = sanitize_hex_color( get_theme_mod( $color[0], $color[1] ) );
+		$value        = sanitize_hex_color( docspress_get_design_setting( $color[0], $color[1] ) );
 		$dark_rules[] = $variable . ':' . ( $value ? $value : $color[1] );
 	}
 

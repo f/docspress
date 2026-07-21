@@ -11,10 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 return array(
 	'label'       => __( 'DocsPress', 'docspress' ),
-	'description' => __( 'Logo-matched blue, Wapuu yellow, deep ink, and a friendly rounded interface.', 'docspress' ),
+	'description' => __( 'Logo-matched blue, Wapuu yellow, deep ink, and a friendly Nunito Sans interface.', 'docspress' ),
 	'order'       => 10,
 	'values'      => array(
-		'docspress_ui_font'             => 'rounded',
+		'docspress_ui_font'             => 'nunito',
 		'docspress_content_font'        => 'sans',
 		'docspress_heading_font'        => 'interface',
 		'docspress_content_font_size'   => 17,

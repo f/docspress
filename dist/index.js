@@ -66566,7 +66566,7 @@ function renderBlocks(nodes, context = {}) {
 
     if (node.type === "html" && isOpeningGutenbergHtml(node.value)) {
       const collected = collectGutenbergHtml(nodes, index);
-      blocks.push(collected.value);
+      blocks.push(normalizeGutenbergBlockComments(collected.value));
       index = collected.endIndex;
       continue;
     }
@@ -66578,6 +66578,31 @@ function renderBlocks(nodes, context = {}) {
   }
 
   return blocks;
+}
+
+function normalizeGutenbergBlockComments(value) {
+  return String(value || "").replace(
+    /<!--\s*wp:([\w/-]+)(?:\s+(\{[^\r\n]*\}))?\s*(\/)?-->/g,
+    (comment, name, rawAttributes, selfClosing) => {
+      if (!rawAttributes) {
+        return `<!-- wp:${name}${selfClosing ? " /" : " "}-->`;
+      }
+
+      try {
+        const attributes = JSON.parse(rawAttributes);
+        const serialized = JSON.stringify(attributes)
+          .replace(/--/g, "\\u002d\\u002d")
+          .replace(/</g, "\\u003c")
+          .replace(/>/g, "\\u003e")
+          .replace(/&/g, "\\u0026")
+          .replace(/\\\"/g, "\\u0022");
+
+        return `<!-- wp:${name} ${serialized}${selfClosing ? " /" : " "}-->`;
+      } catch {
+        return comment;
+      }
+    }
+  );
 }
 
 function collectGutenbergHtml(nodes, startIndex) {
