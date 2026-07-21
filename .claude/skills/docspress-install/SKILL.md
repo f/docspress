@@ -1,6 +1,6 @@
 ---
 name: docspress-install
-description: Install and configure DocsPress for a GitHub repository and its WordPress publishing target. Use when an agent must publish an existing Markdown documentation tree, create or repair the DocsPress GitHub Actions workflow, configure WordPress.com OAuth or an existing bearer-token WordPress endpoint, prepare the companion DocsPress theme and blocks plugin, verify a dry run, or safely move documentation from draft to published pages.
+description: Install and configure DocsPress for a GitHub repository and its WordPress publishing target. Use when an agent must publish an existing Markdown documentation tree, enable WordPress-to-GitHub proposal pull requests, create or repair the DocsPress GitHub Actions workflow, configure WordPress.com OAuth or an existing bearer-token WordPress endpoint, prepare the companion DocsPress theme and blocks plugin, verify a dry run, or safely move documentation from draft to published pages.
 ---
 
 # Install DocsPress
@@ -27,6 +27,7 @@ Use these safe defaults unless the repository already defines intentional altern
 
 | Setting | Default |
 | --- | --- |
+| `mode` | `publish` |
 | `docs-dir` | detected docs directory, otherwise `docs` |
 | `root-slug` | `docs` |
 | `root-title` | `Docs` |
@@ -75,6 +76,28 @@ jobs:
 ```
 
 For self-hosted WordPress, also set `wordpress-url: https://example.com`. Do not append `/wp-json`; DocsPress does that itself.
+
+Do not enable reverse sync during the initial installation. After manual dry-run, draft-write, and default-branch publishing are proven, the user may opt into `mode: reconcile`. Add an off-hour five-minute schedule, non-cancelling concurrency, and the minimum GitHub write permissions:
+
+```yaml
+on:
+  push:
+    branches: [main]
+    paths: ["docs/**", ".github/workflows/sync-docs.yml"]
+  schedule:
+    - cron: "3/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: docspress-sync
+  cancel-in-progress: false
+```
+
+Set `mode: reconcile` on the pinned DocsPress step. Confirm the repository permits GitHub Actions to create pull requests, or use an approved GitHub App/PAT through `github-token`. Explain that the WordPress token still accesses only WordPress; the GitHub token maintains the action-owned `docspress/wordpress-sync` branch and rolling pull request. Enabling this mode authorizes ongoing WordPress metadata writes and GitHub branch/PR writes, so obtain explicit approval for both boundaries.
 
 Do not invent a release tag or copy an unverified SHA. If an immutable revision cannot be verified, stop and ask before using a floating ref such as `@main`.
 

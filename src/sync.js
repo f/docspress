@@ -4,13 +4,15 @@ export async function syncPages(options) {
   const {
     desiredPages,
     client,
+    existingPages: suppliedExistingPages,
     dryRun = false,
     deleteMode = "trash",
     rootSlug = "docs",
+    allowDeletions = true,
     logger = console
   } = options;
 
-  const existingPages = await client.listPages();
+  const existingPages = suppliedExistingPages || await client.listPages();
   const indexed = indexExistingPages(existingPages);
   const desiredKeys = new Set(desiredPages.map((page) => page.key));
   const result = createResult(dryRun);
@@ -69,9 +71,9 @@ export async function syncPages(options) {
     }
   }
 
-  const deletions = Array.from(indexed.managedByKey.values())
+  const deletions = allowDeletions ? Array.from(indexed.managedByKey.values())
     .filter((page) => isUnderRoot(page.sentinel?.key, rootSlug) && !desiredKeys.has(page.sentinel.key))
-    .sort((a, b) => b.path.split("/").length - a.path.split("/").length);
+    .sort((a, b) => b.path.split("/").length - a.path.split("/").length) : [];
 
   for (const page of deletions) {
     result.deleted += 1;

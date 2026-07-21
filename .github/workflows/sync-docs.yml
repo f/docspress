@@ -1,18 +1,33 @@
 name: Sync DocsPress documentation
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**/*.md"
+      - "docs/**/*.markdown"
+      - "docs/**/*.json"
+      - ".github/workflows/sync-docs.yml"
+  schedule:
+    - cron: "3/5 * * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: docspress-sync
+  cancel-in-progress: false
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: Automattic/docspress@fc23da3d8575b18bbc81a81bd8c6b915dbdfcdd9
+      - uses: ./
         with:
+          mode: reconcile
           wordpress-site: fkadev.blog
           wordpress-access-token: ${{ secrets.WP_ACCESS_TOKEN }}
           docs-dir: docs

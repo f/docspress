@@ -29,6 +29,16 @@ Keep `status: draft` if WordPress remains an editorial review gate. Set `status:
 
 <!-- wp:docspress/callout {"tone":"danger","title":"Automatic sync includes removals","content":"<p>Deleting a managed Markdown file schedules its managed WordPress Page for Trash, or permanent deletion when <code>delete-mode: force</code>. Review that policy before enabling the push trigger.</p>","collapsible":true,"open":false} /-->
 
+## Stage 4: reconcile WordPress edits
+
+After normal publishing is stable, use one workflow for push-based publishing and scheduled WordPress polling:
+
+<!-- wp:docspress/colorful-code {"language":"yaml","filename":".github/workflows/sync-docs.yml","code":"on:\n  push:\n    branches: [main]\n    paths: [\"docs/**\", \".github/workflows/sync-docs.yml\"]\n  schedule:\n    - cron: \"3/5 * * * *\"\n  workflow_dispatch:\n\npermissions:\n  contents: write\n  pull-requests: write\n\nconcurrency:\n  group: docspress-sync\n  cancel-in-progress: false\n\njobs:\n  sync:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@FULL_COMMIT_SHA\n      - uses: Automattic/docspress@FULL_COMMIT_SHA\n        with:\n          mode: reconcile\n          wordpress-site: example.wordpress.com\n          wordpress-access-token: ${{ secrets.WP_ACCESS_TOKEN }}\n          docs-dir: docs\n          root-slug: docs\n          status: publish","highlightedLines":"5-6,10-12,25","showLineNumbers":true,"caption":"Pushes publish Markdown; the off-hour five-minute schedule proposes WordPress editor changes."} /-->
+
+DocsPress converts supported core blocks back to readable Markdown and leaves custom or attributed blocks as serialized Gutenberg comments so a later publish remains lossless. It updates one action-owned branch and pull request instead of opening duplicates on every poll.
+
+<!-- wp:docspress/callout {"tone":"warning","title":"Two-sided edits stop before writes","content":"<p>If GitHub and WordPress both changed the same managed Page since the sentinel baseline, reconcile mode reports a conflict and changes neither system. Resolve one side deliberately, then run the workflow again.</p>","collapsible":false} /-->
+
 ## Observe each run
 
 The Action exports counters for created, updated, deleted, unchanged, and conflict operations plus `summary-json` for downstream jobs.

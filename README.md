@@ -35,7 +35,7 @@ Use $docspress-install to publish this repository's existing documentation to Wo
 Use $generate-docs-from-source to inspect this repository, generate and verify DocsPress-compatible documentation with the appropriate Gutenberg blocks from the source code, and configure the GitHub Action if it is missing.
 ```
 
-Docspress is built for teams that want GitHub to remain the source of truth for developer docs while WordPress remains the publishing surface. Commit Markdown, run a GitHub Action, and Docspress creates, updates, or removes managed WordPress Pages through the REST API.
+Docspress keeps Markdown and WordPress documentation synchronized. It can publish merged Markdown as managed Gutenberg Pages, turn WordPress editor changes into a GitHub pull request, or safely reconcile both directions.
 
 ## Why Docspress?
 
@@ -46,6 +46,7 @@ Docspress is built for teams that want GitHub to remain the source of truth for 
 - Protect manual WordPress content with managed-page sentinels.
 - Review planned changes with `dry-run` before writing to WordPress.
 - Support manifests, redirects, rewritten local links, and edit links.
+- Propose WordPress editor changes as readable Markdown pull requests.
 
 ## Project status
 
@@ -105,6 +106,48 @@ jobs:
 
 Start with `dry-run: true`. When the plan looks right in the GitHub Actions summary, switch to `dry-run: false`.
 
+## Two-way synchronization
+
+Use `mode: reconcile` after the publish workflow is proven. Push events publish GitHub-only changes; the five-minute schedule detects WordPress-only edits and maintains one rolling pull request.
+
+```yaml
+name: Reconcile docs
+
+on:
+  push:
+    branches: [main]
+    paths: ["docs/**", ".github/workflows/sync-docs.yml"]
+  schedule:
+    - cron: "3/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: docspress-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Automattic/docspress@main
+        with:
+          mode: reconcile
+          wordpress-site: fkadev.blog
+          wordpress-access-token: ${{ secrets.WP_ACCESS_TOKEN }}
+          docs-dir: docs
+          root-slug: docs
+          status: publish
+```
+
+`publish` remains the default. `propose` only prepares WordPress changes and refreshes synchronization metadata; `reconcile` also publishes non-conflicting GitHub changes. If the same Page changes on both sides, the run reports a conflict before writing either side.
+
+The WordPress token reads and updates Pages. Pull requests use the job's `GITHUB_TOKEN`; no second stored secret is needed when the repository allows GitHub Actions to create pull requests.
+
 ## WordPress.com authentication
 
 WordPress.com API writes require an OAuth bearer token with the `global` scope. Docspress includes a token helper so you can authorize in the browser and store the result as a GitHub Actions secret.
@@ -140,6 +183,7 @@ The secret name is `WP_ACCESS_TOKEN`. Use it in your workflow as `${{ secrets.WP
 
 | Input | Default | Description |
 | --- | --- | --- |
+| `mode` | `publish` | `publish`, `propose`, or `reconcile`. |
 | `wordpress-url` | `https://public-api.wordpress.com` | WordPress API base URL. |
 | `wordpress-site` | required | WordPress.com site ID or domain, such as `fkadev.blog`. |
 | `wordpress-access-token` | required | OAuth bearer token that can edit pages. |
@@ -155,9 +199,13 @@ The secret name is `WP_ACCESS_TOKEN`. Use it in your workflow as `${{ secrets.WP
 | `github-repository` | `GITHUB_REPOSITORY` | Repository used for edit links, such as `owner/repo`. |
 | `github-ref` | `GITHUB_REF_NAME` | Branch or ref used for edit links. |
 | `github-server-url` | `GITHUB_SERVER_URL` | GitHub server URL used for edit links. |
+| `github-token` | `github.token` | Token used for reverse-sync branches and pull requests. |
+| `pull-request-base` | repository default branch | Base for reverse-sync pull requests. |
+| `pull-request-branch` | `docspress/wordpress-sync` | Dedicated rolling proposal branch. |
+| `pull-request-title` | `Sync WordPress documentation changes` | Rolling pull request title. |
 | `status` | `publish` | Status for created or updated pages. Use `draft` for private review or `publish` for public pages. |
 | `delete-mode` | `trash` | Use `trash` or `force` for removed Markdown files. |
-| `dry-run` | `false` | Plan changes without writing to WordPress. |
+| `dry-run` | `false` | Plan changes without writing to WordPress or GitHub. |
 
 Docspress writes these outputs:
 
@@ -167,7 +215,10 @@ Docspress writes these outputs:
 | `updated` | Count of pages updated or planned for update. |
 | `deleted` | Count of pages deleted or planned for deletion. |
 | `unchanged` | Count of managed pages already in sync. |
-| `conflicts` | Count of unmanaged WordPress page conflicts. |
+| `conflicts` | Count of unmanaged or two-sided synchronization conflicts. |
+| `proposed` | Count of repository files proposed from WordPress. |
+| `pull-request-number` | Rolling reverse-sync pull request number. |
+| `pull-request-url` | Rolling reverse-sync pull request URL. |
 | `summary-json` | JSON summary of the sync result. |
 
 ## Docs mapping
@@ -299,7 +350,7 @@ Generated placeholder and redirect pages do not get edit links.
 
 ## Safety model
 
-Docspress adds a hidden sentinel comment to every page it manages. During sync it only updates or deletes WordPress pages that contain that sentinel. If a matching WordPress page exists without the sentinel, Docspress reports a conflict and fails instead of overwriting manual content.
+Docspress adds a hidden sentinel comment to every page it manages. During sync it only updates or deletes WordPress pages that contain that sentinel. In `reconcile` mode the sentinel is also the common ancestor used to distinguish a one-sided edit from a true two-sided conflict.
 
 Recommended first run:
 

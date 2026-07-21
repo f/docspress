@@ -4,6 +4,12 @@ title: GitHub Action inputs and outputs
 
 DocsPress is a Node 20 GitHub Action configured entirely through `with` inputs.
 
+## Synchronization mode
+
+| Input | Default | Description |
+| --- | --- | --- |
+| `mode` | `publish` | `publish` sends Markdown to WordPress, `propose` opens a Markdown pull request from WordPress edits, and `reconcile` safely handles both directions. |
+
 ## WordPress connection
 
 | Input | Default | Description |
@@ -34,13 +40,24 @@ DocsPress is a Node 20 GitHub Action configured entirely through `with` inputs.
 | `github-ref` | `GITHUB_REF_NAME`, then `main` | Branch or ref used in edit URLs. |
 | `github-server-url` | `GITHUB_SERVER_URL`, then `https://github.com` | GitHub server used in edit URLs. |
 
+## WordPress-to-GitHub pull requests
+
+| Input | Default | Description |
+| --- | --- | --- |
+| `github-token` | `github.token` | Token used to create commits, the managed branch, and pull requests. |
+| `pull-request-base` | repository default branch | Base branch for the rolling pull request. |
+| `pull-request-branch` | `docspress/wordpress-sync` | Action-owned branch that is refreshed from the latest base on every run. |
+| `pull-request-title` | `Sync WordPress documentation changes` | Pull request and commit title. |
+
+Reverse sync requires `contents: write` and `pull-requests: write`. The repository must also allow GitHub Actions to create pull requests, or `github-token` must use a suitable GitHub App or personal access token.
+
 ## Publication and deletion
 
 | Input | Default | Description |
 | --- | --- | --- |
 | `status` | `publish` | WordPress status for created or updated Pages. Start with `draft`. |
 | `delete-mode` | `trash` | `trash` moves removed managed Pages to Trash; `force` permanently deletes them. |
-| `dry-run` | `false` | Plans operations without WordPress writes. Start with `true`. |
+| `dry-run` | `false` | Plans operations without WordPress or GitHub writes. Start with `true`. |
 
 <!-- wp:docspress/callout {"tone":"warning","title":"Override the write-capable defaults","content":"<p>The Action metadata defaults to <code>status: publish</code> and <code>dry-run: false</code>. New installations should explicitly set <code>status: draft</code>, <code>delete-mode: trash</code>, and <code>dry-run: true</code>.</p>","collapsible":false} /-->
 
@@ -52,7 +69,10 @@ DocsPress is a Node 20 GitHub Action configured entirely through `with` inputs.
 | `updated` | Pages updated or planned for update. |
 | `deleted` | Pages deleted or planned for deletion. |
 | `unchanged` | Managed Pages already matching the desired state. |
-| `conflicts` | Unmanaged Page path collisions. |
+| `conflicts` | Unmanaged Page collisions, unsupported WordPress structure changes, or edits made on both sides. |
+| `proposed` | Repository files proposed from WordPress. |
+| `pull-request-number` | Rolling reverse-sync pull request number, when present. |
+| `pull-request-url` | Rolling reverse-sync pull request URL, when present. |
 | `summary-json` | JSON object containing counters, conflict details, and ordered operations. |
 
 The Action also writes a GitHub Actions job summary and fails the run when `conflicts` is greater than zero.

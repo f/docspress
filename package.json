@@ -2,7 +2,7 @@
   "name": "docspress",
   "version": "0.2.1",
   "private": false,
-  "description": "Sync Markdown docs to WordPress Pages as Gutenberg content from GitHub Actions.",
+  "description": "Synchronize Markdown docs and WordPress Pages through GitHub Actions.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
@@ -45,16 +45,19 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@actions/core": "^3.0.1",
+    "@actions/github": "^8.0.1",
+    "@wordpress/block-serialization-default-parser": "^5.51.0",
     "fast-glob": "^3.3.3",
     "gray-matter": "^4.0.3",
     "mdast-util-to-string": "^4.0.0",
     "remark-gfm": "^4.0.1",
     "remark-parse": "^11.0.0",
+    "turndown": "^7.2.4",
+    "turndown-plugin-gfm": "^1.0.2",
     "unified": "^11.0.5"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.38.4",
-    "@wordpress/block-serialization-default-parser": "^5.35.0",
     "eslint": "^9.31.0",
     "vitest": "^3.2.4"
   },

@@ -1,11 +1,15 @@
 import * as core from "@actions/core";
+import { syncBidirectional } from "./bidirectional.js";
 import { collectDesiredPages } from "./docs.js";
+import { GitHubPullRequestClient } from "./github.js";
 import { syncPages } from "./sync.js";
 import { normalizeBoolean } from "./utils.js";
 import { WordPressClient } from "./wordpress.js";
 
 async function main() {
+  const mode = normalizeMode(core.getInput("mode") || "publish");
   const config = {
+    mode,
     baseUrl: core.getInput("wordpress-url") || "https://public-api.wordpress.com",
     site: core.getInput("wordpress-site", { required: true }),
     token: core.getInput("wordpress-access-token", { required: true }),
@@ -21,6 +25,10 @@ async function main() {
     githubRepository: core.getInput("github-repository") || process.env.GITHUB_REPOSITORY || "",
     githubRef: core.getInput("github-ref") || process.env.GITHUB_REF_NAME || "main",
     githubServerUrl: core.getInput("github-server-url") || process.env.GITHUB_SERVER_URL || "https://github.com",
+    githubToken: core.getInput("github-token"),
+    pullRequestBase: core.getInput("pull-request-base") || "",
+    pullRequestBranch: core.getInput("pull-request-branch") || "docspress/wordpress-sync",
+    pullRequestTitle: core.getInput("pull-request-title") || "Sync WordPress documentation changes",
     status: core.getInput("status") || "publish",
     deleteMode: core.getInput("delete-mode") || "trash",
     dryRun: normalizeBoolean(core.getInput("dry-run") || "false")
@@ -51,20 +59,40 @@ async function main() {
     token: config.token
   });
 
-  const result = await syncPages({
-    desiredPages,
-    client,
-    dryRun: config.dryRun,
-    deleteMode: config.deleteMode,
-    rootSlug: config.rootSlug,
-    logger: core
-  });
+  const result = config.mode === "publish"
+    ? await syncPages({
+      desiredPages,
+      client,
+      dryRun: config.dryRun,
+      deleteMode: config.deleteMode,
+      rootSlug: config.rootSlug,
+      logger: core
+    })
+    : await syncBidirectional({
+      mode: config.mode,
+      desiredPages,
+      client,
+      githubClient: config.dryRun ? null : new GitHubPullRequestClient({
+        token: config.githubToken,
+        repository: process.env.GITHUB_REPOSITORY,
+        base: config.pullRequestBase,
+        branch: config.pullRequestBranch,
+        title: config.pullRequestTitle
+      }),
+      dryRun: config.dryRun,
+      deleteMode: config.deleteMode,
+      rootSlug: config.rootSlug,
+      cwd: process.cwd(),
+      manifestFile: config.manifestFile,
+      createH1: config.createH1,
+      logger: core
+    });
 
   setOutputs(result);
   await writeSummary(result);
 
   if (result.conflicts > 0) {
-    core.setFailed(`Docspress found ${result.conflicts} unmanaged WordPress page conflict(s).`);
+    core.setFailed(`Docspress found ${result.conflicts} synchronization conflict(s).`);
   }
 }
 
@@ -74,6 +102,9 @@ function setOutputs(result) {
   core.setOutput("deleted", String(result.deleted));
   core.setOutput("unchanged", String(result.unchanged));
   core.setOutput("conflicts", String(result.conflicts));
+  core.setOutput("proposed", String(result.proposed || 0));
+  core.setOutput("pull-request-number", result.pullRequest?.number ? String(result.pullRequest.number) : "");
+  core.setOutput("pull-request-url", result.pullRequest?.url || "");
   core.setOutput("summary-json", JSON.stringify(result));
 }
 
@@ -89,8 +120,13 @@ async function writeSummary(result) {
       [{ data: "Updated", header: true }, String(result.updated)],
       [{ data: "Deleted", header: true }, String(result.deleted)],
       [{ data: "Unchanged", header: true }, String(result.unchanged)],
+      [{ data: "Proposed files", header: true }, String(result.proposed || 0)],
       [{ data: "Conflicts", header: true }, String(result.conflicts)]
     ]);
+
+  if (result.pullRequest?.url) {
+    core.summary.addLink(`Pull request #${result.pullRequest.number}`, result.pullRequest.url);
+  }
 
   if (result.conflictDetails.length > 0) {
     core.summary.addHeading("Conflicts", 2);
@@ -100,6 +136,14 @@ async function writeSummary(result) {
   }
 
   await core.summary.write();
+}
+
+function normalizeMode(value) {
+  const mode = String(value || "").trim().toLowerCase();
+  if (!["publish", "propose", "reconcile"].includes(mode)) {
+    throw new Error(`Invalid mode '${value}'. Use publish, propose, or reconcile.`);
+  }
+  return mode;
 }
 
 main().catch((error) => {

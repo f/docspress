@@ -1,8 +1,12 @@
 name: Docspress
-description: Sync nested Markdown docs to WordPress Pages as Gutenberg block content.
+description: Synchronize Markdown docs and WordPress Pages with Gutenberg content and pull requests.
 author: Fatih Kadir Akin
 
 inputs:
+  mode:
+    description: Use publish for GitHub to WordPress, propose for WordPress pull requests, or reconcile for safe two-way synchronization.
+    required: false
+    default: publish
   wordpress-url:
     description: WordPress API base URL. Use https://public-api.wordpress.com for WordPress.com.
     required: false
@@ -61,6 +65,22 @@ inputs:
     description: GitHub server URL for edit links. Defaults to GITHUB_SERVER_URL.
     required: false
     default: ""
+  github-token:
+    description: GitHub token used to create or update reverse-sync branches and pull requests.
+    required: false
+    default: ${{ github.token }}
+  pull-request-base:
+    description: Base branch for WordPress-to-GitHub pull requests. Defaults to the repository default branch.
+    required: false
+    default: ""
+  pull-request-branch:
+    description: Dedicated branch maintained by Docspress for WordPress-to-GitHub changes.
+    required: false
+    default: docspress/wordpress-sync
+  pull-request-title:
+    description: Title for the rolling WordPress-to-GitHub pull request.
+    required: false
+    default: Sync WordPress documentation changes
   status:
     description: WordPress status for created or updated pages, such as draft or publish.
     required: false
@@ -70,7 +90,7 @@ inputs:
     required: false
     default: trash
   dry-run:
-    description: Plan create/update/delete operations without writing to WordPress.
+    description: Plan WordPress and GitHub operations without writing to either system.
     required: false
     default: "false"
 
@@ -84,7 +104,13 @@ outputs:
   unchanged:
     description: Count of managed pages already in sync.
   conflicts:
-    description: Count of unmanaged WordPress page conflicts.
+    description: Count of unmanaged or two-sided synchronization conflicts.
+  proposed:
+    description: Count of repository files proposed from WordPress changes.
+  pull-request-number:
+    description: Number of the rolling WordPress-to-GitHub pull request, when present.
+  pull-request-url:
+    description: URL of the rolling WordPress-to-GitHub pull request, when present.
   summary-json:
     description: JSON summary of the sync result.
 

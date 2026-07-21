@@ -3,8 +3,9 @@ import path from "node:path";
 import fg from "fast-glob";
 import { headingBlock, paragraphBlock, sourceLinkBlock } from "./gutenberg.js";
 import { markdownToBlocks } from "./markdown.js";
+import { hashPageState } from "./page-state.js";
 import { prependSentinel } from "./sentinel.js";
-import { escapeAttribute, escapeHtml, normalizeBoolean, sha256, slugify, stableJson, titleFromSlug, toPosixPath } from "./utils.js";
+import { escapeAttribute, escapeHtml, normalizeBoolean, slugify, titleFromSlug, toPosixPath } from "./utils.js";
 
 const INDEX_FILENAMES = new Set(["index", "readme"]);
 
@@ -462,7 +463,7 @@ function finalizePage(page, options) {
     status,
     body
   };
-  const hash = sha256(stableJson(stablePayload));
+  const hash = hashPageState(stablePayload);
   const content = prependSentinel(body, {
     key,
     source: page.sourcePath,
