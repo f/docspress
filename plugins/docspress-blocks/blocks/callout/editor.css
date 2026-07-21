@@ -1,0 +1,16 @@
+.editor-styles-wrapper .wp-block-docspress-callout {
+	max-width: min(100%, 860px);
+}
+
+.docspress-callout--editor {
+	grid-template-columns: auto minmax(0, 1fr);
+}
+
+.docspress-callout--editor .docspress-callout__icon {
+	font: 800 0.72rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+
+.docspress-callout--editor .docspress-callout__title:empty::before,
+.docspress-callout--editor .docspress-callout__content:empty::before {
+	color: color-mix(in srgb, currentColor 48%, transparent);
+}

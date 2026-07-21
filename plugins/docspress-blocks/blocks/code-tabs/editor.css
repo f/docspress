@@ -1,0 +1,11 @@
+.editor-styles-wrapper .wp-block-docspress-code-tabs {
+	max-width: min(100%, 860px);
+}
+
+.docspress-code-tabs--editor .docspress-code-tabs__panel {
+	display: block;
+}
+
+.docspress-code-tabs--editor .docspress-code__editor {
+	background: transparent;
+}

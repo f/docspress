@@ -1,0 +1,33 @@
+/* Shared editor presentation for code-based blocks. */
+.docspress-code--editor .docspress-code__surface,
+.docspress-code-tabs--editor .docspress-code-tabs__surface {
+	box-shadow: var(--db-code-shadow);
+}
+
+.docspress-code__editor {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 190px;
+	margin: 0;
+	padding: 17px 22px;
+	resize: vertical;
+	border: 0;
+	border-radius: 0;
+	outline: 0;
+	background: var(--db-code-bg);
+	box-shadow: none;
+	color: var(--db-code-text);
+	font: 500 0.875rem/1.72 var(--dp-font-mono, "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+	tab-size: 2;
+}
+
+.docspress-code__editor:focus {
+	box-shadow: inset 3px 0 0 var(--db-code-accent);
+}
+
+.docspress-code--editor .docspress-code__caption,
+.docspress-code-tabs--editor .docspress-code__caption {
+	min-height: 20px;
+	padding: 4px;
+}

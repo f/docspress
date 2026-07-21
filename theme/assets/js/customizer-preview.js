@@ -105,6 +105,18 @@
 	bindInverseClass('docspress_search_show_excerpts', 'docspress-search-hide-excerpts');
 	bindInverseClass('docspress_search_show_hints', 'docspress-search-hide-hints');
 
+	wp.customize('docspress_design_preset', function (value) {
+		value.bind(function (next) {
+			Array.from(document.body.classList).forEach(function (className) {
+				if (className.indexOf('docspress-preset-') === 0) {
+					document.body.classList.remove(className);
+				}
+			});
+			const preset = String(next).toLowerCase().replace(/[^a-z0-9-]/g, '') || 'custom';
+			document.body.classList.add('docspress-preset-' + preset);
+		});
+	});
+
 	const lightColors = {
 		docspress_accent_color: '--dp-blue',
 		docspress_accent_strong: '--dp-blue-dark',

@@ -1,0 +1,108 @@
+.docspress-code-tabs__surface {
+	width: 100%;
+	background: color-mix(in srgb, var(--db-code-accent) 3%, var(--db-code-bg));
+	box-shadow: var(--db-code-shadow);
+}
+
+.docspress-code-tabs__header {
+	display: grid;
+	min-height: 42px;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 10px;
+	box-sizing: border-box;
+	padding: 5px 7px;
+	border-bottom: 1px solid var(--db-code-border);
+	background: color-mix(in srgb, var(--db-code-accent) 4%, var(--db-code-panel));
+}
+
+.docspress-code-tabs__list {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	gap: 2px;
+	overflow-x: auto;
+	scrollbar-width: thin;
+}
+
+.docspress-code-tabs__tab {
+	display: inline-flex;
+	min-height: 30px;
+	flex: 0 0 auto;
+	align-items: center;
+	padding: 0 10px;
+	border: 0;
+	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	background: transparent;
+	box-shadow: none;
+	color: var(--db-code-muted);
+	cursor: pointer;
+	font: 680 0.72rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	transition: background-color 140ms ease, box-shadow 140ms ease, color 140ms ease;
+}
+
+.docspress-code-tabs__tab:hover,
+.docspress-code-tabs__tab:focus-visible {
+	background: color-mix(in srgb, var(--db-code-accent) 7%, transparent);
+	color: var(--db-code-text);
+}
+
+.docspress-code-tabs__tab.is-active {
+	background: color-mix(in srgb, var(--db-code-accent) 11%, var(--db-code-panel));
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-code-accent) 24%, transparent);
+	color: var(--db-code-text);
+}
+
+.docspress-code-tabs__tools {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	gap: 7px;
+}
+
+.docspress-code-tabs__filename {
+	display: block;
+}
+
+.docspress-code-tabs__filename[hidden] {
+	display: none;
+}
+
+.docspress-code-tabs__panel .docspress-code__surface {
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.docspress-code-tabs__panel .docspress-code__pre,
+.entry-content .docspress-code-tabs__panel .docspress-code__pre {
+	background: transparent;
+}
+
+@media (max-width: 560px) {
+	.docspress-code-tabs__header {
+		gap: 6px;
+		padding-right: 5px;
+	}
+
+	.docspress-code-tabs__filename {
+		max-width: 7rem;
+	}
+
+	.docspress-code-tabs__copy {
+		padding-inline: 6px;
+	}
+}
+
+@media (max-width: 420px) {
+	.docspress-code-tabs__filename {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.docspress-code-tabs__tab {
+		transition: none;
+	}
+}

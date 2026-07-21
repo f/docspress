@@ -32,9 +32,19 @@ Docspress is early software. The core sync loop works, and the first-class targe
 
 - `src/`, `bin/`, and `scripts/` contain the GitHub Action and npm package.
 - [`theme/`](theme/) contains the installable DocsPress WordPress theme and its local Playground blueprint.
-- [`plugins/`](plugins/) is the home for Docspress WordPress plugins, with one subdirectory per plugin.
+- [`plugins/docspress-blocks/`](plugins/docspress-blocks/) provides documentation-focused Gutenberg blocks and starter patterns.
 
 The WordPress theme and plugin directories are distributed through this GitHub repository. They are intentionally excluded from the `docspress` npm tarball, which remains focused on the Action and CLI runtime.
+
+Run the complete WordPress experience from the repository root:
+
+```bash
+npx @wp-playground/cli@latest start \
+  --path=theme \
+  --mount="$(pwd)/plugins/docspress-blocks:/wordpress/wp-content/plugins/docspress-blocks" \
+  --blueprint=theme/blueprint.json \
+  --port=9400
+```
 
 ## Quick start
 

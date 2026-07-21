@@ -3,7 +3,7 @@
 	"meta": {
 		"title": "DocsPress Theme Demo",
 		"author": "f",
-		"description": "A Docusaurus-inspired WordPress documentation theme with nested demo pages."
+		"description": "A Docusaurus-inspired WordPress documentation theme with DocsPress Blocks and nested Gutenberg demo pages."
 	},
 	"preferredVersions": {
 		"php": "8.3",
@@ -28,7 +28,7 @@
 		},
 		{
 			"step": "runPHP",
-			"code": "<?php require_once '/wordpress/wp-load.php'; foreach ( wp_get_themes() as $slug => $theme ) { if ( 'DocsPress' === $theme->get( 'Name' ) ) { switch_theme( $slug ); require get_theme_root( $slug ) . '/' . $slug . '/playground/setup.php'; break; } }"
+			"code": "<?php require_once '/wordpress/wp-load.php'; require_once ABSPATH . 'wp-admin/includes/plugin.php'; $blocks = 'docspress-blocks/docspress-blocks.php'; if ( file_exists( WP_PLUGIN_DIR . '/' . $blocks ) && ! is_plugin_active( $blocks ) ) { activate_plugin( $blocks ); } wp_clean_themes_cache(); foreach ( wp_get_themes() as $slug => $theme ) { if ( 'DocsPress' === $theme->get( 'Name' ) ) { switch_theme( $slug ); require get_theme_root( $slug ) . '/' . $slug . '/playground/setup.php'; break; } }"
 		}
 	]
 }

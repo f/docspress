@@ -16,22 +16,25 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 - A dedicated **DocsPress Theme** Customizer panel with preset, navigation, command-search, layout, color, typography, header, article, and footer controls.
 - Automatic Page-tree navigation or fully hand-built WordPress menus for both the header and documentation sidebar.
 - A transparent Octocat/Wapuu hybrid default header mark, while preserving WordPress's standard custom-logo override.
+- The companion DocsPress Blocks plugin with Colorful Code, Code Tabs, Callout, and starter documentation patterns.
 - Jetpack installed and activated by the Playground blueprint in local Offline Mode.
-- A WordPress Playground blueprint with realistic nested demo Pages.
+- A WordPress Playground blueprint with realistic nested demo Pages stored as Gutenberg block HTML.
 
 The layout deliberately follows the useful parts of a classic Docusaurus docs page—header, left navigation, central article, right-hand table of contents—without copying Docusaurus code or branding.
 
 ## Run it in WordPress Playground
 
-From this folder, run:
+From the Docspress repository root, run:
 
 ```bash
 npx @wp-playground/cli@latest start \
-  --blueprint=blueprint.json \
+  --path=theme \
+  --mount="$(pwd)/plugins/docspress-blocks:/wordpress/wp-content/plugins/docspress-blocks" \
+  --blueprint=theme/blueprint.json \
   --port=9400
 ```
 
-Playground mounts and activates the theme, installs Jetpack, creates two editable navigation menus and a small documentation tree, logs you into WordPress, and opens the Introduction page at:
+Playground mounts and activates the theme and DocsPress Blocks, installs Jetpack, creates two editable navigation menus and a small documentation tree, logs you into WordPress, and opens the Introduction page at:
 
 ```text
 http://127.0.0.1:9400/
@@ -139,6 +142,10 @@ Use `create-h1: false`: the theme renders the WordPress Page title as the docume
 Keep the action's `edit-link` input disabled when using this theme. The theme builds its own GitHub proposal button from the same sentinel source metadata, avoiding a duplicate link inside the article body.
 
 The theme preserves the Page hierarchy generated from nested Markdown folders. Set the generated **Docs** Page as the documentation root in the Customizer to exclude unrelated site Pages from the sidebar.
+
+### Documentation blocks
+
+The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Colorful Code, Code Tabs, and Callout blocks plus two starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. They inherit theme typography, radius, borders, and content width; free-form block colors are intentionally unavailable. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback.
 
 ### Versioned docs
 

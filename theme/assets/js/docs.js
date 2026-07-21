@@ -417,6 +417,7 @@
 	}
 
 	document.querySelectorAll('.entry-content pre').forEach(function (pre) {
+		if (pre.closest('.docspress-code__surface')) return;
 		const button = document.createElement('button');
 		button.className = 'copy-code';
 		button.type = 'button';

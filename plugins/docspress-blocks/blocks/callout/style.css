@@ -1,0 +1,152 @@
+.docspress-callout {
+	--db-callout-accent: var(--dp-blue, #3858e9);
+	--db-callout-surface: color-mix(in srgb, var(--db-callout-accent) 5%, var(--dp-paper, #fff));
+	--db-callout-border: color-mix(in srgb, var(--db-callout-accent) 24%, var(--dp-line, #dcdcde));
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	gap: 11px;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	margin-block: clamp(1.25rem, 2.5vw, 2rem);
+	padding: 15px 17px 15px 14px;
+	border: 1px solid var(--db-callout-border);
+	border-radius: var(--dp-radius, 10px);
+	background: var(--db-callout-surface);
+	box-shadow: 0 2px 12px color-mix(in srgb, var(--dp-ink, #171a22) 4%, transparent);
+	color: var(--dp-copy, #2c3338);
+}
+
+.docspress-callout--tip {
+	--db-callout-accent: #008a20;
+}
+
+.docspress-callout--warning {
+	--db-callout-accent: #c05f00;
+}
+
+.docspress-callout--danger {
+	--db-callout-accent: #d63638;
+}
+
+.docspress-callout--success {
+	--db-callout-accent: #007c5c;
+}
+
+html[data-theme="dark"] .docspress-callout--tip {
+	--db-callout-accent: #61ce78;
+}
+
+html[data-theme="dark"] .docspress-callout--warning {
+	--db-callout-accent: #f1b354;
+}
+
+html[data-theme="dark"] .docspress-callout--danger {
+	--db-callout-accent: #ff8587;
+}
+
+html[data-theme="dark"] .docspress-callout--success {
+	--db-callout-accent: #55d6ae;
+}
+
+.docspress-callout__icon {
+	display: grid;
+	width: 26px;
+	height: 26px;
+	place-items: center;
+	border-radius: max(2px, calc(var(--dp-radius, 10px) - 4px));
+	border: 1px solid color-mix(in srgb, var(--db-callout-accent) 22%, transparent);
+	background: color-mix(in srgb, var(--db-callout-accent) 11%, transparent);
+	color: var(--db-callout-accent);
+}
+
+.docspress-callout__icon svg {
+	width: 15px;
+	height: 15px;
+}
+
+.docspress-callout__title {
+	margin: 1px 0 4px;
+	color: color-mix(in srgb, var(--db-callout-accent) 76%, var(--dp-ink, #1d2327));
+	font: 740 0.88rem/1.3 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	letter-spacing: -0.01em;
+}
+
+.docspress-callout__content {
+	color: var(--dp-copy, #2c3338);
+	font-size: 0.92em;
+}
+
+.docspress-callout__content > :first-child {
+	margin-top: 0;
+}
+
+.docspress-callout__content > :last-child {
+	margin-bottom: 0;
+}
+
+details.docspress-callout {
+	display: block;
+	padding: 0;
+}
+
+details.docspress-callout > summary {
+	display: grid;
+	box-sizing: border-box;
+	width: 100%;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	gap: 11px;
+	align-items: center;
+	margin: 0;
+	padding: 13px 16px 13px 13px;
+	cursor: pointer;
+	list-style: none;
+}
+
+details.docspress-callout > summary::-webkit-details-marker {
+	display: none;
+}
+
+details.docspress-callout > summary::marker {
+	content: "";
+}
+
+details.docspress-callout > summary:focus-visible {
+	border-radius: calc(var(--dp-radius, 10px) - 1px);
+	outline: 2px solid color-mix(in srgb, var(--db-callout-accent) 58%, transparent);
+	outline-offset: -2px;
+}
+
+details.docspress-callout > summary .docspress-callout__title {
+	margin: 0;
+}
+
+details.docspress-callout > .docspress-callout__content {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 0 17px 15px 50px;
+}
+
+.docspress-callout__chevron {
+	color: var(--db-callout-accent);
+	font-size: 1.15rem;
+	transition: transform 160ms ease;
+}
+
+details[open] .docspress-callout__chevron {
+	transform: rotate(180deg);
+}
+
+@media (max-width: 560px) {
+	.docspress-callout {
+		padding-right: 14px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.docspress-callout__chevron {
+		transition: none;
+	}
+}

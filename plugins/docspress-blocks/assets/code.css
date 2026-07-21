@@ -1,0 +1,297 @@
+/* Shared code-surface tokens and primitives used by Colorful Code and Code Tabs. */
+.wp-block-docspress-colorful-code,
+.wp-block-docspress-code-tabs {
+	--db-code-bg: color-mix(in srgb, var(--dp-canvas, #f8f9fb) 82%, var(--dp-paper, #fff));
+	--db-code-panel: var(--dp-paper, #fff);
+	--db-code-panel-strong: var(--dp-blue-soft, #eef1ff);
+	--db-code-border: var(--dp-line-strong, #cfd4dc);
+	--db-code-text: var(--dp-ink, #171a22);
+	--db-code-muted: var(--dp-muted, #6f7685);
+	--db-code-accent: var(--db-preset-code-accent, var(--dp-blue, #3858e9));
+	--db-code-accent-2: var(--db-preset-code-accent-2, var(--dp-blue-dark, #2145d8));
+	--db-code-keyword: var(--db-preset-code-keyword, var(--dp-blue-dark, #2145d8));
+	--db-code-string: var(--db-preset-code-string, #137c44);
+	--db-code-number: var(--db-preset-code-number, #a84f00);
+	--db-code-comment: var(--dp-muted, #6f7685);
+	--db-code-shadow: 0 8px 24px color-mix(in srgb, var(--dp-ink, #171a22) 8%, transparent);
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	margin-block: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+html[data-theme="dark"] .wp-block-docspress-colorful-code,
+html[data-theme="dark"] .wp-block-docspress-code-tabs {
+	--db-code-bg: color-mix(in srgb, var(--dp-canvas, #11141b) 78%, #000);
+	--db-code-panel: var(--dp-paper, #171b23);
+	--db-code-panel-strong: var(--dp-blue-soft, #20294c);
+	--db-code-border: var(--dp-line-strong, #434c5b);
+	--db-code-text: var(--dp-ink, #f3f5f8);
+	--db-code-muted: var(--dp-muted, #929aab);
+	--db-code-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+}
+
+.docspress-preset-docspress,
+.docspress-blocks--preset-docspress {
+	--db-preset-code-accent: #005cb3;
+	--db-preset-code-accent-2: #fec408;
+	--db-preset-code-keyword: #005cb3;
+	--db-preset-code-string: #19733f;
+	--db-preset-code-number: #bd5400;
+}
+
+.docspress-preset-wordpress,
+.docspress-blocks--preset-wordpress,
+.docspress-preset-wordpress-com,
+.docspress-blocks--preset-wordpress-com {
+	--db-preset-code-accent: #3858e9;
+	--db-preset-code-accent-2: #2145e6;
+	--db-preset-code-keyword: #2a46ce;
+	--db-preset-code-string: #087a3e;
+	--db-preset-code-number: #a54800;
+}
+
+.docspress-preset-jetpack,
+.docspress-blocks--preset-jetpack {
+	--db-preset-code-accent: #069e08;
+	--db-preset-code-accent-2: #007117;
+	--db-preset-code-keyword: #007117;
+	--db-preset-code-string: #3858e9;
+	--db-preset-code-number: #9b4f00;
+}
+
+html[data-theme="dark"] .docspress-preset-docspress {
+	--db-preset-code-accent: #fec408;
+	--db-preset-code-accent-2: #fe8301;
+	--db-preset-code-keyword: #62b5ff;
+	--db-preset-code-string: #a7e48d;
+	--db-preset-code-number: #ffd078;
+}
+
+html[data-theme="dark"] .docspress-preset-wordpress,
+html[data-theme="dark"] .docspress-preset-wordpress-com {
+	--db-preset-code-accent: #7b90ff;
+	--db-preset-code-accent-2: #adbaf3;
+	--db-preset-code-keyword: #a8b5ff;
+	--db-preset-code-string: #82dc97;
+	--db-preset-code-number: #ffbc73;
+}
+
+html[data-theme="dark"] .docspress-preset-jetpack {
+	--db-preset-code-accent: #61ce4f;
+	--db-preset-code-accent-2: #91e982;
+	--db-preset-code-keyword: #91e982;
+	--db-preset-code-string: #86c8ff;
+	--db-preset-code-number: #ffd36b;
+}
+
+.docspress-code__surface,
+.docspress-code-tabs__surface {
+	position: relative;
+	overflow: hidden;
+	border: 1px solid var(--db-code-border);
+	border-radius: var(--dp-radius, 10px);
+	background: var(--db-code-bg);
+	box-shadow: var(--db-code-shadow);
+	color: var(--db-code-text);
+}
+
+.docspress-code__surface,
+.docspress-code-tabs__surface {
+	background: color-mix(in srgb, var(--db-code-accent) 3%, var(--db-code-bg));
+}
+
+.docspress-code__bar {
+	display: grid;
+	min-height: 42px;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 7px;
+	box-sizing: border-box;
+	padding: 5px 7px;
+	border-bottom: 1px solid var(--db-code-border);
+	background: color-mix(in srgb, var(--db-code-accent) 4%, var(--db-code-panel));
+}
+
+.docspress-code__filename,
+.docspress-code-tabs__filename {
+	min-width: 0;
+	max-width: 14rem;
+	overflow: hidden;
+	color: var(--db-code-muted);
+	font: 600 0.68rem/1.2 var(--dp-font-mono, "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+	letter-spacing: -0.01em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.docspress-code__filename {
+	justify-self: end;
+}
+
+.docspress-code__language {
+	display: inline-flex;
+	min-height: 30px;
+	align-items: center;
+	padding: 0 10px;
+	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	background: color-mix(in srgb, var(--db-code-accent) 11%, var(--db-code-panel));
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-code-accent) 24%, transparent);
+	color: var(--db-code-text);
+	font: 680 0.72rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+.docspress-code__copy {
+	display: inline-flex;
+	min-height: 28px;
+	align-items: center;
+	gap: 5px;
+	margin: 0;
+	padding: 3px 7px;
+	border: 1px solid var(--db-code-border);
+	border-radius: max(2px, calc(var(--dp-radius, 10px) - 3px));
+	background: color-mix(in srgb, var(--db-code-panel) 76%, transparent);
+	box-shadow: none;
+	color: var(--db-code-text);
+	cursor: pointer;
+	font: 650 0.68rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	transition: border-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.docspress-code__copy:hover,
+.docspress-code__copy:focus-visible {
+	border-color: var(--db-code-accent);
+	color: var(--db-code-accent);
+}
+
+.docspress-code__copy:active {
+	transform: translateY(1px);
+}
+
+.docspress-code__copy.is-copied {
+	border-color: var(--db-code-accent);
+	color: var(--db-code-accent);
+}
+
+.docspress-code__pre {
+	max-width: 100%;
+	margin: 0;
+	overflow: auto;
+	background: transparent;
+	color: var(--db-code-text);
+	font: 500 0.875rem/1.72 var(--dp-font-mono, "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+	tab-size: 2;
+	-webkit-overflow-scrolling: touch;
+}
+
+.entry-content .docspress-code__pre {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: var(--db-code-text);
+	font: 500 0.875rem/1.72 var(--dp-font-mono, "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+}
+
+.entry-content .wp-block-docspress-colorful-code,
+.entry-content .wp-block-docspress-code-tabs {
+	margin-block: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.docspress-code__pre code {
+	display: block;
+	min-width: max-content;
+	padding: 18px 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+}
+
+.docspress-code__line {
+	display: block;
+	position: relative;
+	min-height: 1.72em;
+	padding: 0 22px;
+	white-space: pre;
+}
+
+.docspress-code__surface.has-line-numbers .docspress-code__line {
+	padding-left: 58px;
+}
+
+.docspress-code__surface.has-line-numbers .docspress-code__line::before {
+	position: absolute;
+	left: 0;
+	width: 42px;
+	color: var(--db-code-muted);
+	content: attr(data-line);
+	font-size: 0.74rem;
+	font-variant-numeric: tabular-nums;
+	opacity: 0.68;
+	text-align: right;
+	user-select: none;
+}
+
+.docspress-code__line.is-highlighted {
+	background: color-mix(in srgb, var(--db-code-accent) 10%, transparent);
+	box-shadow: inset 2px 0 0 var(--db-code-accent);
+}
+
+.docspress-code__line .token-comment {
+	color: var(--db-code-comment);
+	font-style: italic;
+}
+
+.docspress-code__line .token-keyword {
+	color: var(--db-code-keyword);
+	font-weight: 680;
+}
+
+.docspress-code__line .token-string {
+	color: var(--db-code-string);
+}
+
+.docspress-code__line .token-number,
+.docspress-code__line .token-boolean {
+	color: var(--db-code-number);
+}
+
+.docspress-code__line .token-property,
+.docspress-code__line .token-selector {
+	color: var(--db-code-accent);
+}
+
+.docspress-code__caption {
+	margin: 9px 3px 0;
+	color: var(--dp-muted, #646970);
+	font: 500 0.78rem/1.45 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	text-align: center;
+}
+
+@media (max-width: 560px) {
+	.docspress-code__copy b {
+		display: none;
+	}
+
+	.docspress-code__line,
+	.docspress-code__surface.has-line-numbers .docspress-code__line {
+		padding-right: 14px;
+	}
+}
+
+@media (max-width: 420px) {
+	.docspress-code__filename {
+		display: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.docspress-code__copy {
+		transition: none;
+	}
+}
