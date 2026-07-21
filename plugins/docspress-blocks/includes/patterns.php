@@ -86,8 +86,10 @@ function docspress_blocks_register_patterns() {
 						'endpoint'       => '/wp-json/wp/v2/pages',
 						'headers'        => "Content-Type: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN",
 						'requestBody'    => "{\n  \"title\": \"Getting Started\",\n  \"status\": \"draft\"\n}",
+						'requestBodyFormat' => 'json',
 						'responseStatus' => '201 Created',
 						'responseBody'   => "{\n  \"id\": 42,\n  \"slug\": \"getting-started\",\n  \"status\": \"draft\"\n}",
+						'responseBodyFormat' => 'json',
 					)
 				)
 				. docspress_blocks_serialize(
@@ -97,6 +99,37 @@ function docspress_blocks_register_patterns() {
 							array( 'label' => 'cURL', 'language' => 'bash', 'filename' => 'Terminal', 'code' => "curl https://example.com/wp-json/wp/v2/pages \\\n  -H 'Authorization: Bearer \$WP_ACCESS_TOKEN'" ),
 							array( 'label' => 'JavaScript', 'language' => 'javascript', 'filename' => 'request.js', 'code' => "const response = await fetch( '/wp-json/wp/v2/pages' );\nconst pages = await response.json();" ),
 						),
+					)
+				),
+		)
+	);
+
+	register_block_pattern(
+		'docspress/ai-prompt-example',
+		array(
+			'title'       => __( 'AI prompt example', 'docspress-blocks' ),
+			'description' => __( 'A documented AI prompt with model, mode, context, and a concise expected result.', 'docspress-blocks' ),
+			'categories'  => array( 'docspress' ),
+			'content'     => '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Try this prompt</h2><!-- /wp:heading -->'
+				. '<!-- wp:paragraph --><p>Use this prompt to review the implementation before proposing a change.</p><!-- /wp:paragraph -->'
+				. docspress_blocks_serialize(
+					'docspress/prompt',
+					array(
+						'prompt'   => "Review the synchronization logic for failure modes.\n\nReturn a short risk list, then propose the smallest safe patch.",
+						'model'    => 'GPT-5',
+						'mode'     => 'code',
+						'thinking' => true,
+						'context'  => '@repository, src/sync.js, test/sync.test.js',
+						'caption'  => 'Synchronization review prompt',
+					)
+				)
+				. docspress_blocks_serialize(
+					'docspress/result',
+					array(
+						'status'  => 'neutral',
+						'title'   => 'Expected output',
+						'content' => '<p>A focused review with risks, a minimal patch, and matching tests.</p>',
+						'meta'    => 'review checklist',
 					)
 				),
 		)

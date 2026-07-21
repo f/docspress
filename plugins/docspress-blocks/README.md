@@ -7,12 +7,13 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 - **Colorful Code** — filename chrome, language-aware token colors, line numbers, highlighted ranges, captions, and copy-to-clipboard.
 - **Code Tabs** — up to eight keyboard-accessible examples with independent labels, languages, filenames, and code.
 - **Callout** — note, tip, warning, danger, and success tones, with an optional collapsible presentation.
-- **API Request / Response** — one structured HTTP exchange with method, endpoint, headers, request body, response status, response body, and a copyable URL.
+- **API Request / Response** — one structured HTTP exchange with method, endpoint, bold/light header pairs, independently selectable JSON or raw request and response bodies, response status, and a copyable URL.
 - **Terminal Session** — a copyable command separated from its read-only output, with editable prompt, shell, and title labels.
 - **Result** — a compact success, neutral, warning, or error outcome for builds, checks, and verification steps.
 - **File Tree** — an indentation-aware repository view with accessible file and folder entries.
+- **Prompt** — a first-class, copyable AI prompt with model, mode, optional Thinking state, classified context chips, and an editable caption.
 
-The inserter also includes **Documentation page starter** and **API request example** patterns under the **DocsPress** category.
+The inserter also includes **Documentation page starter**, **API request example**, and **AI prompt example** patterns under the **DocsPress** category.
 
 Block colors are intentionally not author-configurable. Every block inherits the active DocsPress design preset, its light or dark tokens, typography, radius, borders, and article width. Only meaningful semantic states—such as callout tone, HTTP method, and result status—are exposed in the editor.
 
@@ -33,7 +34,8 @@ docspress-blocks/
 │   ├── api-request/
 │   ├── terminal-session/
 │   ├── result/
-│   └── file-tree/
+│   ├── file-tree/
+│   └── prompt/
 ├── assets/
 │   ├── editor-shared.js
 │   ├── code.css
@@ -70,7 +72,7 @@ Callouts can stay open or become collapsible:
 API exchanges keep their request and response together:
 
 ```html
-<!-- wp:docspress/api-request {"method":"POST","endpoint":"/wp-json/wp/v2/pages","headers":"Content-Type: application/json","requestBody":"{\n  \"status\": \"draft\"\n}","responseStatus":"201 Created","responseBody":"{\n  \"id\": 42\n}"} /-->
+<!-- wp:docspress/api-request {"method":"POST","endpoint":"/wp-json/wp/v2/pages","headers":"Content-Type: application/json","requestBody":"{\n  \"status\": \"draft\"\n}","requestBodyFormat":"json","responseStatus":"201 Created","responseBody":"{\n  \"id\": 42\n}","responseBodyFormat":"json"} /-->
 ```
 
 Terminal sessions distinguish commands from their output, while Result summarizes the outcome:
@@ -87,7 +89,13 @@ File trees use two spaces per nesting level and a trailing slash for folders:
 <!-- wp:docspress/file-tree {"root":"repository/","tree":"docs/\n  introduction.md\n  api/\n    endpoints.md","caption":"Documentation source tree."} /-->
 ```
 
-The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML and uses all seven blocks.
+Prompts remain readable, crawlable HTML instead of screenshots or iframes:
+
+```html
+<!-- wp:docspress/prompt {"prompt":"Review this synchronization logic and propose the smallest safe patch.","model":"GPT-5","mode":"code","thinking":true,"context":"@repository, src/sync.js, test/sync.test.js","caption":"Synchronization review prompt"} /-->
+```
+
+The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML and uses all eight blocks. Its Kitchen Sink Page covers every semantic state and meaningful configuration combination, while its live component table lists every plugin installed by the blueprint.
 
 ## Run with the theme
 

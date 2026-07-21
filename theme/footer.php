@@ -10,7 +10,7 @@
 	<footer class="site-footer">
 		<p>
 			<?php
-			$footer_text = get_theme_mod( 'docspress_footer_text', __( 'Documentation powered by WordPress · {year}', 'docspress' ) );
+			$footer_text = get_theme_mod( 'docspress_footer_text', __( 'Documentation powered by WordPress and {site_title} · {year}', 'docspress' ) );
 			$footer_text = strtr(
 				$footer_text,
 				array(

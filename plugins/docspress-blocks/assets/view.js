@@ -56,6 +56,28 @@
 		return html;
 	}
 
+	function highlightJson( source ) {
+		const pattern = /"(?:\\u[\da-fA-F]{4}|\\["\\/bfnrt]|[^"\\\u0000-\u001F])*"|-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?|\b(?:true|false|null)\b/g;
+		let cursor = 0;
+		let html = '';
+		let match;
+
+		while ( ( match = pattern.exec( source ) ) ) {
+			html += escapeHtml( source.slice( cursor, match.index ) );
+			const token = match[ 0 ];
+			let kind = 'number';
+			if ( token.startsWith( '"' ) ) {
+				kind = /^\s*:/.test( source.slice( pattern.lastIndex ) ) ? 'property' : 'string';
+			} else if ( /^(?:true|false|null)$/.test( token ) ) {
+				kind = 'literal';
+			}
+			html += `<span class="docspress-api__token--${ kind }">${ escapeHtml( token ) }</span>`;
+			cursor = pattern.lastIndex;
+		}
+
+		return html + escapeHtml( source.slice( cursor ) );
+	}
+
 	function enhanceCode( root ) {
 		root.querySelectorAll( '.docspress-code__surface:not([data-docspress-highlighted])' ).forEach( function ( surface ) {
 			const language = surface.dataset.language || 'plaintext';
@@ -63,6 +85,13 @@
 				line.innerHTML = highlightLine( line.textContent, language );
 			} );
 			surface.dataset.docspressHighlighted = 'true';
+		} );
+	}
+
+	function enhanceApiPayloads( root ) {
+		root.querySelectorAll( '.docspress-api__payload[data-docspress-api-format="json"] code:not([data-docspress-api-highlighted])' ).forEach( function ( code ) {
+			code.innerHTML = highlightJson( code.textContent );
+			code.dataset.docspressApiHighlighted = 'true';
 		} );
 	}
 
@@ -194,6 +223,7 @@
 
 	function initialize() {
 		enhanceCode( document );
+		enhanceApiPayloads( document );
 		enhanceTabs( document );
 		document.addEventListener( 'click', function ( event ) {
 			const button = event.target.closest( '[data-docspress-copy]' );

@@ -2,6 +2,8 @@
 
 A small, Docusaurus-inspired documentation theme for [Docspress](https://github.com/Automattic/docspress). It turns an ordinary hierarchy of WordPress Pages into a focused documentation experience while keeping WordPress—and the content that Docspress synchronizes—fully native.
 
+![DocsPress theme showing the Kitchen Sink documentation page](screenshot.png)
+
 ## What it includes
 
 - A sticky, hierarchy-aware documentation sidebar built from published Pages.
@@ -16,9 +18,9 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 - A dedicated **DocsPress Theme** Customizer panel with preset, navigation, command-search, layout, color, typography, header, article, and footer controls.
 - Automatic Page-tree navigation or fully hand-built WordPress menus for both the header and documentation sidebar.
 - A transparent Octocat/Wapuu hybrid default header mark, while preserving WordPress's standard custom-logo override.
-- The companion DocsPress Blocks plugin with code, callout, API exchange, terminal session, result, and file-tree blocks plus starter documentation patterns.
+- The companion DocsPress Blocks plugin with code, prompt, callout, API exchange, terminal session, result, and file-tree blocks plus starter documentation patterns.
 - Jetpack installed and activated by the Playground blueprint in local Offline Mode.
-- A WordPress Playground blueprint with realistic nested demo Pages stored as Gutenberg block HTML.
+- A WordPress Playground blueprint with realistic nested demo Pages and a generated Kitchen Sink stored as Gutenberg block HTML.
 
 The layout deliberately follows the useful parts of a classic Docusaurus docs page—header, left navigation, central article, right-hand table of contents—without copying Docusaurus code or branding.
 
@@ -34,11 +36,13 @@ npx @wp-playground/cli@latest start \
   --port=9400
 ```
 
-Playground mounts and activates the theme and DocsPress Blocks, installs Jetpack, creates two editable navigation menus and a small documentation tree, logs you into WordPress, and opens the Introduction page at:
+Playground mounts and activates the theme and DocsPress Blocks, installs Jetpack, creates two editable navigation menus and a complete documentation tree, logs you into WordPress, and opens the Kitchen Sink at:
 
 ```text
-http://127.0.0.1:9400/
+http://127.0.0.1:9400/docs/kitchen-sink/
 ```
+
+The Kitchen Sink is an acceptance page rather than a static screenshot. It builds its component inventory from the running WordPress installation, so every plugin installed by the blueprint appears with its version and activation state. Grouped sections exercise all eight DocsPress blocks, every semantic state, meaningful configuration combinations, all three inserter patterns, and the native Gutenberg blocks used by the seed. Use it to compare presets and light/dark mode without hunting through separate Pages.
 
 To rebuild the persisted Playground site from scratch, add `--reset`. To keep it from opening a browser automatically, add `--skip-browser`.
 
@@ -119,7 +123,7 @@ The GitHub action reads the exact `source` path from the hidden Docspress sentin
 
 ### Footer
 
-The footer can be hidden, given custom text, and paired with an optional link. Footer text supports `{year}` and `{site_title}` placeholders.
+The footer defaults to `Documentation powered by WordPress and {site_title} · {year}`. It can be hidden, given custom text, and paired with an optional link. Footer text supports `{year}` and `{site_title}` placeholders.
 
 ## Use it with Docspress
 
@@ -145,7 +149,7 @@ The theme preserves the Page hierarchy generated from nested Markdown folders. S
 
 ### Documentation blocks
 
-The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Colorful Code, Code Tabs, Callout, API Request / Response, Terminal Session, Result, and File Tree blocks plus two starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. They inherit theme typography, radius, borders, and content width; free-form block colors are intentionally unavailable. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback.
+The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Colorful Code, Code Tabs, Callout, API Request / Response, Terminal Session, Result, File Tree, and Prompt blocks plus three starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. They inherit theme typography, radius, borders, and content width; free-form block colors are intentionally unavailable. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback. The Kitchen Sink Page is the single-page reference for every available block option and semantic state.
 
 ### Versioned docs
 

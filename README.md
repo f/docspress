@@ -14,6 +14,12 @@
 
 Docspress is built for teams that want GitHub to remain the source of truth for developer docs while WordPress remains the publishing surface. Commit Markdown, run a GitHub Action, and Docspress creates, updates, or removes managed WordPress Pages through the REST API.
 
+## Theme preview
+
+![DocsPress WordPress theme showing the Kitchen Sink documentation page](theme/screenshot.png)
+
+The companion WordPress theme provides a Docusaurus-style documentation shell, configurable design presets, command search, nested navigation, page actions, light and dark modes, and documentation-focused Gutenberg blocks.
+
 ## Why Docspress?
 
 - Keep docs in Markdown next to the code they describe.

@@ -1,9 +1,9 @@
 {
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"meta": {
-		"title": "DocsPress Theme Demo",
+		"title": "DocsPress Kitchen Sink",
 		"author": "f",
-		"description": "A Docusaurus-inspired WordPress documentation theme with DocsPress Blocks and nested Gutenberg demo pages."
+		"description": "A complete DocsPress acceptance site covering the active theme, every installed plugin, every documentation block, and their meaningful option states."
 	},
 	"preferredVersions": {
 		"php": "8.3",
@@ -13,7 +13,7 @@
 		"JETPACK_DEV_DEBUG": true,
 		"WP_ENVIRONMENT_TYPE": "development"
 	},
-	"landingPage": "/",
+	"landingPage": "/docs/kitchen-sink/",
 	"login": true,
 	"steps": [
 		{

@@ -15,18 +15,37 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $label   Section label.
  * @param string $content Plain-text payload.
  * @param string $class   Section modifier.
+ * @param string $format  Payload format.
  * @return string
  */
-function docspress_blocks_api_payload( $label, $content, $class ) {
+function docspress_blocks_api_payload( $label, $content, $class, $format = 'raw' ) {
 	if ( '' === trim( $content ) ) {
 		return '';
 	}
 
+	$format       = docspress_blocks_allowed_value( $format, array( 'headers', 'json', 'raw' ), 'raw' );
+	$format_label = 'headers' === $format ? __( 'Key: value', 'docspress-blocks' ) : strtoupper( $format );
+	$code         = esc_html( $content );
+
+	if ( 'headers' === $format ) {
+		$lines = preg_split( '/\r\n|\r|\n/', $content );
+		$code  = '';
+		foreach ( $lines as $line ) {
+			if ( preg_match( '/^([^:]+)(:)(.*)$/', $line, $matches ) ) {
+				$code .= '<span class="docspress-api__header-line"><strong class="docspress-api__header-name">' . esc_html( trim( $matches[1] ) ) . '<span aria-hidden="true">:</span></strong><span class="docspress-api__header-value">' . esc_html( $matches[3] ) . '</span></span>';
+			} else {
+				$code .= '<span class="docspress-api__header-line"><span class="docspress-api__header-value">' . esc_html( $line ) . '</span></span>';
+			}
+		}
+	}
+
 	return sprintf(
-		'<section class="docspress-api__payload docspress-api__payload--%1$s"><div class="docspress-api__payload-label">%2$s</div><pre><code>%3$s</code></pre></section>',
+		'<section class="docspress-api__payload docspress-api__payload--%1$s" data-docspress-api-format="%2$s"><div class="docspress-api__payload-label"><span>%3$s</span><span class="docspress-api__format">%4$s</span></div><pre><code>%5$s</code></pre></section>',
 		esc_attr( $class ),
+		esc_attr( $format ),
 		esc_html( $label ),
-		esc_html( $content )
+		esc_html( $format_label ),
+		$code
 	);
 }
 
@@ -44,6 +63,8 @@ function docspress_blocks_render_api_request( $attributes ) {
 	$headers       = isset( $attributes['headers'] ) ? (string) $attributes['headers'] : '';
 	$request_body  = isset( $attributes['requestBody'] ) ? (string) $attributes['requestBody'] : '';
 	$response_body = isset( $attributes['responseBody'] ) ? (string) $attributes['responseBody'] : '';
+	$request_format = docspress_blocks_allowed_value( isset( $attributes['requestBodyFormat'] ) ? $attributes['requestBodyFormat'] : '', array( 'json', 'raw' ), 'json' );
+	$response_format = docspress_blocks_allowed_value( isset( $attributes['responseBodyFormat'] ) ? $attributes['responseBodyFormat'] : '', array( 'json', 'raw' ), 'json' );
 	$status        = isset( $attributes['responseStatus'] ) ? sanitize_text_field( $attributes['responseStatus'] ) : '200 OK';
 	$endpoint_id   = wp_unique_id( 'docspress-api-endpoint-' );
 	$wrapper       = get_block_wrapper_attributes(
@@ -65,14 +86,14 @@ function docspress_blocks_render_api_request( $attributes ) {
 				<b><?php esc_html_e( 'Copy URL', 'docspress-blocks' ); ?></b>
 			</button>
 		</div>
-		<?php echo docspress_blocks_api_payload( __( 'Headers', 'docspress-blocks' ), $headers, 'headers' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-		<?php echo docspress_blocks_api_payload( __( 'Request body', 'docspress-blocks' ), $request_body, 'request' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo docspress_blocks_api_payload( __( 'Headers', 'docspress-blocks' ), $headers, 'headers', 'headers' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+		<?php echo docspress_blocks_api_payload( __( 'Request body', 'docspress-blocks' ), $request_body, 'request', $request_format ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		<section class="docspress-api__response">
 			<div class="docspress-api__response-line">
 				<span class="docspress-api__eyebrow"><?php esc_html_e( 'Response', 'docspress-blocks' ); ?></span>
 				<span class="docspress-api__status"><?php echo esc_html( $status ); ?></span>
 			</div>
-			<?php echo docspress_blocks_api_payload( __( 'Body', 'docspress-blocks' ), $response_body, 'response' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo docspress_blocks_api_payload( __( 'Body', 'docspress-blocks' ), $response_body, 'response', $response_format ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</section>
 	</figure>
 	<?php
@@ -102,8 +123,10 @@ function docspress_blocks_register_api_request() {
 				'endpoint'       => array( 'type' => 'string', 'default' => '/wp-json/wp/v2/pages' ),
 				'headers'        => array( 'type' => 'string', 'default' => "Accept: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN" ),
 				'requestBody'    => array( 'type' => 'string', 'default' => '' ),
+				'requestBodyFormat' => array( 'type' => 'string', 'default' => 'json' ),
 				'responseStatus' => array( 'type' => 'string', 'default' => '200 OK' ),
 				'responseBody'   => array( 'type' => 'string', 'default' => "{\n  \"id\": 42,\n  \"slug\": \"getting-started\"\n}" ),
+				'responseBodyFormat' => array( 'type' => 'string', 'default' => 'json' ),
 			),
 			'supports'        => array( 'anchor' => true, 'html' => false ),
 		)

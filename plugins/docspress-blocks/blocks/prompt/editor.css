@@ -1,0 +1,27 @@
+.editor-styles-wrapper .docspress-prompt--editor {
+	margin-block: 1.5rem;
+}
+
+.docspress-prompt--editor textarea.docspress-prompt__text {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 115px;
+	margin: 0;
+	padding: 0;
+	resize: vertical;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: var(--dp-ink, #171a22);
+	font: 520 0.96rem/1.65 var(--dp-font-body, Georgia, serif);
+}
+
+.docspress-prompt--editor .docspress-prompt__copy--preview {
+	cursor: default;
+}
+
+.docspress-prompt--editor .docspress-prompt__caption {
+	min-width: 7rem;
+	padding: 3px 0;
+}

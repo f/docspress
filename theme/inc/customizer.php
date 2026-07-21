@@ -780,7 +780,7 @@ function docspress_customize_register( $wp_customize ) {
 			'type' => 'checkbox',
 		),
 		'docspress_footer_text' => array(
-			'default' => __( 'Documentation powered by WordPress · {year}', 'docspress' ),
+			'default' => __( 'Documentation powered by WordPress and {site_title} · {year}', 'docspress' ),
 			'sanitize_callback' => 'sanitize_text_field',
 			'sanitize_js_callback' => 'sanitize_text_field',
 			'section' => 'docspress_footer',

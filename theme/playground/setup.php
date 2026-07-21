@@ -177,9 +177,10 @@ function docspress_playground_table( $headers, $rows ) {
  * @param string $title   Callout title.
  * @param string $content Callout content HTML.
  * @param bool   $collapsible Whether the callout can collapse.
+ * @param bool   $open        Whether a collapsible callout starts open.
  * @return string
  */
-function docspress_playground_callout( $tone, $title, $content, $collapsible = false ) {
+function docspress_playground_callout( $tone, $title, $content, $collapsible = false, $open = true ) {
 	return docspress_playground_block(
 		'docspress/callout',
 		array(
@@ -187,7 +188,7 @@ function docspress_playground_callout( $tone, $title, $content, $collapsible = f
 			'title'       => $title,
 			'content'     => '<p>' . $content . '</p>',
 			'collapsible' => $collapsible,
-			'open'        => true,
+			'open'        => $open,
 		)
 	);
 }
@@ -199,9 +200,11 @@ function docspress_playground_callout( $tone, $title, $content, $collapsible = f
  * @param string $language   Language identifier.
  * @param string $filename   Filename label.
  * @param string $highlights Highlighted line expression.
+ * @param bool   $show_line_numbers Whether to show line numbers.
+ * @param string $caption    Optional caption.
  * @return string
  */
-function docspress_playground_code( $code, $language, $filename = '', $highlights = '' ) {
+function docspress_playground_code( $code, $language, $filename = '', $highlights = '', $show_line_numbers = true, $caption = '' ) {
 	return docspress_playground_block(
 		'docspress/colorful-code',
 		array(
@@ -209,7 +212,8 @@ function docspress_playground_code( $code, $language, $filename = '', $highlight
 			'language'         => $language,
 			'filename'         => $filename,
 			'highlightedLines' => $highlights,
-			'showLineNumbers'  => true,
+			'showLineNumbers'  => $show_line_numbers,
+			'caption'          => $caption,
 		)
 	);
 }
@@ -217,15 +221,18 @@ function docspress_playground_code( $code, $language, $filename = '', $highlight
 /**
  * Serialize a DocsPress Code Tabs dynamic block.
  *
- * @param array $tabs Code tabs.
+ * @param array  $tabs Code tabs.
+ * @param bool   $show_line_numbers Whether to show line numbers.
+ * @param string $caption Optional caption.
  * @return string
  */
-function docspress_playground_code_tabs( $tabs ) {
+function docspress_playground_code_tabs( $tabs, $show_line_numbers = true, $caption = '' ) {
 	return docspress_playground_block(
 		'docspress/code-tabs',
 		array(
 			'tabs'            => $tabs,
-			'showLineNumbers' => true,
+			'showLineNumbers' => $show_line_numbers,
+			'caption'         => $caption,
 		)
 	);
 }
@@ -262,15 +269,16 @@ function docspress_playground_api_request( $method, $endpoint, $headers, $reques
  * @param string $command Command text.
  * @param string $output  Command output.
  * @param string $shell   Shell label.
+ * @param string $prompt  Prompt label.
  * @return string
  */
-function docspress_playground_terminal( $title, $command, $output, $shell = 'bash' ) {
+function docspress_playground_terminal( $title, $command, $output, $shell = 'bash', $prompt = '$' ) {
 	return docspress_playground_block(
 		'docspress/terminal-session',
 		array(
 			'title'   => $title,
 			'shell'   => $shell,
-			'prompt'  => '$',
+			'prompt'  => $prompt,
 			'command' => $command,
 			'output'  => $output,
 		)
@@ -315,6 +323,57 @@ function docspress_playground_file_tree( $root, $tree, $caption = '' ) {
 			'caption' => $caption,
 		)
 	);
+}
+
+/**
+ * Serialize a DocsPress Prompt dynamic block.
+ *
+ * @param string $prompt   Prompt text.
+ * @param string $model    Model label.
+ * @param string $mode     Prompt mode.
+ * @param string $context  Comma-separated context.
+ * @param bool   $thinking Whether to show the thinking indicator.
+ * @return string
+ */
+function docspress_playground_prompt( $prompt, $model, $mode, $context = '', $thinking = false ) {
+	return docspress_playground_block(
+		'docspress/prompt',
+		array(
+			'prompt'   => $prompt,
+			'model'    => $model,
+			'mode'     => $mode,
+			'context'  => $context,
+			'thinking' => $thinking,
+		)
+	);
+}
+
+/**
+ * Build a current component inventory for the Kitchen Sink page.
+ *
+ * @return array
+ */
+function docspress_playground_component_rows() {
+	if ( ! function_exists( 'get_plugins' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+
+	$rows         = array();
+	$active       = (array) get_option( 'active_plugins', array() );
+	$active_theme = wp_get_theme();
+	$rows[]       = array( 'WordPress', 'Core', esc_html( get_bloginfo( 'version' ) ), 'Running' );
+	$rows[]       = array( esc_html( $active_theme->get( 'Name' ) ), 'Theme', esc_html( $active_theme->get( 'Version' ) ), 'Active' );
+
+	foreach ( get_plugins() as $plugin_file => $plugin ) {
+		$rows[] = array(
+			esc_html( $plugin['Name'] ? $plugin['Name'] : $plugin_file ),
+			'Plugin',
+			esc_html( $plugin['Version'] ? $plugin['Version'] : '—' ),
+			in_array( $plugin_file, $active, true ) ? 'Active' : 'Inactive',
+		);
+	}
+
+	return $rows;
 }
 
 $docs = docspress_playground_page(
@@ -459,6 +518,15 @@ docspress_playground_page(
 				array( 'label' => 'JSON', 'language' => 'json', 'filename' => 'docspress.json', 'code' => "{\n  \"source\": \"Markdown\",\n  \"surface\": \"WordPress\"\n}" ),
 			)
 		),
+		docspress_playground_heading( 'AI prompts' ),
+		docspress_playground_paragraph( 'Prompts are documentation artifacts, not source code. Keep the model, interaction mode, and supplied context visible so readers can reproduce the example.' ),
+		docspress_playground_prompt(
+			"Review the documentation synchronization logic for failure modes.\n\nReturn a short risk list, then propose the smallest safe patch and the tests it needs.",
+			'GPT-5',
+			'code',
+			'@repository, src/sync.js, test/sync.test.js',
+			true
+		),
 		docspress_playground_table(
 			array( 'Markdown', 'Block' ),
 			array(
@@ -469,6 +537,7 @@ docspress_playground_page(
 				array( 'Terminal command and output', 'docspress/terminal-session' ),
 				array( 'Execution outcome', 'docspress/result' ),
 				array( 'Repository structure', 'docspress/file-tree' ),
+				array( 'AI prompt', 'docspress/prompt' ),
 			)
 		),
 		docspress_playground_callout( 'note', 'Gutenberg escape hatch', 'Serialized Gutenberg comments are preserved, so authors can use these native blocks directly when a Markdown mapping does not exist yet.' )
@@ -528,6 +597,130 @@ docspress_playground_page(
 	'The REST resources used to keep documentation Pages in sync.'
 );
 
+$kitchen_sink = docspress_playground_page(
+	'Kitchen Sink',
+	'kitchen-sink',
+	docspress_playground_document(
+		docspress_playground_paragraph( 'This page is the complete WordPress Playground acceptance surface for the DocsPress theme and every installed documentation block.' ),
+		docspress_playground_callout( 'note', 'How to use this page', 'Change the design preset or light/dark mode, then scan every section for typography, spacing, borders, interactions, and responsive behavior.' ),
+		docspress_playground_heading( 'Playground runtime' ),
+		docspress_playground_paragraph( 'The inventory below is generated from the running WordPress installation, so newly installed blueprint plugins appear automatically.' ),
+		docspress_playground_table(
+			array( 'Component', 'Type', 'Version', 'Status' ),
+			docspress_playground_component_rows()
+		),
+		docspress_playground_callout( 'tip', 'Jetpack Offline Mode', 'Jetpack is active with <code>JETPACK_DEV_DEBUG</code>, so its local features can be inspected without connecting this temporary site to WordPress.com.' ),
+		docspress_playground_heading( 'Theme option matrix' ),
+		docspress_playground_table(
+			array( 'Customizer section', 'Options exercised by the demo' ),
+			array(
+				array( 'Design preset', 'DocsPress, WordPress.org, WordPress.com, Jetpack, Custom' ),
+				array( 'Color mode', 'Light, Dark, visible switcher, enforced default when hidden' ),
+				array( 'Navigation', 'Automatic Page tree or selected WordPress menu; depth, ordering, root, filter, version selector' ),
+				array( 'Command search', 'Labels, result count, dimensions, radius, backdrop, paths, excerpts, keyboard legend' ),
+				array( 'Reading layout', 'Article/sidebar/TOC widths; compact, comfortable, roomy density' ),
+				array( 'Article actions', 'WordPress edit and exact GitHub Markdown proposal links' ),
+			)
+		),
+		docspress_playground_heading( 'Colorful Code' ),
+		docspress_playground_paragraph( 'Options: language, filename, highlighted line expression, line numbers, caption, and copy.' ),
+		docspress_playground_code(
+			"name: Publish docs\non:\n  push:\n    paths: [\"docs/**\"]\nsteps:\n  - uses: Automattic/docspress@main",
+			'yaml',
+			'.github/workflows/docs.yml',
+			'3-4,6',
+			true,
+			'Line numbers, multiple highlighted ranges, filename, language, and caption enabled.'
+		),
+		docspress_playground_code(
+			"Markdown in.\nWordPress out.",
+			'plaintext',
+			'Without line numbers',
+			'',
+			false,
+			'Plain text with line numbers disabled.'
+		),
+		docspress_playground_heading( 'Code Tabs' ),
+		docspress_playground_paragraph( 'Options: two to eight tabs, independent labels, languages, filenames and source, shared line-number visibility, caption, keyboard navigation, and copy.' ),
+		docspress_playground_code_tabs(
+			array(
+				array( 'label' => 'npm', 'language' => 'bash', 'filename' => 'Terminal', 'code' => 'npm install docspress' ),
+				array( 'label' => 'pnpm', 'language' => 'bash', 'filename' => 'Terminal', 'code' => 'pnpm add docspress' ),
+				array( 'label' => 'Yarn', 'language' => 'bash', 'filename' => 'Terminal', 'code' => 'yarn add docspress' ),
+				array( 'label' => 'Bun', 'language' => 'bash', 'filename' => 'Terminal', 'code' => 'bun add docspress' ),
+				array( 'label' => 'JavaScript', 'language' => 'javascript', 'filename' => 'publish.js', 'code' => "import { publish } from 'docspress';\nawait publish();" ),
+				array( 'label' => 'PHP', 'language' => 'php', 'filename' => 'publish.php', 'code' => "<?php\ndocspress_publish();" ),
+				array( 'label' => 'Python', 'language' => 'python', 'filename' => 'publish.py', 'code' => "from docspress import publish\npublish()" ),
+				array( 'label' => 'cURL', 'language' => 'bash', 'filename' => 'Terminal', 'code' => 'curl https://example.com/wp-json/wp/v2/pages' ),
+			),
+			false,
+			'The maximum eight compact tabs with line numbers disabled.'
+		),
+		docspress_playground_heading( 'Callouts' ),
+		docspress_playground_paragraph( 'Options: note, tip, warning, danger, and success tones; static or reader-collapsible; open or closed by default.' ),
+		docspress_playground_callout( 'note', 'Note', 'Neutral context that belongs beside the current step.' ),
+		docspress_playground_callout( 'tip', 'Tip', 'A useful shortcut or recommended practice.' ),
+		docspress_playground_callout( 'warning', 'Warning', 'A condition readers should check before continuing.' ),
+		docspress_playground_callout( 'danger', 'Danger', 'A destructive or security-sensitive action.' ),
+		docspress_playground_callout( 'success', 'Success', 'A confirmed positive state or completed milestone.' ),
+		docspress_playground_callout( 'note', 'Collapsible, open by default', 'Readers can hide this longer explanation.', true, true ),
+		docspress_playground_callout( 'tip', 'Collapsible, closed by default', 'This content begins hidden and remains accessible to keyboard and screen-reader users.', true, false ),
+		docspress_playground_heading( 'API Request / Response' ),
+		docspress_playground_paragraph( 'Options: GET, POST, PUT, PATCH, and DELETE; endpoint, optional headers/body, response status, response body, and URL copy.' ),
+		docspress_playground_api_request( 'GET', '/wp-json/wp/v2/pages?per_page=2', 'Accept: application/json', '', '200 OK', "[\n  { \"id\": 41, \"slug\": \"docs\" },\n  { \"id\": 42, \"slug\": \"getting-started\" }\n]" ),
+		docspress_playground_api_request( 'POST', '/wp-json/wp/v2/pages', "Content-Type: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN", "{\n  \"title\": \"API Reference\",\n  \"status\": \"draft\"\n}", '201 Created', "{\n  \"id\": 43,\n  \"status\": \"draft\"\n}" ),
+		docspress_playground_api_request( 'PUT', '/wp-json/wp/v2/pages/43', 'Content-Type: application/json', "{\n  \"title\": \"REST API Reference\"\n}", '200 OK', "{\n  \"id\": 43,\n  \"title\": { \"rendered\": \"REST API Reference\" }\n}" ),
+		docspress_playground_api_request( 'PATCH', '/wp-json/wp/v2/pages/43', 'Content-Type: application/json', "{\n  \"status\": \"publish\"\n}", '200 OK', "{\n  \"id\": 43,\n  \"status\": \"publish\"\n}" ),
+		docspress_playground_api_request( 'DELETE', '/wp-json/wp/v2/pages/43?force=true', 'Authorization: Bearer $WP_ACCESS_TOKEN', '', '204 No Content', '' ),
+		docspress_playground_heading( 'Terminal Session' ),
+		docspress_playground_paragraph( 'Options: title, shell label, prompt character, multiline command, optional output, and command copy.' ),
+		docspress_playground_terminal( 'Publish documentation', "npx docspress publish ./docs \\\n  --status=draft", "✓ Read 18 documents\n✓ Created 18 draft pages\nCompleted in 2.1s", 'bash', '$' ),
+		docspress_playground_terminal( 'Inspect the site', 'wp option get docspress_playground_runtime --format=json', '', 'wp-cli', '>' ),
+		docspress_playground_terminal( 'Windows example', 'Get-ChildItem .\\docs -Recurse', "Directory: C:\\project\\docs\nMode  Name\n-a--- introduction.md", 'pwsh', 'PS>' ),
+		docspress_playground_heading( 'Result' ),
+		docspress_playground_paragraph( 'Options: success, neutral, warning, and error status; title, rich content, and optional compact metadata.' ),
+		docspress_playground_result( 'success', 'All checks passed', 'The generated Pages match the repository tree.', '18 pages · 2.1s' ),
+		docspress_playground_result( 'neutral', 'No changes required', 'WordPress is already synchronized with the current commit.', '0 updates' ),
+		docspress_playground_result( 'warning', 'Drafts need review', 'Three new Pages are waiting for editorial approval.', '3 drafts' ),
+		docspress_playground_result( 'error', 'Publication failed', 'The access token cannot create Pages on this site.', 'HTTP 403' ),
+		docspress_playground_heading( 'File Tree' ),
+		docspress_playground_paragraph( 'Options: root label, two-space indentation, folder detection from a trailing slash, files, and optional caption.' ),
+		docspress_playground_file_tree(
+			'Automattic/docspress/',
+			"docs/\n  introduction.md\n  guides/\n    installation.md\n    deployment.md\nplugins/\n  docspress-blocks/\n    blocks/\n      prompt/\ntheme/\n  playground/\n    setup.php\npackage.json",
+			'Nested folders, files, a custom root label, and caption.'
+		),
+		docspress_playground_file_tree( 'docs/', "index.md\napi.md\nchangelog.md" ),
+		docspress_playground_heading( 'Prompt' ),
+		docspress_playground_paragraph( 'Options: free-form model label, Chat/Code/Ask/Plan modes, optional Thinking state, copy, and context chips for @mentions, #images, URLs, and file paths.' ),
+		docspress_playground_prompt( 'Explain DocsPress to a new contributor in three short paragraphs.', 'GPT-5', 'chat', '@documentation, https://github.com/Automattic/docspress', false ),
+		docspress_playground_prompt( "Review this synchronization function for race conditions.\n\nReturn risks first, then the smallest safe patch.", 'Claude Sonnet', 'code', '@repository, src/sync.js, test/sync.test.js, #trace', true ),
+		docspress_playground_prompt( 'Which configuration inputs affect the generated WordPress page hierarchy?', 'Gemini Pro', 'ask', '@web, action.yml, README.md', false ),
+		docspress_playground_prompt( 'Create a phased migration plan from a static documentation site to DocsPress.', 'Custom planning agent', 'plan', 'docs/, #architecture, https://example.com/current-docs', true ),
+		docspress_playground_heading( 'Patterns and native blocks' ),
+		docspress_playground_table(
+			array( 'Pattern', 'Included DocsPress blocks' ),
+			array(
+				array( 'Documentation page starter', 'Callout, Terminal Session, Result' ),
+				array( 'API request example', 'API Request / Response, Code Tabs' ),
+				array( 'AI prompt example', 'Prompt, Result' ),
+			)
+		),
+		docspress_playground_list(
+			array(
+				'This page also exercises native Gutenberg Paragraph, Heading, List, and Table blocks.',
+				'Every DocsPress example is stored as canonical serialized <code>&lt;!-- wp:docspress/* --&gt;</code> markup.',
+				'Open this Page in WordPress to edit every example through its native block controls.',
+			)
+		),
+		docspress_playground_callout( 'success', 'Kitchen Sink complete', 'Every installed component, DocsPress block, semantic variant, and meaningful option is represented on this page.' )
+	),
+	$docs,
+	40,
+	'Every DocsPress block, state, option, installed plugin, and theme control in one Playground acceptance page.',
+	'docs/kitchen-sink.md'
+);
+
 $header_menu = docspress_playground_menu( 'DocsPress Header' );
 if ( $header_menu && ! wp_get_nav_menu_items( $header_menu ) ) {
 	wp_update_nav_menu_item(
@@ -536,6 +729,17 @@ if ( $header_menu && ! wp_get_nav_menu_items( $header_menu ) ) {
 		array(
 			'menu-item-title'     => 'Docs',
 			'menu-item-object-id' => $introduction,
+			'menu-item-object'    => 'page',
+			'menu-item-type'      => 'post_type',
+			'menu-item-status'    => 'publish',
+		)
+	);
+	wp_update_nav_menu_item(
+		$header_menu,
+		0,
+		array(
+			'menu-item-title'     => 'Kitchen Sink',
+			'menu-item-object-id' => $kitchen_sink,
 			'menu-item-object'    => 'page',
 			'menu-item-type'      => 'post_type',
 			'menu-item-status'    => 'publish',
@@ -615,6 +819,8 @@ update_option(
 		'docspress_blocks_active' => in_array( 'docspress-blocks/docspress-blocks.php', (array) get_option( 'active_plugins', array() ), true ),
 		'jetpack_offline_mode' => defined( 'JETPACK_DEV_DEBUG' ) && JETPACK_DEV_DEBUG,
 		'environment'         => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
+		'kitchen_sink_page'   => (int) $kitchen_sink,
+		'design_preset'       => get_theme_mod( 'docspress_design_preset', 'docspress' ),
 	)
 );
 update_option( 'blogdescription', 'Markdown-first documentation, published with WordPress.' );

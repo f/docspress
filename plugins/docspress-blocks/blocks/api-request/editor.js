@@ -9,11 +9,17 @@
 		el( 'path', { d: 'M4 7h16M4 17h16M8 4 4 7l4 3m8 4 4 3-4 3' } )
 	);
 
-	function PayloadEditor( { label, value, placeholder, onChange, modifier } ) {
+	function PayloadEditor( { label, value, placeholder, onChange, modifier, format } ) {
+		const formatLabel = format === 'headers' ? __( 'Key: value', 'docspress-blocks' ) : format.toUpperCase();
 		return el(
 			'section',
-			{ className: `docspress-api__payload docspress-api__payload--${ modifier }` },
-			el( 'div', { className: 'docspress-api__payload-label' }, label ),
+			{ className: `docspress-api__payload docspress-api__payload--${ modifier }`, 'data-docspress-api-format': format },
+			el(
+				'div',
+				{ className: 'docspress-api__payload-label' },
+				el( 'span', null, label ),
+				el( 'span', { className: 'docspress-api__format' }, formatLabel )
+			),
 			el( PlainText, { value, onChange, placeholder, 'aria-label': label } )
 		);
 	}
@@ -30,8 +36,10 @@
 			endpoint: { type: 'string', default: '/wp-json/wp/v2/pages' },
 			headers: { type: 'string', default: 'Accept: application/json\nAuthorization: Bearer $WP_ACCESS_TOKEN' },
 			requestBody: { type: 'string', default: '' },
+			requestBodyFormat: { type: 'string', default: 'json' },
 			responseStatus: { type: 'string', default: '200 OK' },
-			responseBody: { type: 'string', default: '{\n  "id": 42,\n  "slug": "getting-started"\n}' }
+			responseBody: { type: 'string', default: '{\n  "id": 42,\n  "slug": "getting-started"\n}' },
+			responseBodyFormat: { type: 'string', default: 'json' }
 		},
 		supports: { anchor: true, html: false },
 		edit: function ApiRequestEdit( { attributes, setAttributes } ) {
@@ -64,6 +72,24 @@
 							label: __( 'Response status', 'docspress-blocks' ),
 							value: attributes.responseStatus,
 							onChange: ( responseStatus ) => setAttributes( { responseStatus } )
+						} ),
+						el( SelectControl, {
+							label: __( 'Request body display', 'docspress-blocks' ),
+							value: attributes.requestBodyFormat,
+							options: [
+								{ label: __( 'JSON — syntax highlighted', 'docspress-blocks' ), value: 'json' },
+								{ label: __( 'Raw — unformatted text', 'docspress-blocks' ), value: 'raw' }
+							],
+							onChange: ( requestBodyFormat ) => setAttributes( { requestBodyFormat } )
+						} ),
+						el( SelectControl, {
+							label: __( 'Response body display', 'docspress-blocks' ),
+							value: attributes.responseBodyFormat,
+							options: [
+								{ label: __( 'JSON — syntax highlighted', 'docspress-blocks' ), value: 'json' },
+								{ label: __( 'Raw — unformatted text', 'docspress-blocks' ), value: 'raw' }
+							],
+							onChange: ( responseBodyFormat ) => setAttributes( { responseBodyFormat } )
 						} )
 					)
 				),
@@ -82,6 +108,7 @@
 						value: attributes.headers,
 						placeholder: 'Accept: application/json',
 						modifier: 'headers',
+						format: 'headers',
 						onChange: ( headers ) => setAttributes( { headers } )
 					} ),
 					el( PayloadEditor, {
@@ -89,6 +116,7 @@
 						value: attributes.requestBody,
 						placeholder: __( 'Optional request body…', 'docspress-blocks' ),
 						modifier: 'request',
+						format: attributes.requestBodyFormat,
 						onChange: ( requestBody ) => setAttributes( { requestBody } )
 					} ),
 					el(
@@ -105,6 +133,7 @@
 							value: attributes.responseBody,
 							placeholder: '{\n  "ok": true\n}',
 							modifier: 'response',
+							format: attributes.responseBodyFormat,
 							onChange: ( responseBody ) => setAttributes( { responseBody } )
 						} )
 					)
