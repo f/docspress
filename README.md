@@ -28,6 +28,14 @@ Docspress is built for teams that want GitHub to remain the source of truth for 
 
 Docspress is early software. The core sync loop works, and the first-class target is WordPress.com with OAuth bearer tokens. Custom WordPress REST API base URLs are available through `wordpress-url`, but WordPress.com is the best-tested path right now.
 
+## Repository layout
+
+- `src/`, `bin/`, and `scripts/` contain the GitHub Action and npm package.
+- [`theme/`](theme/) contains the installable DocsPress WordPress theme and its local Playground blueprint.
+- [`plugins/`](plugins/) is the home for Docspress WordPress plugins, with one subdirectory per plugin.
+
+The WordPress theme and plugin directories are distributed through this GitHub repository. They are intentionally excluded from the `docspress` npm tarball, which remains focused on the Action and CLI runtime.
+
 ## Quick start
 
 Create a workflow in the repository that owns your Markdown docs:
@@ -50,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: f/docspress@main
+      - uses: Automattic/docspress@main
         with:
           wordpress-site: fkadev.blog
           wordpress-access-token: ${{ secrets.WP_ACCESS_TOKEN }}

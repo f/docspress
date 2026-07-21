@@ -1,0 +1,15 @@
+/**
+ * WordPress.org preset refinements.
+ */
+
+.docspress-preset-wordpress .entry-title {
+	font-size: clamp(42px, 5.4vw, 64px);
+	letter-spacing: -0.03em;
+	line-height: 1;
+}
+
+.docspress-preset-wordpress .entry-content h2,
+.docspress-preset-wordpress .entry-content h3,
+.docspress-preset-wordpress .entry-content h4 {
+	letter-spacing: -0.015em;
+}

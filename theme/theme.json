@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"layout": {
+			"contentSize": "800px",
+			"wideSize": "1100px"
+		},
+		"color": {
+			"palette": [
+				{ "slug": "docspress-blue", "color": "#3858e9", "name": "DocsPress blue" },
+				{ "slug": "ink", "color": "#171a22", "name": "Ink" },
+				{ "slug": "paper", "color": "#ffffff", "name": "Paper" },
+				{ "slug": "canvas", "color": "#f8f9fb", "name": "Canvas" }
+			]
+		},
+		"typography": {
+			"fluid": true,
+			"fontFamilies": [
+				{ "slug": "ui", "name": "DocsPress UI", "fontFamily": "\"Avenir Next\", Avenir, \"Century Gothic\", Futura, sans-serif" },
+				{ "slug": "reading", "name": "DocsPress Reading", "fontFamily": "Charter, \"Bitstream Charter\", \"Sitka Text\", Georgia, serif" },
+				{ "slug": "mono", "name": "DocsPress Mono", "fontFamily": "\"SFMono-Regular\", Consolas, \"Liberation Mono\", monospace" }
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#ffffff",
+			"text": "#3d4351"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--reading)",
+			"fontSize": "17px",
+			"lineHeight": "1.78"
+		}
+	}
+}

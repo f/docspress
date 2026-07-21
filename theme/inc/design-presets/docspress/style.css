@@ -1,0 +1,94 @@
+/**
+ * DocsPress logo-derived preset refinements.
+ */
+
+.docspress-preset-docspress {
+	--dp-brand-yellow: #fec408;
+	--dp-brand-orange: #fe8301;
+	--dp-brand-ink: #232323;
+}
+
+.docspress-preset-docspress .brand > [data-customize-site-title] {
+	color: var(--dp-ink);
+	font-weight: 900;
+	letter-spacing: -0.045em;
+}
+
+.docspress-preset-docspress .brand-wordpress {
+	color: var(--dp-blue-dark);
+	font-weight: 700;
+}
+
+.docspress-preset-docspress .primary-navigation .current-menu-item > a,
+.docspress-preset-docspress .primary-navigation .current_page_item > a {
+	background: var(--dp-brand-yellow);
+	color: var(--dp-brand-ink);
+}
+
+.docspress-preset-docspress .search-shortcut kbd {
+	border-color: color-mix(in srgb, var(--dp-brand-orange) 48%, var(--dp-line));
+	background: color-mix(in srgb, var(--dp-brand-yellow) 22%, var(--dp-paper));
+	color: var(--dp-ink);
+}
+
+.docspress-preset-docspress .docs-nav a[aria-current="page"] .nav-dot,
+.docspress-preset-docspress .docs-nav-custom .current-menu-item > a::before {
+	background: var(--dp-brand-yellow);
+	box-shadow: 0 0 0 2px var(--dp-brand-ink);
+}
+
+.docspress-preset-docspress .entry-title {
+	font-size: clamp(42px, 5.6vw, 68px);
+	font-weight: var(--dp-heading-weight);
+	letter-spacing: -0.06em;
+	line-height: 0.98;
+}
+
+.docspress-preset-docspress .entry-kicker {
+	gap: 6px;
+	padding: 4px 10px 4px 8px;
+	border: 2px solid var(--dp-brand-ink);
+	border-radius: 999px;
+	background: var(--dp-brand-yellow);
+	box-shadow: 3px 3px 0 var(--dp-brand-orange);
+	color: var(--dp-brand-ink);
+	letter-spacing: 0.08em;
+}
+
+.docspress-preset-docspress .entry-kicker::before {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--dp-brand-orange);
+}
+
+.docspress-preset-docspress .entry-header::after {
+	width: 74px;
+	height: 4px;
+	border-radius: 999px;
+	background: linear-gradient(90deg, var(--dp-blue) 0 72%, var(--dp-brand-yellow) 72% 100%);
+}
+
+.docspress-preset-docspress .entry-content blockquote,
+.docspress-preset-docspress .entry-content .wp-block-quote {
+	border-color: color-mix(in srgb, var(--dp-blue) 20%, var(--dp-line));
+	border-left-color: var(--dp-brand-yellow);
+	background: color-mix(in srgb, var(--dp-brand-yellow) 9%, var(--dp-paper));
+}
+
+.docspress-preset-docspress .page-action-wordpress {
+	border-color: var(--dp-blue);
+	background: var(--dp-blue);
+	color: #fff;
+	box-shadow: 0 4px 12px color-mix(in srgb, var(--dp-blue) 18%, transparent);
+}
+
+.docspress-preset-docspress .page-action-wordpress:hover {
+	border-color: var(--dp-blue-dark);
+	background: var(--dp-blue-dark);
+	color: #fff;
+}
+
+.docspress-preset-docspress .pagination-direction {
+	color: var(--dp-blue-dark);
+}

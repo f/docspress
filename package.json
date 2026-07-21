@@ -1,6 +1,6 @@
 {
   "name": "docspress",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "private": false,
   "description": "Sync Markdown docs to WordPress Pages as Gutenberg content from GitHub Actions.",
   "type": "module",
@@ -33,6 +33,14 @@
     "docs"
   ],
   "author": "Fatih Kadir Akin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Automattic/docspress.git"
+  },
+  "homepage": "https://github.com/Automattic/docspress#readme",
+  "bugs": {
+    "url": "https://github.com/Automattic/docspress/issues"
+  },
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@actions/core": "^3.0.1",

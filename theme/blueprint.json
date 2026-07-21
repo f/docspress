@@ -1,0 +1,34 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"meta": {
+		"title": "DocsPress Theme Demo",
+		"author": "f",
+		"description": "A Docusaurus-inspired WordPress documentation theme with nested demo pages."
+	},
+	"preferredVersions": {
+		"php": "8.3",
+		"wp": "latest"
+	},
+	"constants": {
+		"JETPACK_DEV_DEBUG": true,
+		"WP_ENVIRONMENT_TYPE": "development"
+	},
+	"landingPage": "/",
+	"login": true,
+	"steps": [
+		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "jetpack"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "runPHP",
+			"code": "<?php require_once '/wordpress/wp-load.php'; foreach ( wp_get_themes() as $slug => $theme ) { if ( 'DocsPress' === $theme->get( 'Name' ) ) { switch_theme( $slug ); require get_theme_root( $slug ) . '/' . $slug . '/playground/setup.php'; break; } }"
+		}
+	]
+}

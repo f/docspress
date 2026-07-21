@@ -1,0 +1,9 @@
+/**
+ * Jetpack preset refinements.
+ */
+
+.docspress-preset-jetpack .entry-title {
+	font-size: clamp(42px, 5.5vw, 66px);
+	letter-spacing: -0.055em;
+	line-height: 1;
+}
