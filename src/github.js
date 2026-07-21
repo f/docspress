@@ -1,6 +1,7 @@
 import * as github from "@actions/github";
 
 export const DOCSPRESS_PR_MARKER = "<!-- docspress:wordpress-sync -->";
+export const githubContext = github.context;
 
 export class GitHubPullRequestClient {
   constructor(options) {

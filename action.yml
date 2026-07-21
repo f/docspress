@@ -107,6 +107,8 @@ outputs:
     description: Count of unmanaged or two-sided synchronization conflicts.
   proposed:
     description: Count of repository files proposed from WordPress changes.
+  skipped:
+    description: Whether the Action skipped a push created by merging its managed reverse-sync branch.
   pull-request-number:
     description: Number of the rolling WordPress-to-GitHub pull request, when present.
   pull-request-url:

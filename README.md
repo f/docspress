@@ -157,7 +157,7 @@ Reverse synchronization compares Gutenberg blocks semantically and changes only 
 
 `reconcile` leaves each WordPress-only Page unchanged while its pull request is open. Once the pull request merges, the next run refreshes the synchronization sentinel; GitHub-only changes to other Pages still publish normally.
 
-The job condition skips the `push` event created when GitHub merges DocsPress's action-owned `docspress/wordpress-sync` branch. Scheduled and manual runs still reconcile normally. If you customize `pull-request-branch`, update the branch name in this condition too.
+The job condition skips the `push` event created when GitHub merges DocsPress's action-owned `docspress/wordpress-sync` branch. Scheduled and manual runs still reconcile normally. If you customize `pull-request-branch`, update the branch name in this condition too. As a fallback for workflows without the condition, the Action recognizes its configured branch in GitHub's merge commit and exits successfully without reading or writing WordPress.
 
 The WordPress token reads and updates Pages. Pull requests use the job's `GITHUB_TOKEN`; no second stored secret is needed when the repository allows GitHub Actions to create pull requests.
 
@@ -230,6 +230,7 @@ Docspress writes these outputs:
 | `unchanged` | Count of managed pages already in sync. |
 | `conflicts` | Count of unmanaged or two-sided synchronization conflicts. |
 | `proposed` | Count of repository files proposed from WordPress. |
+| `skipped` | Whether the Action skipped a managed reverse-sync merge push. |
 | `pull-request-number` | Rolling reverse-sync pull request number. |
 | `pull-request-url` | Rolling reverse-sync pull request URL. |
 | `summary-json` | JSON summary of the sync result. |

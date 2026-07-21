@@ -43,7 +43,7 @@ DocsPress compares the live Gutenberg tree with the tree generated from the curr
 
 The Action updates one action-owned branch and pull request instead of opening duplicates on every poll.
 
-The job condition skips the `push` event created when GitHub merges the action-owned `docspress/wordpress-sync` branch. Scheduled and manual runs still reconcile normally. If you set a custom `pull-request-branch`, use the same branch name in the condition.
+The job condition skips the `push` event created when GitHub merges the action-owned `docspress/wordpress-sync` branch. Scheduled and manual runs still reconcile normally. If you set a custom `pull-request-branch`, use the same branch name in the condition. As a fallback for workflows without the condition, the Action recognizes its configured branch in GitHub's merge commit and exits successfully without reading or writing WordPress.
 
 While that pull request is open, `reconcile` leaves the WordPress-only Page untouched. After the pull request merges, the next run recognizes that both sides converge and refreshes the Page sentinel; GitHub-only changes to other Pages can continue publishing in the same run.
 

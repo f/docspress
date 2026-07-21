@@ -1,7 +1,8 @@
 import * as core from "@actions/core";
 import { syncBidirectional } from "./bidirectional.js";
 import { collectDesiredPages } from "./docs.js";
-import { GitHubPullRequestClient } from "./github.js";
+import { isManagedPullRequestMerge } from "./github-event.js";
+import { githubContext, GitHubPullRequestClient } from "./github.js";
 import { syncPages } from "./sync.js";
 import { normalizeBoolean } from "./utils.js";
 import { WordPressClient } from "./wordpress.js";
@@ -33,6 +34,19 @@ async function main() {
     deleteMode: core.getInput("delete-mode") || "trash",
     dryRun: normalizeBoolean(core.getInput("dry-run") || "false")
   };
+
+  if (isManagedPullRequestMerge({
+    eventName: githubContext.eventName,
+    commitMessage: githubContext.payload.head_commit?.message,
+    repository: process.env.GITHUB_REPOSITORY || "",
+    branch: config.pullRequestBranch
+  })) {
+    core.notice(`Skipping the merge from the action-owned ${config.pullRequestBranch} branch.`);
+    const result = emptyResult(config.dryRun, true);
+    setOutputs(result);
+    await writeSummary(result);
+    return;
+  }
 
   const desiredPages = await collectDesiredPages({
     cwd: process.cwd(),
@@ -106,6 +120,7 @@ function setOutputs(result) {
   core.setOutput("unchanged", String(result.unchanged));
   core.setOutput("conflicts", String(result.conflicts));
   core.setOutput("proposed", String(result.proposed || 0));
+  core.setOutput("skipped", String(Boolean(result.skipped)));
   core.setOutput("pull-request-number", result.pullRequest?.number ? String(result.pullRequest.number) : "");
   core.setOutput("pull-request-url", result.pullRequest?.url || "");
   core.setOutput("summary-json", JSON.stringify(result));
@@ -124,7 +139,8 @@ async function writeSummary(result) {
       [{ data: "Deleted", header: true }, String(result.deleted)],
       [{ data: "Unchanged", header: true }, String(result.unchanged)],
       [{ data: "Proposed files", header: true }, String(result.proposed || 0)],
-      [{ data: "Conflicts", header: true }, String(result.conflicts)]
+      [{ data: "Conflicts", header: true }, String(result.conflicts)],
+      [{ data: "Skipped managed merge", header: true }, String(Boolean(result.skipped))]
     ]);
 
   if (result.pullRequest?.url) {
@@ -139,6 +155,22 @@ async function writeSummary(result) {
   }
 
   await core.summary.write();
+}
+
+function emptyResult(dryRun, skipped = false) {
+  return {
+    dryRun,
+    created: 0,
+    updated: 0,
+    deleted: 0,
+    unchanged: 0,
+    conflicts: 0,
+    proposed: 0,
+    skipped,
+    conflictDetails: [],
+    operations: [],
+    pullRequest: null
+  };
 }
 
 function normalizeMode(value) {

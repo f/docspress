@@ -71,6 +71,7 @@ Reverse sync requires `contents: write` and `pull-requests: write`. The reposito
 | `unchanged` | Managed Pages already matching the desired state. |
 | `conflicts` | Unmanaged Page collisions, unsupported WordPress structure changes, or edits made on both sides. |
 | `proposed` | Repository files proposed from WordPress. |
+| `skipped` | Whether the Action skipped a managed reverse-sync merge push. |
 | `pull-request-number` | Rolling reverse-sync pull request number, when present. |
 | `pull-request-url` | Rolling reverse-sync pull request URL, when present. |
 | `summary-json` | JSON object containing counters, conflict details, and ordered operations. |

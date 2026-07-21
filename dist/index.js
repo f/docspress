@@ -25489,7 +25489,7 @@ var Schema = __nccwpck_require__(995);
 module.exports = new Schema({
   explicit: [
     __nccwpck_require__(4504),
-    __nccwpck_require__(1848),
+    __nccwpck_require__(9467),
     __nccwpck_require__(7021)
   ]
 });
@@ -26475,7 +26475,7 @@ module.exports = new Type('tag:yaml.org,2002:pairs', {
 
 /***/ }),
 
-/***/ 1848:
+/***/ 9467:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 
@@ -92792,12 +92792,26 @@ function editUrlForPage(page, options) {
   return `${serverUrl}/${repository}/edit/${ref}/${page.sourcePath.split("/").map(encodeURIComponent).join("/")}`;
 }
 
+;// CONCATENATED MODULE: ./src/github-event.js
+function isManagedPullRequestMerge({ eventName, commitMessage, repository, branch }) {
+  if (eventName !== "push" || !commitMessage || !repository || !branch) {
+    return false;
+  }
+
+  const [owner] = repository.split("/");
+  const firstLine = commitMessage.split("\n", 1)[0];
+  const match = /^Merge pull request #\d+ from (.+)$/.exec(firstLine);
+
+  return match?.[1] === `${owner}/${branch}`;
+}
+
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js
 var github = __nccwpck_require__(3228);
 ;// CONCATENATED MODULE: ./src/github.js
 
 
 const DOCSPRESS_PR_MARKER = "<!-- docspress:wordpress-sync -->";
+const githubContext = github.context;
 
 class GitHubPullRequestClient {
   constructor(options) {
@@ -93164,6 +93178,7 @@ function normalizePage(page) {
 
 
 
+
 async function main() {
   const mode = normalizeMode(getInput("mode") || "publish");
   const config = {
@@ -93191,6 +93206,19 @@ async function main() {
     deleteMode: getInput("delete-mode") || "trash",
     dryRun: normalizeBoolean(getInput("dry-run") || "false")
   };
+
+  if (isManagedPullRequestMerge({
+    eventName: githubContext.eventName,
+    commitMessage: githubContext.payload.head_commit?.message,
+    repository: process.env.GITHUB_REPOSITORY || "",
+    branch: config.pullRequestBranch
+  })) {
+    notice(`Skipping the merge from the action-owned ${config.pullRequestBranch} branch.`);
+    const result = src_emptyResult(config.dryRun, true);
+    setOutputs(result);
+    await writeSummary(result);
+    return;
+  }
 
   const desiredPages = await collectDesiredPages({
     cwd: process.cwd(),
@@ -93264,6 +93292,7 @@ function setOutputs(result) {
   setOutput("unchanged", String(result.unchanged));
   setOutput("conflicts", String(result.conflicts));
   setOutput("proposed", String(result.proposed || 0));
+  setOutput("skipped", String(Boolean(result.skipped)));
   setOutput("pull-request-number", result.pullRequest?.number ? String(result.pullRequest.number) : "");
   setOutput("pull-request-url", result.pullRequest?.url || "");
   setOutput("summary-json", JSON.stringify(result));
@@ -93282,7 +93311,8 @@ async function writeSummary(result) {
       [{ data: "Deleted", header: true }, String(result.deleted)],
       [{ data: "Unchanged", header: true }, String(result.unchanged)],
       [{ data: "Proposed files", header: true }, String(result.proposed || 0)],
-      [{ data: "Conflicts", header: true }, String(result.conflicts)]
+      [{ data: "Conflicts", header: true }, String(result.conflicts)],
+      [{ data: "Skipped managed merge", header: true }, String(Boolean(result.skipped))]
     ]);
 
   if (result.pullRequest?.url) {
@@ -93297,6 +93327,22 @@ async function writeSummary(result) {
   }
 
   await summary.write();
+}
+
+function src_emptyResult(dryRun, skipped = false) {
+  return {
+    dryRun,
+    created: 0,
+    updated: 0,
+    deleted: 0,
+    unchanged: 0,
+    conflicts: 0,
+    proposed: 0,
+    skipped,
+    conflictDetails: [],
+    operations: [],
+    pullRequest: null
+  };
 }
 
 function normalizeMode(value) {
