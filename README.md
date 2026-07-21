@@ -131,6 +131,13 @@ concurrency:
 
 jobs:
   sync:
+    # Do not publish a merged WordPress-to-GitHub proposal back to WordPress.
+    if: >-
+      github.event_name != 'push' ||
+      !contains(
+        github.event.head_commit.message,
+        format('from {0}/docspress/wordpress-sync', github.repository_owner)
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -149,6 +156,8 @@ jobs:
 Reverse synchronization compares Gutenberg blocks semantically and changes only the matching Markdown source regions. WordPress editor metadata and omitted default attributes do not create diff noise; unchanged frontmatter, code fences, tables, and custom-block comments remain untouched. When a block cannot be represented safely as readable Markdown, DocsPress preserves its serialized Gutenberg form.
 
 `reconcile` leaves each WordPress-only Page unchanged while its pull request is open. Once the pull request merges, the next run refreshes the synchronization sentinel; GitHub-only changes to other Pages still publish normally.
+
+The job condition skips the `push` event created when GitHub merges DocsPress's action-owned `docspress/wordpress-sync` branch. Scheduled and manual runs still reconcile normally. If you customize `pull-request-branch`, update the branch name in this condition too.
 
 The WordPress token reads and updates Pages. Pull requests use the job's `GITHUB_TOKEN`; no second stored secret is needed when the repository allows GitHub Actions to create pull requests.
 

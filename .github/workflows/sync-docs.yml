@@ -22,6 +22,14 @@ concurrency:
 
 jobs:
   sync:
+    # A merge from the action-owned reverse-sync branch already contains the
+    # WordPress changes, so publishing it back to WordPress would create a loop.
+    if: >-
+      github.event_name != 'push' ||
+      !contains(
+        github.event.head_commit.message,
+        format('from {0}/docspress/wordpress-sync', github.repository_owner)
+      )
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
