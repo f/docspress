@@ -6,6 +6,7 @@ Move from a reviewed manual draft to maintainable continuous publication, then a
 
 ## Available guides
 
+- [Customize the theme in WordPress](customize-theme.md) is a visual tour of the DocsPress Customizer, including design presets, navigation, command search, and the remaining reading controls.
 - [Keep documentation synchronized](continuous-sync.md) covers manual validation, draft writes, path-scoped triggers, and publication approval.
 - [Use manifests and redirects](manifests-and-redirects.md) covers stable routes, explicit parents, virtual section Pages, and moved-page placeholders.
 

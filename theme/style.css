@@ -1173,6 +1173,23 @@ body.command-search-open {
 	border-radius: var(--dp-radius);
 }
 
+.entry-content .wp-block-image img {
+	display: block;
+	width: 100%;
+	border: 1px solid var(--dp-line);
+	box-shadow: 0 10px 28px color-mix(in srgb, var(--dp-ink) 8%, transparent);
+}
+
+.entry-content .wp-block-image figcaption,
+.entry-content .wp-element-caption {
+	margin: 0.65rem 0 0;
+	color: var(--dp-muted);
+	font-family: var(--dp-font-ui);
+	font-size: 0.78rem;
+	line-height: 1.5;
+	text-align: center;
+}
+
 .entry-content hr {
 	margin: 2.3em 0;
 	border: 0;

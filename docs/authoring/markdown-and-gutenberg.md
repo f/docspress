@@ -19,6 +19,16 @@ DocsPress converts familiar Markdown into editable Gutenberg-compatible content 
 | Raw HTML | `core/html` |
 | Serialized Gutenberg comments | preserved, with WordPress-safe attribute escaping |
 
+## Add screenshots and diagrams
+
+A standalone Markdown image becomes a native `core/image` block. Write meaningful alternative text and add an optional quoted title when the image needs a visible caption:
+
+```markdown
+![The navigation controls in the DocsPress Customizer](https://example.com/navigation.jpg "Choose a Page tree or a WordPress menu.")
+```
+
+DocsPress preserves the image URL; it does not upload repository files to the WordPress Media Library. Use a stable HTTPS URL, or upload the asset separately before synchronization. The [theme customization guide](../guides/customize-theme.md) is an image-rich example with real WordPress administration screenshots.
+
 ## Choose a DocsPress block
 
 <!-- wp:docspress/code-tabs {"tabs":[{"label":"Source code","language":"plaintext","filename":"Use","code":"DocsPress: Colorful Code\nOne example with a filename, highlighting, line numbers, caption, and copy."},{"label":"Alternatives","language":"plaintext","filename":"Use","code":"DocsPress: Code Tabs\nEquivalent package-manager, language, platform, or API-client examples."},{"label":"Commands","language":"plaintext","filename":"Use","code":"DocsPress: Terminal Session\nA copyable command separated from its observed output."}],"showLineNumbers":false,"caption":"Choose blocks by meaning, not decoration."} /-->

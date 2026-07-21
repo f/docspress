@@ -20,6 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return int
  */
 function docspress_playground_upsert_page( $page, $parent_id, $order ) {
+	$theme_asset_source = 'https://raw.githubusercontent.com/Automattic/docspress/main/theme/';
+	$theme_asset_local  = trailingslashit( get_template_directory_uri() );
+	$content            = str_replace( $theme_asset_source, $theme_asset_local, (string) $page['content'] );
 	$existing = get_posts(
 		array(
 			'post_type'      => 'page',
@@ -33,7 +36,7 @@ function docspress_playground_upsert_page( $page, $parent_id, $order ) {
 	$post = array(
 		'post_title'     => sanitize_text_field( $page['title'] ),
 		'post_name'      => sanitize_title( $page['slug'] ),
-		'post_content'   => wp_slash( $page['content'] ),
+		'post_content'   => wp_slash( $content ),
 		'post_parent'    => $parent_id,
 		'menu_order'     => $order,
 		'post_status'    => 'publish',

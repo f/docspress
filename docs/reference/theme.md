@@ -40,6 +40,8 @@ The companion theme turns the managed Page hierarchy into a Docusaurus-inspired 
 
 The default footer is `Documentation powered by WordPress and {site_title} · {year}`.
 
+For a screenshot-led walkthrough of the native controls and live preview, see [Customize the theme in WordPress](../guides/customize-theme.md).
+
 ## Design presets
 
 Preset code is organized under `theme/inc/design-presets/{preset}/`. Each preset owns its setting recipe and optional scoped stylesheet, so new presets do not require a central registry edit.
