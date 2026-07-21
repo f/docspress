@@ -4,7 +4,7 @@ title: Synchronization and REST API
 
 DocsPress builds a desired Page model from Markdown, lists existing WordPress Pages, and reconciles only the Pages carrying a valid management sentinel.
 
-## WordPress endpoints
+## WordPress endpoints TEST
 
 For WordPress.com, the Pages collection is:
 
