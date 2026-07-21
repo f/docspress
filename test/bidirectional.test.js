@@ -8,7 +8,7 @@ import { prependSentinel } from "../src/sentinel.js";
 
 const paragraph = (text) => `<!-- wp:paragraph -->\n<p>${text}</p>\n<!-- /wp:paragraph -->`;
 
-function desiredPage(text = "Base") {
+function desiredPage(text = "Base", overrides = {}) {
   const page = {
     key: "docs",
     sourcePath: "docs/index.md",
@@ -19,22 +19,24 @@ function desiredPage(text = "Base") {
     parentKey: null,
     status: "publish",
     body: paragraph(text),
-    depth: 1
+    depth: 1,
+    ...overrides
   };
   page.hash = hashPageState(page);
   page.content = prependSentinel(page.body, { key: page.key, source: page.sourcePath, hash: page.hash });
   return page;
 }
 
-function existingPage(base, text = "Base") {
+function existingPage(base, text = "Base", overrides = {}) {
   return {
     id: 1,
-    slug: "docs",
+    slug: base.slug,
     parent: 0,
-    title: "Docs",
-    status: "publish",
-    content: prependSentinel(paragraph(text), { key: "docs", source: "docs/index.md", hash: base.hash }),
-    link: "https://example.com/docs/"
+    title: base.title,
+    status: base.status,
+    content: prependSentinel(paragraph(text), { key: base.key, source: base.sourcePath, hash: base.hash }),
+    link: `https://example.com/${base.slug}/`,
+    ...overrides
   };
 }
 
@@ -70,6 +72,74 @@ describe("syncBidirectional", () => {
       expect.objectContaining({ path: "docs/index.md", content: expect.stringContaining("Edited in WordPress") })
     ]);
     expect(client.updatePage).not.toHaveBeenCalled();
+  });
+
+  it("keeps a WordPress-only edit intact while reconcile opens its pull request", async () => {
+    const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "docspress-bidirectional-"));
+    await fs.mkdir(path.join(cwd, "docs"));
+    await fs.writeFile(path.join(cwd, "docs", "index.md"), "# Docs\n\nBase\n");
+    const desired = desiredPage();
+    const client = mockClient([existingPage(desired, "Edited in WordPress")]);
+    const githubClient = { syncChanges: vi.fn(async () => ({ number: 4, url: "https://github.com/o/r/pull/4", status: "created" })) };
+
+    const result = await syncBidirectional({
+      mode: "reconcile",
+      desiredPages: [desired],
+      client,
+      githubClient,
+      cwd,
+      logger: { info() {} }
+    });
+
+    expect(result.proposed).toBe(1);
+    expect(result.updated).toBe(0);
+    expect(result.unchanged).toBe(1);
+    expect(githubClient.syncChanges).toHaveBeenCalledOnce();
+    expect(client.updatePage).not.toHaveBeenCalled();
+  });
+
+  it("publishes GitHub-only Pages while preserving a WordPress-only Page", async () => {
+    const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "docspress-bidirectional-"));
+    await fs.mkdir(path.join(cwd, "docs"));
+    await fs.writeFile(path.join(cwd, "docs", "wordpress.md"), "# WordPress\n\nBase\n");
+    await fs.writeFile(path.join(cwd, "docs", "github.md"), "# GitHub\n\nEdited in GitHub\n");
+    const wordpressBase = desiredPage("Base", {
+      key: "wordpress",
+      sourcePath: "docs/wordpress.md",
+      title: "WordPress",
+      slug: "wordpress"
+    });
+    const githubBase = desiredPage("Base", {
+      key: "github",
+      sourcePath: "docs/github.md",
+      title: "GitHub",
+      slug: "github"
+    });
+    const githubDesired = desiredPage("Edited in GitHub", {
+      key: "github",
+      sourcePath: "docs/github.md",
+      title: "GitHub",
+      slug: "github"
+    });
+    const client = mockClient([
+      existingPage(wordpressBase, "Edited in WordPress", { id: 1 }),
+      existingPage(githubBase, "Base", { id: 2 })
+    ]);
+    const githubClient = { syncChanges: vi.fn(async () => ({ number: 5, url: "https://github.com/o/r/pull/5", status: "created" })) };
+
+    const result = await syncBidirectional({
+      mode: "reconcile",
+      desiredPages: [wordpressBase, githubDesired],
+      client,
+      githubClient,
+      cwd,
+      logger: { info() {} }
+    });
+
+    expect(result.proposed).toBe(1);
+    expect(result.updated).toBe(1);
+    expect(client.updatePage).toHaveBeenCalledOnce();
+    expect(client.updatePage).toHaveBeenCalledWith(2, expect.objectContaining({ content: githubDesired.content }));
   });
 
   it("publishes a GitHub-only edit in reconcile mode", async () => {

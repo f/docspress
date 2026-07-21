@@ -39,7 +39,11 @@ Before the first reverse-sync run, open [Settings → Actions → General for th
 
 <!-- wp:docspress/colorful-code {"language":"yaml","filename":".github/workflows/sync-docs.yml","code":"on:\n  push:\n    branches: [main]\n    paths: [\"docs/**\", \".github/workflows/sync-docs.yml\"]\n  schedule:\n    - cron: \"3/5 * * * *\"\n  workflow_dispatch:\n\npermissions:\n  contents: write\n  pull-requests: write\n\nconcurrency:\n  group: docspress-sync\n  cancel-in-progress: false\n\njobs:\n  sync:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@FULL_COMMIT_SHA\n      - uses: Automattic/docspress@FULL_COMMIT_SHA\n        with:\n          mode: reconcile\n          wordpress-site: example.wordpress.com\n          wordpress-access-token: ${{ secrets.WP_ACCESS_TOKEN }}\n          docs-dir: docs\n          root-slug: docs\n          status: publish","highlightedLines":"5-6,10-12,25","showLineNumbers":true,"caption":"Pushes publish Markdown; the off-hour five-minute schedule proposes WordPress editor changes."} /-->
 
-DocsPress converts supported core blocks back to readable Markdown and leaves custom or attributed blocks as serialized Gutenberg comments so a later publish remains lossless. It updates one action-owned branch and pull request instead of opening duplicates on every poll.
+DocsPress compares the live Gutenberg tree with the tree generated from the current Markdown, then rewrites only source regions whose blocks changed. Unchanged frontmatter, spacing, code-fence languages, tables, and serialized custom blocks stay byte-for-byte intact. Supported core blocks become readable Markdown; attributed, preformatted, and unrecognized blocks stay as lossless serialized Gutenberg comments. If DocsPress cannot map the blocks safely, the run fails instead of regenerating the whole file.
+
+The Action updates one action-owned branch and pull request instead of opening duplicates on every poll.
+
+While that pull request is open, `reconcile` leaves the WordPress-only Page untouched. After the pull request merges, the next run recognizes that both sides converge and refreshes the Page sentinel; GitHub-only changes to other Pages can continue publishing in the same run.
 
 <!-- wp:docspress/callout {"tone":"warning","title":"Two-sided edits stop before writes","content":"<p>If GitHub and WordPress both changed the same managed Page since the sentinel baseline, reconcile mode reports a conflict and changes neither system. Resolve one side deliberately, then run the workflow again.</p>","collapsible":false} /-->
 

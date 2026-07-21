@@ -68100,120 +68100,6 @@ function addBlockFromStack(endOffset) {
 
 //# sourceMappingURL=index.mjs.map
 
-// EXTERNAL MODULE: ./node_modules/turndown/lib/turndown.cjs.js
-var turndown_cjs = __nccwpck_require__(5488);
-// EXTERNAL MODULE: ./node_modules/turndown-plugin-gfm/lib/turndown-plugin-gfm.cjs.js
-var turndown_plugin_gfm_cjs = __nccwpck_require__(2328);
-;// CONCATENATED MODULE: ./node_modules/mdast-util-to-string/lib/index.js
-/**
- * @typedef {import('mdast').Nodes} Nodes
- *
- * @typedef Options
- *   Configuration (optional).
- * @property {boolean | null | undefined} [includeImageAlt=true]
- *   Whether to use `alt` for `image`s (default: `true`).
- * @property {boolean | null | undefined} [includeHtml=true]
- *   Whether to use `value` of HTML (default: `true`).
- */
-
-/** @type {Options} */
-const emptyOptions = {}
-
-/**
- * Get the text content of a node or list of nodes.
- *
- * Prefers the node’s plain-text fields, otherwise serializes its children,
- * and if the given value is an array, serialize the nodes in it.
- *
- * @param {unknown} [value]
- *   Thing to serialize, typically `Node`.
- * @param {Options | null | undefined} [options]
- *   Configuration (optional).
- * @returns {string}
- *   Serialized `value`.
- */
-function lib_toString(value, options) {
-  const settings = options || emptyOptions
-  const includeImageAlt =
-    typeof settings.includeImageAlt === 'boolean'
-      ? settings.includeImageAlt
-      : true
-  const includeHtml =
-    typeof settings.includeHtml === 'boolean' ? settings.includeHtml : true
-
-  return one(value, includeImageAlt, includeHtml)
-}
-
-/**
- * One node or several nodes.
- *
- * @param {unknown} value
- *   Thing to serialize.
- * @param {boolean} includeImageAlt
- *   Include image `alt`s.
- * @param {boolean} includeHtml
- *   Include HTML.
- * @returns {string}
- *   Serialized node.
- */
-function one(value, includeImageAlt, includeHtml) {
-  if (node(value)) {
-    if ('value' in value) {
-      return value.type === 'html' && !includeHtml ? '' : value.value
-    }
-
-    if (includeImageAlt && 'alt' in value && value.alt) {
-      return value.alt
-    }
-
-    if ('children' in value) {
-      return lib_all(value.children, includeImageAlt, includeHtml)
-    }
-  }
-
-  if (Array.isArray(value)) {
-    return lib_all(value, includeImageAlt, includeHtml)
-  }
-
-  return ''
-}
-
-/**
- * Serialize a list of nodes.
- *
- * @param {Array<unknown>} values
- *   Thing to serialize.
- * @param {boolean} includeImageAlt
- *   Include image `alt`s.
- * @param {boolean} includeHtml
- *   Include HTML.
- * @returns {string}
- *   Serialized nodes.
- */
-function lib_all(values, includeImageAlt, includeHtml) {
-  /** @type {Array<string>} */
-  const result = []
-  let index = -1
-
-  while (++index < values.length) {
-    result[index] = one(values[index], includeImageAlt, includeHtml)
-  }
-
-  return result.join('')
-}
-
-/**
- * Check if `value` looks like a node.
- *
- * @param {unknown} value
- *   Thing.
- * @returns {value is Nodes}
- *   Whether `value` is a node.
- */
-function node(value) {
-  return Boolean(value && typeof value === 'object')
-}
-
 ;// CONCATENATED MODULE: ./node_modules/ccount/index.js
 /**
  * Count how often a character (or substring) is used in a string.
@@ -71418,6 +71304,116 @@ function visit(tree, testOrVisitor, visitorOrReverse, maybeReverse) {
     const index = parent ? parent.children.indexOf(node) : undefined
     return visitor(node, index, parent)
   }
+}
+
+;// CONCATENATED MODULE: ./node_modules/mdast-util-to-string/lib/index.js
+/**
+ * @typedef {import('mdast').Nodes} Nodes
+ *
+ * @typedef Options
+ *   Configuration (optional).
+ * @property {boolean | null | undefined} [includeImageAlt=true]
+ *   Whether to use `alt` for `image`s (default: `true`).
+ * @property {boolean | null | undefined} [includeHtml=true]
+ *   Whether to use `value` of HTML (default: `true`).
+ */
+
+/** @type {Options} */
+const emptyOptions = {}
+
+/**
+ * Get the text content of a node or list of nodes.
+ *
+ * Prefers the node’s plain-text fields, otherwise serializes its children,
+ * and if the given value is an array, serialize the nodes in it.
+ *
+ * @param {unknown} [value]
+ *   Thing to serialize, typically `Node`.
+ * @param {Options | null | undefined} [options]
+ *   Configuration (optional).
+ * @returns {string}
+ *   Serialized `value`.
+ */
+function lib_toString(value, options) {
+  const settings = options || emptyOptions
+  const includeImageAlt =
+    typeof settings.includeImageAlt === 'boolean'
+      ? settings.includeImageAlt
+      : true
+  const includeHtml =
+    typeof settings.includeHtml === 'boolean' ? settings.includeHtml : true
+
+  return one(value, includeImageAlt, includeHtml)
+}
+
+/**
+ * One node or several nodes.
+ *
+ * @param {unknown} value
+ *   Thing to serialize.
+ * @param {boolean} includeImageAlt
+ *   Include image `alt`s.
+ * @param {boolean} includeHtml
+ *   Include HTML.
+ * @returns {string}
+ *   Serialized node.
+ */
+function one(value, includeImageAlt, includeHtml) {
+  if (node(value)) {
+    if ('value' in value) {
+      return value.type === 'html' && !includeHtml ? '' : value.value
+    }
+
+    if (includeImageAlt && 'alt' in value && value.alt) {
+      return value.alt
+    }
+
+    if ('children' in value) {
+      return lib_all(value.children, includeImageAlt, includeHtml)
+    }
+  }
+
+  if (Array.isArray(value)) {
+    return lib_all(value, includeImageAlt, includeHtml)
+  }
+
+  return ''
+}
+
+/**
+ * Serialize a list of nodes.
+ *
+ * @param {Array<unknown>} values
+ *   Thing to serialize.
+ * @param {boolean} includeImageAlt
+ *   Include image `alt`s.
+ * @param {boolean} includeHtml
+ *   Include HTML.
+ * @returns {string}
+ *   Serialized nodes.
+ */
+function lib_all(values, includeImageAlt, includeHtml) {
+  /** @type {Array<string>} */
+  const result = []
+  let index = -1
+
+  while (++index < values.length) {
+    result[index] = one(values[index], includeImageAlt, includeHtml)
+  }
+
+  return result.join('')
+}
+
+/**
+ * Check if `value` looks like a node.
+ *
+ * @param {unknown} value
+ *   Thing.
+ * @returns {value is Nodes}
+ *   Whether `value` is a node.
+ */
+function node(value) {
+  return Boolean(value && typeof value === 'object')
 }
 
 ;// CONCATENATED MODULE: ./node_modules/mdast-util-to-markdown/lib/util/format-heading-as-setext.js
@@ -87775,6 +87771,10 @@ function remarkParse(options) {
   }
 }
 
+// EXTERNAL MODULE: ./node_modules/turndown/lib/turndown.cjs.js
+var turndown_cjs = __nccwpck_require__(5488);
+// EXTERNAL MODULE: ./node_modules/turndown-plugin-gfm/lib/turndown-plugin-gfm.cjs.js
+var turndown_plugin_gfm_cjs = __nccwpck_require__(2328);
 ;// CONCATENATED MODULE: ./node_modules/bail/index.js
 /**
  * Throw a given error.
@@ -90944,21 +90944,85 @@ function stripSentinel(content) {
 
 
 
+
+
+
 const REVERSE_BLOCKS = new Set([
   "core/paragraph",
   "core/heading",
   "core/list",
   "core/quote",
   "core/code",
-  "core/preformatted",
   "core/image",
   "core/table"
 ]);
 
+const markdownParser = unified().use(remarkParse).use(remarkGfm);
+const BLOCK_TOKEN_PATTERN = /<!--\s+(\/)?wp:([a-z][a-z0-9_-]*\/)?([a-z][a-z0-9_-]*)\s+({(?:(?=([^}]+|}+(?=})|(?!}\s+\/?-->)[^])*)\5|[^]*?)}\s+)?(\/)?-->/g;
+const CUSTOM_BLOCK_DEFAULTS = {
+  "docspress/api-request": {
+    method: "GET",
+    endpoint: "/wp-json/wp/v2/pages",
+    headers: "Accept: application/json\nAuthorization: Bearer $WP_ACCESS_TOKEN",
+    requestBody: "",
+    requestBodyFormat: "json",
+    responseStatus: "200 OK",
+    responseBody: "{\n  \"id\": 42,\n  \"slug\": \"getting-started\"\n}",
+    responseBodyFormat: "json"
+  },
+  "docspress/callout": {
+    tone: "note",
+    title: "Good to know",
+    content: "<p>Add the detail readers need at exactly the right moment.</p>",
+    collapsible: false,
+    open: true
+  },
+  "docspress/code-tabs": {
+    tabs: [
+      { label: "JavaScript", language: "javascript", filename: "example.js", code: "const docs = await publish();" },
+      { label: "PHP", language: "php", filename: "example.php", code: "$docs = docspress_publish();" }
+    ],
+    showLineNumbers: true,
+    caption: ""
+  },
+  "docspress/colorful-code": {
+    language: "javascript",
+    filename: "",
+    code: "const hello = \"DocsPress\";\nconsole.log( hello );",
+    highlightedLines: "",
+    showLineNumbers: true,
+    caption: ""
+  },
+  "docspress/file-tree": {
+    root: "project/",
+    tree: "docs/\n  getting-started.md\n  api/\n    endpoints.md\npackage.json",
+    caption: ""
+  },
+  "docspress/prompt": {
+    prompt: "Use $docspress-install to review this repository's documentation setup. Return a short plan before writing code.",
+    model: "GPT-5",
+    mode: "code",
+    thinking: true,
+    context: "$docspress-install, @repository, src/sync.js, docs/",
+    caption: "Prompt example"
+  },
+  "docspress/result": {
+    status: "success",
+    title: "Deployment completed",
+    content: "<p>All documentation pages are up to date.</p>",
+    meta: "12 pages · 1.8s"
+  },
+  "docspress/terminal-session": {
+    title: "Terminal",
+    shell: "bash",
+    prompt: "$",
+    command: "npx docspress publish ./docs",
+    output: "✓ Read 12 documents\n✓ Published 12 WordPress pages"
+  }
+};
+
 function blocksToMarkdown(content, options = {}) {
-  const chunks = splitSerializedBlocks(stripSentinel(content));
-  removeGeneratedSourceLink(chunks);
-  removeGeneratedTitle(chunks, options);
+  const chunks = contentBlockChunks(content, options);
   const service = createTurndownService(options.resolveLink);
   const rendered = chunks
     .map((chunk) => blockChunkToMarkdown(chunk, service))
@@ -90968,6 +91032,397 @@ function blocksToMarkdown(content, options = {}) {
     .trim();
 
   return rendered ? `${rendered}\n` : "";
+}
+
+function mergeWordPressIntoSource(options) {
+  const {
+    existing,
+    page,
+    desired,
+    createH1 = false,
+    resolveLink
+  } = options;
+  const desiredChunks = contentBlockChunks(desired.body, {
+    createH1,
+    title: desired.title
+  });
+  const liveChunks = contentBlockChunks(page.content, {
+    createH1,
+    title: page.title
+  });
+  const layout = sourceBlockLayout(existing, desired, desiredChunks.length);
+  const service = createTurndownService(resolveLink);
+  const hunks = blockChangeHunks(desiredChunks, liveChunks);
+  const lineEnding = existing.includes("\r\n") ? "\r\n" : "\n";
+  const separator = `${lineEnding}${lineEnding}`;
+  let body = layout.body;
+
+  const replacements = hunks.map((hunk) => {
+    const oldCount = hunk.oldEnd - hunk.oldStart;
+    const newCount = hunk.newEnd - hunk.newStart;
+    const rendered = liveChunks
+      .slice(hunk.newStart, hunk.newEnd)
+      .map((chunk, index) => blockChunkToSourceMarkdown(
+        chunk,
+        service,
+        oldCount === newCount ? desiredChunks[hunk.oldStart + index] : null
+      ))
+      .filter(Boolean)
+      .join("\n\n")
+      .replace(/\r?\n/g, lineEnding);
+
+    if (oldCount > 0) {
+      let start = layout.blockRanges[hunk.oldStart].start;
+      let end = layout.blockRanges[hunk.oldEnd - 1].end;
+      if (!rendered && hunk.oldEnd < layout.blockRanges.length) {
+        end = layout.blockRanges[hunk.oldEnd].start;
+      } else if (!rendered && hunk.oldStart > 0) {
+        start = layout.blockRanges[hunk.oldStart - 1].end;
+      } else if (!rendered && /^\s*$/.test(body.slice(end))) {
+        end = body.length;
+      }
+      return {
+        start,
+        end,
+        content: rendered
+      };
+    }
+
+    const atEnd = hunk.oldStart >= layout.blockRanges.length;
+    const offset = atEnd
+      ? layout.blockRanges.at(-1)?.end ?? body.length
+      : layout.blockRanges[hunk.oldStart].start;
+    if (layout.blockRanges.length === 0 && rendered) {
+      const hasFrontmatter = existing.length !== layout.body.length;
+      const before = body.trim()
+        ? separator
+        : body.length === 0 && hasFrontmatter
+          ? lineEnding
+          : "";
+      return {
+        start: offset,
+        end: offset,
+        content: `${before}${rendered}${lineEnding}`
+      };
+    }
+    return {
+      start: offset,
+      end: offset,
+      content: rendered
+        ? `${atEnd && layout.blockRanges.length > 0 ? separator : ""}${rendered}${atEnd ? "" : separator}`
+        : ""
+    };
+  });
+
+  for (const replacement of replacements.sort((left, right) => right.start - left.start)) {
+    body = `${body.slice(0, replacement.start)}${replacement.content}${body.slice(replacement.end)}`;
+  }
+
+  return updateSourceMarkdown({
+    existing,
+    body,
+    title: page.title,
+    desired,
+    preserveBody: true
+  });
+}
+
+function contentBlockChunks(content, options = {}) {
+  const chunks = splitSerializedBlocks(stripSentinel(content));
+  removeGeneratedSourceLink(chunks);
+  removeGeneratedTitle(chunks, options);
+  return chunks.filter((chunk) => (chunk.block || chunk.raw.trim()) && !isIgnorableEmptyBlock(chunk));
+}
+
+function isIgnorableEmptyBlock(chunk) {
+  const html = chunk.block?.innerHTML || chunk.raw;
+  return (!chunk.block || chunk.block.blockName === "core/paragraph") &&
+    /^\s*<p>(?:\s|&nbsp;|<br\s*\/?\s*>)*<\/p>\s*$/i.test(html || "");
+}
+
+function blockChangeHunks(desiredChunks, liveChunks) {
+  const desired = desiredChunks.map(blockFingerprint);
+  const live = liveChunks.map(blockFingerprint);
+  const rows = desired.length + 1;
+  const columns = live.length + 1;
+  const lengths = Array.from({ length: rows }, () => new Uint32Array(columns));
+
+  for (let oldIndex = desired.length - 1; oldIndex >= 0; oldIndex -= 1) {
+    for (let newIndex = live.length - 1; newIndex >= 0; newIndex -= 1) {
+      lengths[oldIndex][newIndex] = desired[oldIndex] === live[newIndex]
+        ? lengths[oldIndex + 1][newIndex + 1] + 1
+        : Math.max(lengths[oldIndex + 1][newIndex], lengths[oldIndex][newIndex + 1]);
+    }
+  }
+
+  const matches = [];
+  let oldIndex = 0;
+  let newIndex = 0;
+  while (oldIndex < desired.length && newIndex < live.length) {
+    if (desired[oldIndex] === live[newIndex]) {
+      matches.push([oldIndex, newIndex]);
+      oldIndex += 1;
+      newIndex += 1;
+    } else if (lengths[oldIndex + 1][newIndex] >= lengths[oldIndex][newIndex + 1]) {
+      oldIndex += 1;
+    } else {
+      newIndex += 1;
+    }
+  }
+
+  const hunks = [];
+  let previousOld = -1;
+  let previousNew = -1;
+  for (const [matchedOld, matchedNew] of [...matches, [desired.length, live.length]]) {
+    const oldStart = previousOld + 1;
+    const newStart = previousNew + 1;
+    if (oldStart < matchedOld || newStart < matchedNew) {
+      hunks.push({ oldStart, oldEnd: matchedOld, newStart, newEnd: matchedNew });
+    }
+    previousOld = matchedOld;
+    previousNew = matchedNew;
+  }
+  return hunks;
+}
+
+function blockFingerprint(chunk) {
+  if (!chunk.block) {
+    return stableJson({ name: null, content: chunk.raw.trim() });
+  }
+
+  const block = normalizeBlockForComparison(chunk.block);
+  const name = block.blockName;
+  if (Object.hasOwn(CUSTOM_BLOCK_DEFAULTS, name)) {
+    return stableJson({ name, attrs: effectiveCustomAttributes(name, block.attrs) });
+  }
+
+  const service = createTurndownService();
+  const comparable = { ...chunk, block };
+  let content = canConvertBlock(block)
+    ? blockChunkToMarkdown(comparable, service)
+    : stableJson({ innerHTML: block.innerHTML, innerBlocks: block.innerBlocks });
+  if (name === "core/code") {
+    content = content.replace(/^(`{3,})[^\n]*\n/, "$1\n");
+  }
+
+  return stableJson({ name, attrs: block.attrs || {}, content });
+}
+
+function normalizeBlockForComparison(block) {
+  const attrs = { ...(block.attrs || {}) };
+  if (block.blockName === "core/code") {
+    delete attrs.tokenizedLines;
+  }
+  if (block.blockName === "core/table" && attrs.hasFixedLayout === false) {
+    delete attrs.hasFixedLayout;
+  }
+  if (block.blockName === "core/paragraph" && attrs.dropCap === false) {
+    delete attrs.dropCap;
+  }
+  if (block.blockName === "core/heading" && attrs.level === 2) {
+    delete attrs.level;
+  }
+  if (block.blockName === "core/list" && attrs.ordered === false) {
+    delete attrs.ordered;
+  }
+  return { ...block, attrs };
+}
+
+function effectiveCustomAttributes(name, attributes) {
+  return {
+    ...(CUSTOM_BLOCK_DEFAULTS[name] || {}),
+    ...(attributes || {})
+  };
+}
+
+function blockChunkToSourceMarkdown(chunk, service, originalChunk) {
+  const name = chunk.block?.blockName || "";
+  if (Object.hasOwn(CUSTOM_BLOCK_DEFAULTS, name)) {
+    return serializeCustomBlockForMarkdown(chunk.block, originalChunk?.block);
+  }
+
+  const normalized = chunk.block ? normalizeBlockForComparison(chunk.block) : null;
+  if (normalized && canConvertBlock(normalized)) {
+    return blockChunkToMarkdown(
+      { ...chunk, block: normalized },
+      service,
+      { fallbackLanguage: codeLanguage(originalChunk?.raw || "") }
+    );
+  }
+
+  return serializeRawBlockForMarkdown(chunk);
+}
+
+function serializeCustomBlockForMarkdown(block, originalBlock) {
+  const attrs = mergeCustomAttributes(
+    block.blockName,
+    originalBlock?.attrs || {},
+    block.attrs || {}
+  );
+  const serialized = Object.keys(attrs).length > 0 ? ` ${JSON.stringify(attrs)}` : "";
+  return `<!-- wp:${block.blockName}${serialized} /-->`;
+}
+
+function mergeCustomAttributes(name, original, live) {
+  const defaults = CUSTOM_BLOCK_DEFAULTS[name] || {};
+  const result = {};
+  const keys = new Set([...Object.keys(defaults), ...Object.keys(original), ...Object.keys(live)]);
+
+  for (const key of keys) {
+    const originalHas = Object.hasOwn(original, key);
+    const liveHas = Object.hasOwn(live, key);
+    const originalValue = originalHas ? original[key] : defaults[key];
+    const liveValue = liveHas ? live[key] : defaults[key];
+
+    if (originalHas && stableJson(originalValue) === stableJson(liveValue)) {
+      result[key] = original[key];
+    } else if (liveHas || stableJson(liveValue) !== stableJson(defaults[key])) {
+      result[key] = liveValue;
+    }
+  }
+
+  return result;
+}
+
+function serializeRawBlockForMarkdown(chunk) {
+  if (!chunk.block) {
+    return chunk.raw.trim();
+  }
+  const attrs = chunk.block.attrs || {};
+  const serialized = Object.keys(attrs).length > 0 ? ` ${JSON.stringify(attrs)}` : "";
+  const name = chunk.block.blockName.startsWith("core/")
+    ? chunk.block.blockName.slice("core/".length)
+    : chunk.block.blockName;
+  const openerPattern = new RegExp(BLOCK_TOKEN_PATTERN.source);
+  return chunk.raw.trim().replace(
+    openerPattern,
+    (_match, closing, _namespace, _blockName, _attributes, _balanced, selfClosing) => closing
+      ? _match
+      : `<!-- wp:${name}${serialized}${selfClosing ? " /" : " "}-->`
+  );
+}
+
+function sourceBlockLayout(existing, desired, desiredBlockCount) {
+  const parsed = gray_matter(existing);
+  const body = parsed.content;
+  const specialRanges = findSpecialMarkdownRanges(body);
+  const masked = maskRanges(body, specialRanges);
+  const tree = markdownParser.parse(masked);
+  const frontmatterTitle = typeof parsed.data.title === "string" && parsed.data.title.trim();
+  const titleNode = frontmatterTitle
+    ? null
+    : tree.children.find((node) => node.type === "heading" && node.depth === 1);
+  const entries = [
+    ...specialRanges,
+    ...tree.children
+      .filter((node) => node !== titleNode && node.position?.start?.offset !== undefined && node.position?.end?.offset !== undefined)
+      .map((node) => ({
+        start: node.position.start.offset,
+        end: node.position.end.offset,
+        type: node.type
+      }))
+  ].sort((left, right) => left.start - right.start);
+  const blockRanges = [];
+
+  for (const entry of entries) {
+    const source = body.slice(entry.start, entry.end);
+    const count = sourceChunkBlockCount(source, desired.title);
+    if (count === 0) {
+      continue;
+    }
+    if (count !== 1) {
+      throw new Error(`Docspress cannot safely map a Markdown source region that produces ${count} Gutenberg blocks.`);
+    }
+    blockRanges.push({ start: entry.start, end: entry.end });
+  }
+
+  if (blockRanges.length !== desiredBlockCount) {
+    throw new Error(
+      `Docspress cannot safely map ${desiredBlockCount} Gutenberg blocks onto ${blockRanges.length} Markdown source regions for ${desired.sourcePath}.`
+    );
+  }
+
+  return { body, blockRanges };
+}
+
+function sourceChunkBlockCount(source, fallbackTitle) {
+  const wrapped = `---\ntitle: ${JSON.stringify(fallbackTitle || "Docs")}\n---\n\n${source}`;
+  const rendered = markdownToBlocks(wrapped, { fallbackTitle: fallbackTitle || "Docs" }).blocks;
+  return splitSerializedBlocks(rendered).filter((chunk) => chunk.block || chunk.raw.trim()).length;
+}
+
+function findSpecialMarkdownRanges(source) {
+  const rawTree = markdownParser.parse(source);
+  const codeRanges = [];
+  collectNodeRanges(rawTree, (node) => node.type === "code" || node.type === "inlineCode", codeRanges);
+  const ranges = [];
+  const tokens = new RegExp(BLOCK_TOKEN_PATTERN.source, "g");
+  let depth = 0;
+  let start = -1;
+  let match;
+
+  while ((match = tokens.exec(source))) {
+    if (rangeContains(codeRanges, match.index)) {
+      continue;
+    }
+    const closing = Boolean(match[1]);
+    const selfClosing = Boolean(match[6]);
+    if (!closing && depth === 0) {
+      start = match.index;
+    }
+    if (closing) {
+      depth = Math.max(0, depth - 1);
+      if (depth === 0 && start >= 0) {
+        ranges.push({ start, end: tokens.lastIndex, type: "gutenberg" });
+        start = -1;
+      }
+    } else if (selfClosing) {
+      if (depth === 0 && start >= 0) {
+        ranges.push({ start, end: tokens.lastIndex, type: "gutenberg" });
+        start = -1;
+      }
+    } else {
+      depth += 1;
+    }
+  }
+
+  const codetabs = /{%\s*codetabs\s*%}[\s\S]*?{%\s*end\s*%}/g;
+  while ((match = codetabs.exec(source))) {
+    if (!rangeContains(codeRanges, match.index) && !ranges.some((range) => overlaps(range, { start: match.index, end: codetabs.lastIndex }))) {
+      ranges.push({ start: match.index, end: codetabs.lastIndex, type: "codetabs" });
+    }
+  }
+
+  return ranges.sort((left, right) => left.start - right.start);
+}
+
+function collectNodeRanges(node, predicate, ranges) {
+  if (predicate(node) && node.position?.start?.offset !== undefined && node.position?.end?.offset !== undefined) {
+    ranges.push({ start: node.position.start.offset, end: node.position.end.offset });
+  }
+  for (const child of node.children || []) {
+    collectNodeRanges(child, predicate, ranges);
+  }
+}
+
+function rangeContains(ranges, offset) {
+  return ranges.some((range) => offset >= range.start && offset < range.end);
+}
+
+function overlaps(left, right) {
+  return left.start < right.end && right.start < left.end;
+}
+
+function maskRanges(source, ranges) {
+  const characters = source.split("");
+  for (const range of ranges) {
+    for (let index = range.start; index < range.end; index += 1) {
+      if (characters[index] !== "\n" && characters[index] !== "\r") {
+        characters[index] = " ";
+      }
+    }
+  }
+  return characters.join("");
 }
 
 async function createReverseChanges(options) {
@@ -90987,20 +91442,18 @@ async function createReverseChanges(options) {
     const sourcePath = validateSourcePath(page.sentinel.source, cwd);
     const absolutePath = external_node_path_namespaceObject.resolve(cwd, sourcePath);
     const existing = await promises_namespaceObject.readFile(absolutePath, "utf8");
-    const body = blocksToMarkdown(page.content, {
-      createH1,
-      title: page.title,
-      resolveLink: createReverseLinkResolver({
-        sourcePath,
-        desiredByKey,
-        pageByKey
-      })
+    const resolveLink = createReverseLinkResolver({
+      sourcePath,
+      desiredByKey,
+      pageByKey
     });
-    const content = updateSourceMarkdown({
+    const content = mergeWordPressIntoSource({
       existing,
-      body,
+      page,
       title: page.title,
-      desired
+      desired,
+      createH1,
+      resolveLink
     });
 
     if (content !== existing) {
@@ -91061,7 +91514,7 @@ function createTurndownService(resolveLink) {
   return service;
 }
 
-function blockChunkToMarkdown(chunk, service) {
+function blockChunkToMarkdown(chunk, service, options = {}) {
   if (!chunk.block) {
     return chunk.raw.trim() ? service.turndown(chunk.raw).trim() : "";
   }
@@ -91076,14 +91529,20 @@ function blockChunkToMarkdown(chunk, service) {
   if (name === "core/html") {
     return chunk.block.innerHTML.trim();
   }
-  if (name === "core/code" || name === "core/preformatted") {
-    return codeBlockToMarkdown(chunk.raw, service);
+  if (name === "core/code") {
+    return codeBlockToMarkdown(chunk.raw, service, options.fallbackLanguage);
   }
   if (name === "core/image") {
     return imageBlockToMarkdown(chunk.raw, service);
   }
   if (REVERSE_BLOCKS.has(name)) {
-    return service.turndown(stripBlockComments(chunk.raw)).trim();
+    const markdown = service.turndown(stripBlockComments(chunk.raw)).trim();
+    return name === "core/list"
+      ? markdown
+        .replace(/^(\s*[-+*])\s{2,}/gm, "$1 ")
+        .replace(/^(\s*\d+\.)\s{2,}/gm, "$1 ")
+        .replace(/^(\s*(?:[-+*]|\d+\.)\s+\[[ xX]\])\s{2,}/gm, "$1 ")
+      : markdown;
   }
 
   return chunk.raw.trim();
@@ -91110,7 +91569,6 @@ function canConvertBlock(block) {
     "core/list": ["ordered"],
     "core/quote": [],
     "core/code": [],
-    "core/preformatted": [],
     "core/image": ["url", "alt"],
     "core/table": [],
     "core/separator": [],
@@ -91122,16 +91580,20 @@ function canConvertBlock(block) {
   return Array.isArray(allowedAttrs) && Object.keys(block.attrs || {}).every((key) => allowedAttrs.includes(key));
 }
 
-function codeBlockToMarkdown(raw, service) {
+function codeBlockToMarkdown(raw, service, fallbackLanguage = "") {
   const html = stripBlockComments(raw);
   const match = html.match(/<pre[^>]*>\s*<code(?:[^>]*class=["'][^"']*language-([\w-]+)[^"']*["'])?[^>]*>([\s\S]*?)<\/code>\s*<\/pre>/i);
   if (!match) {
     return service.turndown(html).trim();
   }
-  const language = match[1] || "";
+  const language = match[1] || fallbackLanguage || "";
   const decoded = service.turndown(`<p>${match[2]}</p>`).replace(/\\([\\`*_{}\[\]()#+\-.!])/g, "$1");
   const fence = decoded.includes("```") ? "````" : "```";
   return `${fence}${language}\n${decoded}\n${fence}`;
+}
+
+function codeLanguage(raw) {
+  return String(raw || "").match(/<code(?:[^>]*class=["'][^"']*language-([\w-]+)[^"']*["'])/i)?.[1] || "";
 }
 
 function removeGeneratedSourceLink(chunks) {
@@ -91172,7 +91634,7 @@ function removeGeneratedTitle(chunks, options) {
 
 function splitSerializedBlocks(value) {
   const source = String(value || "");
-  const tokenPattern = /<!--\s*(\/?)wp:([\w/-]+)(?:\s+[\s\S]*?)?\s*(\/)?-->/g;
+  const tokenPattern = new RegExp(BLOCK_TOKEN_PATTERN.source, "g");
   const chunks = [];
   let depth = 0;
   let blockStart = -1;
@@ -91181,7 +91643,7 @@ function splitSerializedBlocks(value) {
 
   while ((match = tokenPattern.exec(source))) {
     const closing = Boolean(match[1]);
-    const selfClosing = Boolean(match[3]);
+    const selfClosing = Boolean(match[6]);
     if (!closing && depth === 0) {
       if (match.index > cursor) {
         pushChunk(chunks, source.slice(cursor, match.index));
@@ -91227,15 +91689,17 @@ function stripBlockComments(value) {
   return String(value || "").replace(/<!--\s*\/?wp:[\s\S]*?-->/g, "").trim();
 }
 
-function updateSourceMarkdown({ existing, body, title, desired }) {
+function updateSourceMarkdown({ existing, body, title, desired, preserveBody = false }) {
   const parsed = gray_matter(existing);
   const frontmatterTitle = typeof parsed.data.title === "string" && parsed.data.title.trim();
   const titleInfo = titleFromMarkdown(existing, desired.title);
   const usedHeadingTitle = !frontmatterTitle && titleInfo.removeFirstHeading;
   const titleChanged = desired.title !== title;
-  let nextBody = body.trim();
+  let nextBody = preserveBody ? body : body.trim();
 
-  if (usedHeadingTitle) {
+  if (usedHeadingTitle && titleChanged && preserveBody) {
+    nextBody = replaceFirstTitleHeading(nextBody, title);
+  } else if (usedHeadingTitle && !preserveBody) {
     nextBody = `# ${title}\n\n${nextBody}`.trim();
   }
 
@@ -91251,13 +91715,65 @@ function updateSourceMarkdown({ existing, body, title, desired }) {
     frontmatterChanged = true;
   }
 
-  const normalizedBody = nextBody ? `${nextBody}\n` : "";
+  const normalizedBody = preserveBody ? nextBody : nextBody ? `${nextBody}\n` : "";
   if (frontmatterChanged) {
+    const prefix = existing.slice(0, existing.length - parsed.content.length);
+    const updatedPrefix = replaceFrontmatterTitle(prefix, title);
+    if (updatedPrefix !== null) {
+      return `${updatedPrefix}${normalizedBody}`;
+    }
     return gray_matter.stringify(normalizedBody, data);
   }
 
   const prefix = existing.slice(0, existing.length - parsed.content.length);
   return `${prefix}${normalizedBody}`;
+}
+
+function replaceFrontmatterTitle(prefix, title) {
+  const pattern = /^(title[ \t]*:)[ \t]*([^\r\n]*)(\r?\n|$)/gm;
+  const matches = [...prefix.matchAll(pattern)];
+  if (matches.length !== 1 || /^[>|][+-]?\s*(?:#.*)?$/.test(matches[0][2].trim())) {
+    return null;
+  }
+
+  const match = matches[0];
+  const currentValue = match[2].trim();
+  const value = yamlTitleScalar(title, currentValue);
+  const replacement = `${match[1]} ${value}${match[3]}`;
+  return `${prefix.slice(0, match.index)}${replacement}${prefix.slice(match.index + match[0].length)}`;
+}
+
+function yamlTitleScalar(title, currentValue) {
+  const value = String(title || "");
+  if (currentValue.startsWith("'") && currentValue.endsWith("'")) {
+    return `'${value.replace(/'/g, "''")}'`;
+  }
+  if (currentValue.startsWith('"') && currentValue.endsWith('"')) {
+    return JSON.stringify(value);
+  }
+  if (isSafePlainYamlScalar(value)) {
+    return value;
+  }
+  return JSON.stringify(value);
+}
+
+function isSafePlainYamlScalar(value) {
+  return Boolean(value) &&
+    value === value.trim() &&
+    !/[\r\n]/.test(value) &&
+    !/^(?:[-?:,\[\]{}#&*!|>'"%@`]\s*|(?:null|true|false|yes|no|on|off|~)$)/i.test(value) &&
+    !/:\s|\s#/.test(value);
+}
+
+function replaceFirstTitleHeading(body, title) {
+  const tree = markdownParser.parse(body);
+  const heading = tree.children.find((node) => node.type === "heading" && node.depth === 1);
+  if (!heading?.position?.start || !heading?.position?.end) {
+    throw new Error("Docspress could not find the Markdown H1 that supplies the Page title.");
+  }
+  const start = heading.position.start.offset;
+  const end = heading.position.end.offset;
+  return `${body.slice(0, start)}# ${title}${body.slice(end)}`;
 }
 
 function createReverseLinkResolver({ sourcePath, desiredByKey, pageByKey }) {
@@ -91372,6 +91888,7 @@ async function syncPages(options) {
     deleteMode = "trash",
     rootSlug = "docs",
     allowDeletions = true,
+    skipUpdateKeys = new Set(),
     logger = console
   } = options;
 
@@ -91404,6 +91921,16 @@ async function syncPages(options) {
     const payload = pagePayload(desired, parentId);
 
     if (managed) {
+      if (skipUpdateKeys.has(desired.key)) {
+        result.unchanged += 1;
+        result.operations.push({
+          action: "unchanged",
+          key: desired.key,
+          id: managed.id,
+          reason: "WordPress-only edit is awaiting its pull request."
+        });
+        continue;
+      }
       if (managed.sentinel?.hash === desired.hash && managed.parent === parentId) {
         result.unchanged += 1;
         result.operations.push({ action: "unchanged", key: desired.key, id: managed.id });
@@ -91648,6 +92175,7 @@ async function syncBidirectional(options) {
   } = options;
   const existingPages = await client.listPages();
   const plan = planReconciliation({ desiredPages, existingPages });
+  const wordpressChangeKeys = new Set(plan.wordpressChanges.map(({ desired }) => desired.key));
   let publishPreview = emptyResult(true);
 
   if (mode === "reconcile") {
@@ -91658,6 +92186,7 @@ async function syncBidirectional(options) {
       dryRun: true,
       deleteMode,
       rootSlug,
+      skipUpdateKeys: wordpressChangeKeys,
       logger: { info() {} }
     });
   }
@@ -91710,6 +92239,7 @@ async function syncBidirectional(options) {
       dryRun: false,
       deleteMode,
       rootSlug,
+      skipUpdateKeys: wordpressChangeKeys,
       logger
     });
   } else if (plan.refreshPages.length > 0) {

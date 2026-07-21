@@ -19,6 +19,14 @@ DocsPress converts familiar Markdown into editable Gutenberg-compatible content 
 | Raw HTML | `core/html` |
 | Serialized Gutenberg comments | preserved, with WordPress-safe attribute escaping |
 
+## Reverse synchronization
+
+In `propose` and `reconcile` modes, DocsPress matches the live top-level Gutenberg blocks to the blocks generated from the current source. It applies a WordPress-only edit to the corresponding Markdown region and preserves every unchanged region exactly, including frontmatter formatting, blank lines, code-fence languages, and custom-block JSON.
+
+WordPress may add editor-only attributes or omit attributes whose values equal a block default. DocsPress treats those serialization differences as equivalent. All DocsPress custom blocks round-trip as self-closing serialized comments; supported plain core blocks return to readable Markdown. A core block with meaningful attributes, an unknown block, or a preformatted block remains serialized so publishing the resulting pull request cannot discard its block data.
+
+If the source structure cannot be mapped safely to the live blocks, reverse synchronization stops with an error rather than rewriting the entire Markdown body.
+
 ## Add screenshots and diagrams
 
 A standalone Markdown image becomes a native `core/image` block. Write meaningful alternative text and add an optional quoted title when the image needs a visible caption:

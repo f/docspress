@@ -146,6 +146,10 @@ jobs:
 
 `publish` remains the default. `propose` only prepares WordPress changes and refreshes synchronization metadata; `reconcile` also publishes non-conflicting GitHub changes. If the same Page changes on both sides, the run reports a conflict before writing either side.
 
+Reverse synchronization compares Gutenberg blocks semantically and changes only the matching Markdown source regions. WordPress editor metadata and omitted default attributes do not create diff noise; unchanged frontmatter, code fences, tables, and custom-block comments remain untouched. When a block cannot be represented safely as readable Markdown, DocsPress preserves its serialized Gutenberg form.
+
+`reconcile` leaves each WordPress-only Page unchanged while its pull request is open. Once the pull request merges, the next run refreshes the synchronization sentinel; GitHub-only changes to other Pages still publish normally.
+
 The WordPress token reads and updates Pages. Pull requests use the job's `GITHUB_TOKEN`; no second stored secret is needed when the repository allows GitHub Actions to create pull requests.
 
 ## WordPress.com authentication

@@ -9,6 +9,7 @@ export async function syncPages(options) {
     deleteMode = "trash",
     rootSlug = "docs",
     allowDeletions = true,
+    skipUpdateKeys = new Set(),
     logger = console
   } = options;
 
@@ -41,6 +42,16 @@ export async function syncPages(options) {
     const payload = pagePayload(desired, parentId);
 
     if (managed) {
+      if (skipUpdateKeys.has(desired.key)) {
+        result.unchanged += 1;
+        result.operations.push({
+          action: "unchanged",
+          key: desired.key,
+          id: managed.id,
+          reason: "WordPress-only edit is awaiting its pull request."
+        });
+        continue;
+      }
       if (managed.sentinel?.hash === desired.hash && managed.parent === parentId) {
         result.unchanged += 1;
         result.operations.push({ action: "unchanged", key: desired.key, id: managed.id });

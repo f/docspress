@@ -18,6 +18,7 @@ export async function syncBidirectional(options) {
   } = options;
   const existingPages = await client.listPages();
   const plan = planReconciliation({ desiredPages, existingPages });
+  const wordpressChangeKeys = new Set(plan.wordpressChanges.map(({ desired }) => desired.key));
   let publishPreview = emptyResult(true);
 
   if (mode === "reconcile") {
@@ -28,6 +29,7 @@ export async function syncBidirectional(options) {
       dryRun: true,
       deleteMode,
       rootSlug,
+      skipUpdateKeys: wordpressChangeKeys,
       logger: { info() {} }
     });
   }
@@ -80,6 +82,7 @@ export async function syncBidirectional(options) {
       dryRun: false,
       deleteMode,
       rootSlug,
+      skipUpdateKeys: wordpressChangeKeys,
       logger
     });
   } else if (plan.refreshPages.length > 0) {
