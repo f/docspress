@@ -6,7 +6,7 @@ DocsPress keeps documentation beside the code that explains it, then publishes t
 
 <!-- wp:docspress/callout {"tone":"tip","title":"The shortest path","content":"<p>Give your coding agent the DocsPress skills. It can inspect an existing repository, generate missing documentation from verified source, and prepare the WordPress synchronization workflow.</p>","collapsible":false} /-->
 
-## Install DocsPress with your coding agents
+## Install DocsPress with your coding agent
 
 Install both skills into the repository that owns the documentation:
 
@@ -22,10 +22,23 @@ If the repository already has Markdown docs, the installer reuses them. If it do
 
 <!-- wp:docspress/file-tree {"root":"your-repository/","tree":".claude/\n  skills/\n    docspress-install/\n    generate-docs-from-source/\n.github/\n  workflows/\n    sync-docs.yml\ndocs/\n  index.md\n  getting-started/\n    index.md\n    first-sync.md\n  guides/\n    github-to-wordpress.md\n    wordpress-to-github.md","caption":"Markdown publishes as WordPress Pages; reviewed Gutenberg edits return through managed pull requests."} /-->
 
-1. Authors and agents can update Markdown under `docs/`, while editors can update existing managed Pages in Gutenberg.
-2. The GitHub Action converts Markdown into Gutenberg blocks and Gutenberg changes back into focused Markdown edits.
-3. DocsPress compares both versions with their shared management marker.
-4. GitHub-only changes update WordPress; WordPress-only changes open a pull request; two-sided changes stop as conflicts.
+<!-- wp:list {"ordered":true} -->
+<ol class="wp-block-list"><!-- wp:list-item -->
+<li>Authors and agents can update Markdown under <code>docs/</code>, while editors can update existing managed Pages in Gutenberg.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The GitHub Action converts Markdown into Gutenberg blocks and Gutenberg changes back into focused Markdown edits.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>DocsPress compares both versions with their shared management marker.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>GitHub-only changes update WordPress; WordPress-only changes open a pull request; two-sided changes stop as conflicts.</li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
 
 Read [Getting started](getting-started/index.md) for the safe first-run sequence or [Authoring documentation](authoring/index.md) for the Markdown contract.
 
@@ -43,9 +56,28 @@ Read [GitHub to WordPress](guides/github-to-wordpress.md) and [WordPress to GitH
 
 ## Explore the documentation
 
-- [Getting started](getting-started/index.md): install the skills, authenticate, and run the first safe sync.
-- [Why DocsPress?](why-docspress.md): compare the WordPress-native model with a Docusaurus static site.
-- [Authoring](authoring/index.md): structure pages and use Markdown or DocsPress Gutenberg blocks.
-- [Guides](guides/index.md): synchronize in either direction, prevent merge loops, and control routes with manifests or redirects.
-- [Reference](reference/index.md): Action inputs, CLI behavior, REST reconciliation, theme, and block schemas.
-- [Troubleshooting](troubleshooting.md): diagnose authentication, conflicts, links, and workflow failures.
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li><a href="/docs/getting-started/">Getting started</a>: install the skills, authenticate, and run the first safe sync.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="/docs/why-docspress/">Why DocsPress?</a>: compare the WordPress-native model with a Docusaurus static site.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="/docs/authoring/">Authoring</a>: structure pages and use Markdown or DocsPress Gutenberg blocks.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="/docs/guides/">Guides</a>: synchronize in either direction, prevent merge loops, and control routes with manifests or redirects.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="/docs/reference/">Reference</a>: Action inputs, CLI behavior, REST reconciliation, theme, and block schemas.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="/docs/troubleshooting/">Troubleshooting</a>: diagnose authentication, conflicts, links, and workflow failures.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
