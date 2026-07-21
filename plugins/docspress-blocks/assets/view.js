@@ -17,23 +17,23 @@
 
 		let working = source;
 		const tokens = [];
-		const stash = function ( pattern, className ) {
-			working = working.replace( pattern, function ( match ) {
-				const marker = `\uE000${ String.fromCodePoint( 0xE100 + tokens.length ) }\uE001`;
-				tokens.push( { marker, html: `<span class="${ className }">${ escapeHtml( match ) }</span>` } );
-				return marker;
-			} );
-		};
+		const usesHashComments = [ 'bash', 'shell', 'python', 'yaml' ].includes( language );
+		const protectedTokenPattern = usesHashComments
+			? /<!--[\s\S]*?-->|(^|\s)#[^\n]*|`(?:\\.|[^`])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g
+			: /<!--[\s\S]*?-->|\/\*[\s\S]*?\*\/|\/\/[^\n]*|`(?:\\.|[^`])*`|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g;
 
-		stash( /<!--[\s\S]*?-->/g, 'token-comment' );
-		stash( /\/\*[\s\S]*?\*\//g, 'token-comment' );
-		if ( [ 'bash', 'shell', 'python', 'yaml' ].includes( language ) ) {
-			stash( /(^|\s)#[^\n]*/g, 'token-comment' );
-		} else {
-			stash( /\/\/[^\n]*/g, 'token-comment' );
-		}
-		stash( /`(?:\\.|[^`])*`/g, 'token-string' );
-		stash( /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'/g, 'token-string' );
+		// Protect comments and strings in one left-to-right pass. Separate passes can
+		// nest private-use markers when a quoted value contains comment-like text,
+		// such as the /**/ portion of a YAML glob.
+		working = working.replace( protectedTokenPattern, function ( match ) {
+			const marker = `\uE000${ String.fromCodePoint( 0xE100 + tokens.length ) }\uE001`;
+			const trimmed = match.trimStart();
+			const className = trimmed.startsWith( '<!--' ) || trimmed.startsWith( '/*' ) || trimmed.startsWith( '//' ) || trimmed.startsWith( '#' )
+				? 'token-comment'
+				: 'token-string';
+			tokens.push( { marker, html: `<span class="${ className }">${ escapeHtml( match ) }</span>` } );
+			return marker;
+		} );
 
 		let html = escapeHtml( working );
 		const keywords = /\b(?:abstract|and|array|as|async|await|break|case|catch|class|const|continue|def|default|delete|do|echo|elif|else|enum|export|extends|false|final|finally|for|foreach|from|function|if|implements|import|in|instanceof|interface|let|match|namespace|new|null|or|private|protected|public|readonly|return|static|switch|throw|trait|true|try|type|typeof|use|var|while|with|yield)\b/g;
