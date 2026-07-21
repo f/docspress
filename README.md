@@ -110,6 +110,8 @@ Start with `dry-run: true`. When the plan looks right in the GitHub Actions summ
 
 Use `mode: reconcile` after the publish workflow is proven. Push events publish GitHub-only changes; the five-minute schedule detects WordPress-only edits and maintains one rolling pull request.
 
+See [GitHub to WordPress](docs/guides/github-to-wordpress.md) and [WordPress to GitHub](docs/guides/wordpress-to-github.md) for focused setup, behavior, and review guidance for each direction.
+
 ```yaml
 name: Reconcile docs
 

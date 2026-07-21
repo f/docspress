@@ -2,7 +2,7 @@
 title: Getting started
 ---
 
-Connect a GitHub documentation tree to WordPress without granting an unreviewed workflow permission to publish immediately.
+Connect a GitHub documentation tree to WordPress without allowing an unreviewed workflow run to publish Pages or open pull requests immediately.
 
 ## Choose the correct starting point
 
@@ -24,9 +24,9 @@ Connect a GitHub documentation tree to WordPress without granting an unreviewed 
 
 1. [Install the agent skills](install-agent-skills.md).
 2. [Authenticate WordPress](authentication.md).
-3. [Run the first synchronization](first-sync.md) manually with drafts and dry-run enabled.
-4. Inspect the Action summary and expected Page hierarchy.
-5. Approve a real draft write.
-6. Enable [continuous synchronization](../guides/continuous-sync.md) only after the manual lifecycle succeeds.
+3. [Run the first synchronization](first-sync.md) manually with `mode: reconcile`, drafts, and dry-run enabled.
+4. Inspect the Action summary, expected Page hierarchy, and proposed Markdown files.
+5. Approve a real draft write and review any WordPress-to-GitHub pull request.
+6. Enable [GitHub-to-WordPress](../guides/github-to-wordpress.md), [WordPress-to-GitHub](../guides/wordpress-to-github.md), or combined [continuous synchronization](../guides/continuous-sync.md) only after the manual lifecycle succeeds.
 
-<!-- wp:docspress/result {"status":"neutral","title":"Nothing is public yet","content":"<p>The starting workflow is manual, dry-run only, and targets draft Pages. Publication remains a separate decision.</p>","meta":"workflow_dispatch · dry-run · draft"} /-->
+<!-- wp:docspress/result {"status":"neutral","title":"Neither side changes yet","content":"<p>The starting workflow is manual, dry-run only, and targets draft Pages. WordPress publication and GitHub pull requests remain separate approval decisions.</p>","meta":"workflow_dispatch · reconcile · dry-run · draft"} /-->

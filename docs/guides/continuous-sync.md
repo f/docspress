@@ -4,6 +4,15 @@ title: Keep documentation synchronized
 
 Enable automatic synchronization only after the same pinned workflow succeeds as a dry run and as a real draft write.
 
+## Choose a direction
+
+| Direction | Guide | Mode |
+| --- | --- | --- |
+| Merged Markdown publishes WordPress Pages | [GitHub to WordPress](github-to-wordpress.md) | `publish`, or `reconcile` in a combined workflow |
+| Gutenberg edits open a Markdown pull request | [WordPress to GitHub](wordpress-to-github.md) | `propose`, or `reconcile` in a combined workflow |
+
+Use the combined `reconcile` workflow below when both authoring paths are valid for the same Page tree.
+
 ## Stage 1: manual dry run
 
 Use `workflow_dispatch`, `status: draft`, `delete-mode: trash`, and `dry-run: true`. Review the Action summary and confirm that every planned create, update, and delete is expected.
@@ -51,7 +60,7 @@ While that pull request is open, `reconcile` leaves the WordPress-only Page unto
 
 ## Observe each run
 
-The Action exports counters for created, updated, deleted, unchanged, and conflict operations plus `summary-json` for downstream jobs.
+The Action exports counters for created, updated, deleted, unchanged, proposed, skipped, and conflict operations plus `summary-json` for downstream jobs.
 
 The [first synchronization walkthrough](../getting-started/first-sync.md) shows the run overview and generated Sync Summary with tightly cropped screenshots. Use the same counters to review every automatic run.
 
