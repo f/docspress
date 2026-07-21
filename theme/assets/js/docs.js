@@ -417,7 +417,7 @@
 	}
 
 	document.querySelectorAll('.entry-content pre').forEach(function (pre) {
-		if (pre.closest('.docspress-code__surface')) return;
+		if (pre.closest('[class*="wp-block-docspress-"]')) return;
 		const button = document.createElement('button');
 		button.className = 'copy-code';
 		button.type = 'button';

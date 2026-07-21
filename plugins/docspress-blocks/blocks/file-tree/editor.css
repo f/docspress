@@ -1,0 +1,19 @@
+.editor-styles-wrapper .docspress-file-tree--editor {
+	margin-block: 1.5rem;
+}
+
+.docspress-file-tree--editor .docspress-file-tree__entries textarea {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 180px;
+	margin: 0;
+	padding: 0;
+	resize: vertical;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: var(--dp-copy, #2c3338);
+	font: 520 0.81rem/1.65 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+	white-space: pre;
+}

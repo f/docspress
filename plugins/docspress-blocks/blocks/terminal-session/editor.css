@@ -1,0 +1,31 @@
+.editor-styles-wrapper .docspress-terminal--editor {
+	margin-block: 1.5rem;
+}
+
+.docspress-terminal--editor .docspress-terminal__bar {
+	grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.docspress-terminal--editor .docspress-terminal__command textarea,
+.docspress-terminal--editor textarea.docspress-terminal__output {
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 48px;
+	margin: 0;
+	padding: 0;
+	resize: vertical;
+	border: 0;
+	outline: 0;
+	background: transparent;
+	color: var(--db-terminal-text);
+	font: 500 0.87rem/1.65 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+}
+
+.docspress-terminal--editor textarea.docspress-terminal__output {
+	min-height: 74px;
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid var(--db-terminal-line);
+	color: var(--db-terminal-muted);
+}

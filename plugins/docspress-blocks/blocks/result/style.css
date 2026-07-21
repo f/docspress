@@ -1,0 +1,106 @@
+.wp-block-docspress-result {
+	--db-result-accent: #087a3e;
+	--db-result-surface: color-mix(in srgb, var(--db-result-accent) 5%, var(--dp-paper, #fff));
+	--db-result-border: color-mix(in srgb, var(--db-result-accent) 23%, var(--dp-line, #dcdcde));
+	display: grid;
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	grid-template-columns: auto minmax(0, 1fr) auto;
+	align-items: start;
+	gap: 12px;
+	margin-block: clamp(1.25rem, 2.5vw, 2rem);
+	padding: 14px 15px;
+	border: 1px solid var(--db-result-border);
+	border-radius: var(--dp-radius, 10px);
+	background: var(--db-result-surface);
+	box-shadow: 0 3px 14px color-mix(in srgb, var(--dp-ink, #171a22) 5%, transparent);
+	color: var(--dp-copy, #2c3338);
+}
+
+.docspress-result--neutral {
+	--db-result-accent: var(--dp-blue, #3858e9);
+}
+
+.docspress-result--warning {
+	--db-result-accent: #b85c00;
+}
+
+.docspress-result--error {
+	--db-result-accent: #d63638;
+}
+
+html[data-theme="dark"] .docspress-result--success {
+	--db-result-accent: #63d68b;
+}
+
+html[data-theme="dark"] .docspress-result--warning {
+	--db-result-accent: #f1b354;
+}
+
+html[data-theme="dark"] .docspress-result--error {
+	--db-result-accent: #ff8587;
+}
+
+.docspress-result__icon {
+	display: grid;
+	width: 28px;
+	height: 28px;
+	place-items: center;
+	border-radius: 50%;
+	background: color-mix(in srgb, var(--db-result-accent) 12%, transparent);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-result-accent) 24%, transparent);
+	color: var(--db-result-accent);
+	font: 760 0.8rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+
+.docspress-result__icon svg {
+	width: 16px;
+	height: 16px;
+}
+
+.docspress-result__kicker {
+	margin: 0 0 3px;
+	color: var(--db-result-accent);
+	font: 730 0.66rem/1.2 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
+}
+
+.docspress-result__title {
+	color: var(--dp-ink, #171a22);
+	font: 720 0.91rem/1.35 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	letter-spacing: -0.01em;
+}
+
+.docspress-result__content {
+	margin-top: 3px;
+	font-size: 0.9em;
+}
+
+.docspress-result__content > :first-child {
+	margin-top: 0;
+}
+
+.docspress-result__content > :last-child {
+	margin-bottom: 0;
+}
+
+.docspress-result__meta {
+	align-self: center;
+	padding-left: 12px;
+	color: var(--dp-muted, #6f7685);
+	font: 600 0.69rem/1.35 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+	white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+	.wp-block-docspress-result {
+		grid-template-columns: auto minmax(0, 1fr);
+	}
+
+	.docspress-result__meta {
+		grid-column: 2;
+		padding-left: 0;
+	}
+}

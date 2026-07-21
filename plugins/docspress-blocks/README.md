@@ -7,10 +7,14 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 - **Colorful Code** — filename chrome, language-aware token colors, line numbers, highlighted ranges, captions, and copy-to-clipboard.
 - **Code Tabs** — up to eight keyboard-accessible examples with independent labels, languages, filenames, and code.
 - **Callout** — note, tip, warning, danger, and success tones, with an optional collapsible presentation.
+- **API Request / Response** — one structured HTTP exchange with method, endpoint, headers, request body, response status, response body, and a copyable URL.
+- **Terminal Session** — a copyable command separated from its read-only output, with editable prompt, shell, and title labels.
+- **Result** — a compact success, neutral, warning, or error outcome for builds, checks, and verification steps.
+- **File Tree** — an indentation-aware repository view with accessible file and folder entries.
 
 The inserter also includes **Documentation page starter** and **API request example** patterns under the **DocsPress** category.
 
-Block colors are intentionally not author-configurable. Code, tabs, and callouts inherit the active DocsPress design preset, its light or dark tokens, typography, radius, borders, and article width. Semantic callout tones are the only color choice exposed in the editor.
+Block colors are intentionally not author-configurable. Every block inherits the active DocsPress design preset, its light or dark tokens, typography, radius, borders, and article width. Only meaningful semantic states—such as callout tone, HTTP method, and result status—are exposed in the editor.
 
 ## Folder structure
 
@@ -25,7 +29,11 @@ docspress-blocks/
 │   │   ├── style.css
 │   │   └── editor.css
 │   ├── code-tabs/
-│   └── callout/
+│   ├── callout/
+│   ├── api-request/
+│   ├── terminal-session/
+│   ├── result/
+│   └── file-tree/
 ├── assets/
 │   ├── editor-shared.js
 │   ├── code.css
@@ -59,7 +67,27 @@ Callouts can stay open or become collapsible:
 <!-- wp:docspress/callout {"tone":"warning","title":"Protect credentials","content":"<p>Never place access tokens in browser-side examples.</p>","collapsible":false} /-->
 ```
 
-The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML and uses all three blocks.
+API exchanges keep their request and response together:
+
+```html
+<!-- wp:docspress/api-request {"method":"POST","endpoint":"/wp-json/wp/v2/pages","headers":"Content-Type: application/json","requestBody":"{\n  \"status\": \"draft\"\n}","responseStatus":"201 Created","responseBody":"{\n  \"id\": 42\n}"} /-->
+```
+
+Terminal sessions distinguish commands from their output, while Result summarizes the outcome:
+
+```html
+<!-- wp:docspress/terminal-session {"title":"Publish a preview","shell":"bash","prompt":"$","command":"npx docspress publish ./docs --status=draft","output":"✓ Created 12 draft pages"} /-->
+
+<!-- wp:docspress/result {"status":"success","title":"Preview published","content":"<p>The page tree is ready to review.</p>","meta":"12 pages · 1.8s"} /-->
+```
+
+File trees use two spaces per nesting level and a trailing slash for folders:
+
+```html
+<!-- wp:docspress/file-tree {"root":"repository/","tree":"docs/\n  introduction.md\n  api/\n    endpoints.md","caption":"Documentation source tree."} /-->
+```
+
+The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML and uses all seven blocks.
 
 ## Run with the theme
 

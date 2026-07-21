@@ -1,0 +1,176 @@
+.wp-block-docspress-api-request {
+	--db-api-accent: var(--dp-blue, #3858e9);
+	--db-api-surface: color-mix(in srgb, var(--db-api-accent) 2%, var(--dp-paper, #fff));
+	--db-api-panel: color-mix(in srgb, var(--dp-canvas, #f6f7f9) 78%, var(--dp-paper, #fff));
+	--db-api-border: var(--dp-line-strong, #cfd4dc);
+	--db-api-muted: var(--dp-muted, #6f7685);
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+	margin-block: clamp(1.5rem, 3vw, 2.25rem);
+	overflow: hidden;
+	border: 1px solid var(--db-api-border);
+	border-radius: var(--dp-radius, 10px);
+	background: var(--db-api-surface);
+	box-shadow: 0 8px 24px color-mix(in srgb, var(--dp-ink, #171a22) 7%, transparent);
+	color: var(--dp-ink, #171a22);
+}
+
+.docspress-preset-docspress .wp-block-docspress-api-request,
+.docspress-blocks--preset-docspress.wp-block-docspress-api-request {
+	--db-api-accent: #005cb3;
+}
+
+.docspress-preset-jetpack .wp-block-docspress-api-request,
+.docspress-blocks--preset-jetpack.wp-block-docspress-api-request {
+	--db-api-accent: #069e08;
+}
+
+.docspress-api__request-line,
+.docspress-api__response-line {
+	display: grid;
+	min-height: 46px;
+	grid-template-columns: auto auto minmax(0, 1fr) auto;
+	align-items: center;
+	gap: 10px;
+	box-sizing: border-box;
+	padding: 8px 10px 8px 14px;
+	border-bottom: 1px solid var(--db-api-border);
+	background: color-mix(in srgb, var(--db-api-accent) 4%, var(--dp-paper, #fff));
+}
+
+.docspress-api__response-line {
+	grid-template-columns: auto minmax(0, 1fr);
+	border-top: 1px solid var(--db-api-border);
+}
+
+.docspress-api__eyebrow,
+.docspress-api__payload-label {
+	color: var(--db-api-muted);
+	font: 680 0.68rem/1.2 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+	letter-spacing: 0.07em;
+	text-transform: uppercase;
+}
+
+.docspress-api__method,
+.docspress-api__status {
+	display: inline-flex;
+	min-height: 25px;
+	align-items: center;
+	justify-content: center;
+	padding: 0 8px;
+	border-radius: max(3px, calc(var(--dp-radius, 10px) - 5px));
+	background: color-mix(in srgb, var(--db-api-accent) 11%, transparent);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-api-accent) 22%, transparent);
+	color: color-mix(in srgb, var(--db-api-accent) 80%, var(--dp-ink, #171a22));
+	font: 760 0.7rem/1 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+}
+
+.docspress-api__status {
+	justify-self: end;
+}
+
+.docspress-api__endpoint,
+.entry-content .docspress-api__endpoint {
+	min-width: 0;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: var(--dp-ink, #171a22);
+	font: 590 0.82rem/1.35 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.docspress-api__copy {
+	display: inline-flex;
+	min-height: 29px;
+	align-items: center;
+	gap: 5px;
+	margin: 0;
+	padding: 3px 8px;
+	border: 1px solid var(--db-api-border);
+	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	background: var(--dp-paper, #fff);
+	color: var(--dp-ink, #171a22);
+	cursor: pointer;
+	font: 650 0.68rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+
+.docspress-api__copy svg {
+	width: 14px;
+	height: 14px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.6;
+}
+
+.docspress-api__copy:hover,
+.docspress-api__copy:focus-visible,
+.docspress-api__copy.is-copied {
+	border-color: var(--db-api-accent);
+	color: var(--db-api-accent);
+}
+
+.docspress-api__payload {
+	padding: 13px 16px 15px;
+	background: var(--db-api-panel);
+}
+
+.docspress-api__payload + .docspress-api__payload {
+	border-top: 1px solid var(--db-api-border);
+}
+
+.docspress-api__payload-label {
+	margin-bottom: 7px;
+}
+
+.docspress-api__payload pre,
+.entry-content .docspress-api__payload pre {
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: var(--dp-copy, #2c3338);
+	font: 500 0.82rem/1.65 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
+	white-space: pre;
+}
+
+.docspress-api__payload code,
+.entry-content .docspress-api__payload code {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	box-shadow: none;
+	color: inherit;
+	font: inherit;
+}
+
+html[data-theme="dark"] .wp-block-docspress-api-request {
+	--db-api-panel: color-mix(in srgb, var(--dp-canvas, #11141b) 82%, #000);
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+@media (max-width: 620px) {
+	.docspress-api__request-line {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+
+	.docspress-api__request-line .docspress-api__eyebrow {
+		display: none;
+	}
+
+	.docspress-api__copy b {
+		display: none;
+	}
+}

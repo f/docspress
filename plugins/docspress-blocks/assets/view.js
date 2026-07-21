@@ -87,17 +87,22 @@
 	}
 
 	function copyCode( button ) {
+		const targetId = button.dataset.docspressCopyTarget;
+		const target = targetId ? document.getElementById( targetId ) : null;
+		let text = target ? target.textContent.trim() : '';
 		let surface = button.closest( '.docspress-code__surface' );
-		if ( ! surface ) {
+		if ( ! text && ! surface ) {
 			const tabs = button.closest( '[data-docspress-tabs]' );
 			const panel = tabs && tabs.querySelector( '[role="tabpanel"]:not([hidden])' );
 			surface = panel && panel.querySelector( '.docspress-code__surface' );
 		}
-		if ( ! surface ) {
+		if ( ! text && ! surface ) {
 			return;
 		}
 
-		const text = textFromSurface( surface );
+		if ( ! text ) {
+			text = textFromSurface( surface );
+		}
 		const operation = navigator.clipboard && window.isSecureContext
 			? navigator.clipboard.writeText( text ).catch( function () {
 				legacyCopy( text );

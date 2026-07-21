@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       DocsPress Blocks
  * Plugin URI:        https://github.com/Automattic/docspress/tree/main/plugins/docspress-blocks
- * Description:       Documentation-focused Gutenberg blocks for colorful code, code tabs, and semantic callouts.
- * Version:           0.1.0
+ * Description:       Documentation-focused Gutenberg blocks for code, API exchanges, terminal sessions, results, file trees, and semantic callouts.
+ * Version:           0.2.1
  * Requires at least: 6.5
  * Requires PHP:      7.4
  * Author:            Automattic
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'DOCSPRESS_BLOCKS_VERSION', '0.1.0' );
+define( 'DOCSPRESS_BLOCKS_VERSION', '0.2.1' );
 define( 'DOCSPRESS_BLOCKS_FILE', __FILE__ );
 define( 'DOCSPRESS_BLOCKS_PATH', plugin_dir_path( __FILE__ ) );
 define( 'DOCSPRESS_BLOCKS_URL', plugin_dir_url( __FILE__ ) );
@@ -25,6 +25,10 @@ require_once DOCSPRESS_BLOCKS_PATH . 'includes/code-surface.php';
 require_once DOCSPRESS_BLOCKS_PATH . 'blocks/colorful-code/block.php';
 require_once DOCSPRESS_BLOCKS_PATH . 'blocks/code-tabs/block.php';
 require_once DOCSPRESS_BLOCKS_PATH . 'blocks/callout/block.php';
+require_once DOCSPRESS_BLOCKS_PATH . 'blocks/api-request/block.php';
+require_once DOCSPRESS_BLOCKS_PATH . 'blocks/terminal-session/block.php';
+require_once DOCSPRESS_BLOCKS_PATH . 'blocks/result/block.php';
+require_once DOCSPRESS_BLOCKS_PATH . 'blocks/file-tree/block.php';
 require_once DOCSPRESS_BLOCKS_PATH . 'includes/patterns.php';
 
 /**

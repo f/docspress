@@ -230,6 +230,93 @@ function docspress_playground_code_tabs( $tabs ) {
 	);
 }
 
+/**
+ * Serialize a DocsPress API Request / Response dynamic block.
+ *
+ * @param string $method         HTTP method.
+ * @param string $endpoint       Request endpoint.
+ * @param string $headers        Request headers.
+ * @param string $request_body   Request body.
+ * @param string $response_status Response status.
+ * @param string $response_body  Response body.
+ * @return string
+ */
+function docspress_playground_api_request( $method, $endpoint, $headers, $request_body, $response_status, $response_body ) {
+	return docspress_playground_block(
+		'docspress/api-request',
+		array(
+			'method'         => $method,
+			'endpoint'       => $endpoint,
+			'headers'        => $headers,
+			'requestBody'    => $request_body,
+			'responseStatus' => $response_status,
+			'responseBody'   => $response_body,
+		)
+	);
+}
+
+/**
+ * Serialize a DocsPress Terminal Session dynamic block.
+ *
+ * @param string $title   Terminal title.
+ * @param string $command Command text.
+ * @param string $output  Command output.
+ * @param string $shell   Shell label.
+ * @return string
+ */
+function docspress_playground_terminal( $title, $command, $output, $shell = 'bash' ) {
+	return docspress_playground_block(
+		'docspress/terminal-session',
+		array(
+			'title'   => $title,
+			'shell'   => $shell,
+			'prompt'  => '$',
+			'command' => $command,
+			'output'  => $output,
+		)
+	);
+}
+
+/**
+ * Serialize a DocsPress Result dynamic block.
+ *
+ * @param string $status  Result status.
+ * @param string $title   Result title.
+ * @param string $content Result content.
+ * @param string $meta    Compact metadata.
+ * @return string
+ */
+function docspress_playground_result( $status, $title, $content, $meta = '' ) {
+	return docspress_playground_block(
+		'docspress/result',
+		array(
+			'status'  => $status,
+			'title'   => $title,
+			'content' => '<p>' . $content . '</p>',
+			'meta'    => $meta,
+		)
+	);
+}
+
+/**
+ * Serialize a DocsPress File Tree dynamic block.
+ *
+ * @param string $root    Root label.
+ * @param string $tree    Indented file list.
+ * @param string $caption Optional caption.
+ * @return string
+ */
+function docspress_playground_file_tree( $root, $tree, $caption = '' ) {
+	return docspress_playground_block(
+		'docspress/file-tree',
+		array(
+			'root'    => $root,
+			'tree'    => $tree,
+			'caption' => $caption,
+		)
+	);
+}
+
 $docs = docspress_playground_page(
 	'Docs',
 	'docs',
@@ -261,7 +348,7 @@ $introduction = docspress_playground_page(
 		),
 		docspress_playground_heading( 'How it works' ),
 		docspress_playground_paragraph( 'A GitHub Action reads the docs tree, converts each file, and reconciles it with your WordPress site through the REST API.' ),
-		docspress_playground_code( "docs/                     WordPress\n├── introduction.md  →   Docs / Introduction\n├── getting-started/     Docs / Getting Started\n│   └── install.md   →   Docs / Getting Started / Installation\n└── guides/               Docs / Guides", 'plaintext', 'Repository map', '2,4' ),
+		docspress_playground_file_tree( 'repository/', "docs/\n  introduction.md\n  getting-started/\n    install.md\n  guides/\n    markdown-features.md", 'Folders become parent Pages; Markdown files become documentation Pages.' ),
 		docspress_playground_heading( 'Safe by default', 3 ),
 		docspress_playground_paragraph( 'Only Pages carrying the DocsPress sentinel are updated or removed. Pages created manually in WordPress remain untouched.' ),
 		docspress_playground_heading( 'What you get' ),
@@ -306,7 +393,10 @@ docspress_playground_page(
 		docspress_playground_code( "name: Publish docs\non:\n  push:\n    branches: [main]\n    paths: [\"docs/**\"]\n\njobs:\n  publish:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: Automattic/docspress@main\n        with:\n          wordpress-site: example.com\n          wordpress-access-token: \${{ secrets.WP_ACCESS_TOKEN }}\n          docs-dir: docs\n          root-slug: docs", 'yaml', '.github/workflows/docs.yml', '11-12' ),
 		docspress_playground_heading( 'Add your token' ),
 		docspress_playground_paragraph( 'Store the WordPress access token as <code>WP_ACCESS_TOKEN</code> in the repository secrets.' ),
-		docspress_playground_callout( 'tip', 'Preview first', 'Set <code>status: draft</code> while validating a new integration, then switch to <code>publish</code> when the page tree looks right.' )
+		docspress_playground_callout( 'tip', 'Preview first', 'Set <code>status: draft</code> while validating a new integration, then switch to <code>publish</code> when the page tree looks right.' ),
+		docspress_playground_heading( 'Verify the setup' ),
+		docspress_playground_terminal( 'Publish a preview', 'npx docspress publish ./docs --status=draft', "✓ Read 12 documents\n✓ Created 12 draft pages\nPreview: https://example.com/docs/" ),
+		docspress_playground_result( 'success', 'Preview published', 'The complete page tree is ready for editorial review in WordPress.', '12 pages · 1.8s' )
 	),
 	$getting_started,
 	0,
@@ -375,6 +465,10 @@ docspress_playground_page(
 				array( 'Fenced code', 'docspress/colorful-code' ),
 				array( 'Code tabs', 'docspress/code-tabs' ),
 				array( 'Admonition', 'docspress/callout' ),
+				array( 'API exchange', 'docspress/api-request' ),
+				array( 'Terminal command and output', 'docspress/terminal-session' ),
+				array( 'Execution outcome', 'docspress/result' ),
+				array( 'Repository structure', 'docspress/file-tree' ),
 			)
 		),
 		docspress_playground_callout( 'note', 'Gutenberg escape hatch', 'Serialized Gutenberg comments are preserved, so authors can use these native blocks directly when a Markdown mapping does not exist yet.' )
@@ -394,7 +488,8 @@ docspress_playground_page(
 		docspress_playground_list( array( 'Sync new documents as drafts.', 'Review the Pages in WordPress.', 'Change the action status to publish.' ), true ),
 		docspress_playground_heading( 'Continuous publishing' ),
 		docspress_playground_paragraph( 'Limit the workflow trigger to changes under <code>docs/**</code>. This keeps documentation deploys focused and easy to audit.' ),
-		docspress_playground_callout( 'success', 'Ready to ship', 'A reviewed draft and a path-scoped workflow make documentation releases predictable.' )
+		docspress_playground_callout( 'success', 'Ready to ship', 'A reviewed draft and a path-scoped workflow make documentation releases predictable.' ),
+		docspress_playground_result( 'neutral', 'Deployment contract', 'Only changes under <code>docs/**</code> trigger publication; application builds stay untouched.', 'path scoped' )
 	),
 	$guides,
 	10,
@@ -408,6 +503,15 @@ docspress_playground_page(
 		docspress_playground_paragraph( 'The WordPress REST API is the small seam between repository content and published Pages.' ),
 		docspress_playground_heading( 'Page reconciliation' ),
 		docspress_playground_paragraph( 'DocsPress compares the desired page tree with managed Pages already present on the site.' ),
+		docspress_playground_api_request(
+			'POST',
+			'/wp-json/wp/v2/pages',
+			"Content-Type: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN",
+			"{\n  \"title\": \"Getting Started\",\n  \"slug\": \"getting-started\",\n  \"status\": \"draft\"\n}",
+			'201 Created',
+			"{\n  \"id\": 42,\n  \"slug\": \"getting-started\",\n  \"status\": \"draft\"\n}"
+		),
+		docspress_playground_heading( 'Client examples', 3 ),
 		docspress_playground_code_tabs(
 			array(
 				array( 'label' => 'cURL', 'language' => 'bash', 'filename' => 'Terminal', 'code' => "curl https://example.com/wp-json/wp/v2/pages\n\ncurl -X POST https://example.com/wp-json/wp/v2/pages" ),

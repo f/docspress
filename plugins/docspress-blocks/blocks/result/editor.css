@@ -1,0 +1,7 @@
+.editor-styles-wrapper .docspress-result--editor {
+	margin-block: 1.25rem;
+}
+
+.docspress-result--editor .docspress-result__kicker {
+	text-transform: uppercase;
+}

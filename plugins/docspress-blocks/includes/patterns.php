@@ -38,7 +38,7 @@ function docspress_blocks_register_patterns() {
 		'docspress/documentation-page-starter',
 		array(
 			'title'       => __( 'Documentation page starter', 'docspress-blocks' ),
-			'description' => __( 'A documentation outline with a callout and a copyable code example.', 'docspress-blocks' ),
+			'description' => __( 'A documentation outline with a callout, copyable terminal command, and verification result.', 'docspress-blocks' ),
 			'categories'  => array( 'docspress' ),
 			'content'     => '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Overview</h2><!-- /wp:heading -->'
 				. '<!-- wp:paragraph --><p>Explain what the reader will accomplish and what they need before starting.</p><!-- /wp:paragraph -->'
@@ -52,11 +52,21 @@ function docspress_blocks_register_patterns() {
 				)
 				. '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Run the example</h2><!-- /wp:heading -->'
 				. docspress_blocks_serialize(
-					'docspress/colorful-code',
+					'docspress/terminal-session',
 					array(
-						'language' => 'bash',
-						'filename' => 'Terminal',
-						'code'     => 'npx docspress publish ./docs',
+						'title'   => 'Publish documentation',
+						'shell'   => 'bash',
+						'command' => 'npx docspress publish ./docs',
+						'output'  => "✓ Read 12 documents\n✓ Published 12 WordPress pages",
+					)
+				)
+				. docspress_blocks_serialize(
+					'docspress/result',
+					array(
+						'status'  => 'success',
+						'title'   => 'Publication verified',
+						'content' => '<p>The documentation tree is ready to review.</p>',
+						'meta'    => '12 pages',
 					)
 				),
 		)
@@ -66,9 +76,20 @@ function docspress_blocks_register_patterns() {
 		'docspress/api-request-example',
 		array(
 			'title'       => __( 'API request example', 'docspress-blocks' ),
-			'description' => __( 'Equivalent request examples in multiple languages followed by a response note.', 'docspress-blocks' ),
+			'description' => __( 'A structured API request and response followed by equivalent client examples.', 'docspress-blocks' ),
 			'categories'  => array( 'docspress' ),
 			'content'     => '<!-- wp:heading {"level":2} --><h2 class="wp-block-heading">Make a request</h2><!-- /wp:heading -->'
+				. docspress_blocks_serialize(
+					'docspress/api-request',
+					array(
+						'method'         => 'POST',
+						'endpoint'       => '/wp-json/wp/v2/pages',
+						'headers'        => "Content-Type: application/json\nAuthorization: Bearer \$WP_ACCESS_TOKEN",
+						'requestBody'    => "{\n  \"title\": \"Getting Started\",\n  \"status\": \"draft\"\n}",
+						'responseStatus' => '201 Created',
+						'responseBody'   => "{\n  \"id\": 42,\n  \"slug\": \"getting-started\",\n  \"status\": \"draft\"\n}",
+					)
+				)
 				. docspress_blocks_serialize(
 					'docspress/code-tabs',
 					array(
@@ -76,14 +97,6 @@ function docspress_blocks_register_patterns() {
 							array( 'label' => 'cURL', 'language' => 'bash', 'filename' => 'Terminal', 'code' => "curl https://example.com/wp-json/wp/v2/pages \\\n  -H 'Authorization: Bearer \$WP_ACCESS_TOKEN'" ),
 							array( 'label' => 'JavaScript', 'language' => 'javascript', 'filename' => 'request.js', 'code' => "const response = await fetch( '/wp-json/wp/v2/pages' );\nconst pages = await response.json();" ),
 						),
-					)
-				)
-				. docspress_blocks_serialize(
-					'docspress/callout',
-					array(
-						'tone'    => 'note',
-						'title'   => 'Response format',
-						'content' => '<p>The endpoint returns JSON and paginates large collections.</p>',
 					)
 				),
 		)

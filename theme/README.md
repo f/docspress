@@ -16,7 +16,7 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 - A dedicated **DocsPress Theme** Customizer panel with preset, navigation, command-search, layout, color, typography, header, article, and footer controls.
 - Automatic Page-tree navigation or fully hand-built WordPress menus for both the header and documentation sidebar.
 - A transparent Octocat/Wapuu hybrid default header mark, while preserving WordPress's standard custom-logo override.
-- The companion DocsPress Blocks plugin with Colorful Code, Code Tabs, Callout, and starter documentation patterns.
+- The companion DocsPress Blocks plugin with code, callout, API exchange, terminal session, result, and file-tree blocks plus starter documentation patterns.
 - Jetpack installed and activated by the Playground blueprint in local Offline Mode.
 - A WordPress Playground blueprint with realistic nested demo Pages stored as Gutenberg block HTML.
 
@@ -145,7 +145,7 @@ The theme preserves the Page hierarchy generated from nested Markdown folders. S
 
 ### Documentation blocks
 
-The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Colorful Code, Code Tabs, and Callout blocks plus two starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. They inherit theme typography, radius, borders, and content width; free-form block colors are intentionally unavailable. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback.
+The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Colorful Code, Code Tabs, Callout, API Request / Response, Terminal Session, Result, and File Tree blocks plus two starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. They inherit theme typography, radius, borders, and content width; free-form block colors are intentionally unavailable. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback.
 
 ### Versioned docs
 
