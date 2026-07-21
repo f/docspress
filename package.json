@@ -1,6 +1,6 @@
 {
   "name": "docspress",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": false,
   "description": "Synchronize Markdown docs and WordPress Pages through GitHub Actions.",
   "type": "module",
