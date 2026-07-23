@@ -3,7 +3,7 @@ Theme Name: DocsPress
 Theme URI: https://github.com/Automattic/docspress
 Author: Fatih Kadir Akın
 Description: A focused, Docusaurus-inspired documentation theme for WordPress and Docspress.
-Version: 0.7.2
+Version: 0.7.3
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -1780,13 +1780,13 @@ body.command-search-open {
 
 /* Native WordPress comments and reply forms. */
 .comments-area {
-	margin-top: 64px;
-	padding-top: 42px;
+	margin-top: 56px;
+	padding-top: 32px;
 	border-top: 1px solid var(--dp-line);
 }
 
 .comments-header {
-	margin-bottom: 28px;
+	margin-bottom: 18px;
 }
 
 .comments-eyebrow {
@@ -1802,21 +1802,23 @@ body.command-search-open {
 	margin: 5px 0 0;
 	color: var(--dp-ink);
 	font-family: var(--dp-font-heading);
-	font-size: clamp(27px, 4vw, 38px);
+	font-size: clamp(26px, 3.6vw, 34px);
 	letter-spacing: -0.035em;
 }
 
 .comments-count {
 	display: inline-grid;
 	place-items: center;
-	min-width: 31px;
-	height: 31px;
+	min-width: 26px;
+	height: 26px;
 	margin-left: 8px;
-	border-radius: 999px;
+	padding: 0 7px;
+	border: 1px solid var(--dp-line);
+	border-radius: var(--dp-radius);
 	background: var(--dp-blue-soft);
 	color: var(--dp-blue-dark);
 	font-family: var(--dp-font-ui);
-	font-size: 13px;
+	font-size: 12px;
 	vertical-align: middle;
 }
 
@@ -1827,23 +1829,30 @@ body.command-search-open {
 	list-style: none;
 }
 
+.comment-list {
+	border-top: 1px solid var(--dp-line);
+}
+
 .comment-list .children {
-	margin-left: 28px;
-	padding-left: 24px;
+	margin-left: 24px;
+	padding-left: 20px;
 	border-left: 1px solid var(--dp-line);
 }
 
 .comment-list .comment-body {
 	position: relative;
-	margin-bottom: 14px;
-	padding: 22px;
-	border: 1px solid var(--dp-line);
-	border-radius: var(--dp-radius);
-	background: color-mix(in srgb, var(--dp-canvas) 52%, var(--dp-paper));
+	margin: 0;
+	padding: 18px 0;
+	border-bottom: 1px solid var(--dp-line);
+	background: transparent;
 }
 
 .comment-meta {
-	margin-bottom: 13px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px 12px;
+	margin-bottom: 10px;
 }
 
 .comment-author {
@@ -1871,7 +1880,7 @@ body.command-search-open {
 }
 
 .comment-metadata {
-	margin: 5px 0 0;
+	margin: 0;
 	color: var(--dp-muted);
 	font-size: 12px;
 }
@@ -1888,15 +1897,28 @@ body.command-search-open {
 .comment-content {
 	font-family: var(--dp-font-copy);
 	font-size: 15px;
-	line-height: 1.75;
+	line-height: 1.65;
+}
+
+.comment-content > *:first-child {
+	margin-top: 0;
 }
 
 .comment-content > *:last-child {
 	margin-bottom: 0;
 }
 
+.comment-content .jetpack-comment-likes-widget-wrapper {
+	min-height: 22px;
+	margin-top: 8px;
+}
+
+.comment-content .jetpack-comment-likes-widget-wrapper iframe {
+	display: block;
+}
+
 .reply {
-	margin-top: 12px;
+	margin-top: 6px;
 }
 
 .comment-reply-link {
@@ -1906,29 +1928,27 @@ body.command-search-open {
 }
 
 .bypostauthor > .comment-body {
-	border-left: 4px solid var(--dp-blue);
+	border-bottom-color: color-mix(in srgb, var(--dp-blue) 45%, var(--dp-line));
 }
 
 .comment-awaiting-moderation,
 .comments-closed {
 	padding: 12px 15px;
-	border-radius: 7px;
+	border-radius: var(--dp-radius);
 	background: var(--dp-blue-soft);
 	color: var(--dp-blue-dark);
 	font-size: 13px;
 	font-style: normal;
 }
 
-.comment-respond {
-	margin-top: 38px;
-	padding: 28px;
-	border: 1px solid var(--dp-line);
-	border-radius: calc(var(--dp-radius) * 1.2);
-	background: var(--dp-canvas);
+.comment-respond,
+.comment-respond-shell {
+	margin-top: 30px;
+	scroll-margin-top: calc(var(--dp-header-height) + 24px);
 }
 
 .comment-reply-title {
-	font-size: 29px;
+	font-size: 26px;
 }
 
 .cancel-reply {
@@ -1947,6 +1967,7 @@ body.command-search-open {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 16px;
+	margin-top: 18px;
 }
 
 .comment-form > p {
@@ -1985,7 +2006,7 @@ body.command-search-open {
 	width: 100%;
 	padding: 11px 12px;
 	border: 1px solid var(--dp-line-strong);
-	border-radius: 7px;
+	border-radius: var(--dp-radius);
 	background: var(--dp-paper);
 	color: var(--dp-ink);
 	transition: border-color 150ms ease, box-shadow 150ms ease;
@@ -2021,7 +2042,7 @@ body.command-search-open {
 	min-height: 44px;
 	padding: 9px 17px;
 	border: 1px solid var(--dp-blue);
-	border-radius: 7px;
+	border-radius: var(--dp-radius);
 	background: var(--dp-blue);
 	color: #fff;
 	font-weight: 800;
@@ -2107,6 +2128,21 @@ body.command-search-open {
 	margin-top: 1.8em;
 }
 
+.docspress-density-compact .comments-area {
+	margin-top: 48px;
+	padding-top: 26px;
+}
+
+.docspress-density-compact .comment-list .comment-body {
+	padding-top: 14px;
+	padding-bottom: 14px;
+}
+
+.docspress-density-compact .comment-respond,
+.docspress-density-compact .comment-respond-shell {
+	margin-top: 24px;
+}
+
 .docspress-density-roomy .docs-main {
 	padding-top: 72px;
 	padding-bottom: 104px;
@@ -2118,6 +2154,25 @@ body.command-search-open {
 
 .docspress-density-roomy .entry-content h2 {
 	margin-top: 2.65em;
+}
+
+.docspress-density-roomy .comments-area {
+	margin-top: 72px;
+	padding-top: 42px;
+}
+
+.docspress-density-roomy .comments-header {
+	margin-bottom: 24px;
+}
+
+.docspress-density-roomy .comment-list .comment-body {
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+
+.docspress-density-roomy .comment-respond,
+.docspress-density-roomy .comment-respond-shell {
+	margin-top: 38px;
 }
 
 @media (max-width: 1180px) {
@@ -2324,9 +2379,13 @@ body.command-search-open {
 		padding-left: 12px;
 	}
 
-	.comment-list .comment-body,
-	.comment-respond {
-		padding: 18px;
+	.comment-list .comment-body {
+		padding: 16px 0;
+	}
+
+	.comment-respond,
+	.comment-respond-shell {
+		padding: 0;
 	}
 
 	.comment-form {
