@@ -271,18 +271,13 @@ a.docspress-hero__button--secondary:hover {
 	--db-hero-panel: transparent;
 	border: 0;
 	border-radius: 0;
-	background-image:
-		radial-gradient(circle at 82% 28%, color-mix(in srgb, #a9c6ff 28%, transparent) 0, transparent 34%),
-		radial-gradient(circle at 88% 72%, color-mix(in srgb, #bde9c4 36%, transparent) 0, transparent 38%);
+	background-image: none;
 	box-shadow: none;
 }
 
 html[data-theme="dark"] .docspress-preset-jetpack .docspress-hero--layout-editorial.docspress-hero--paper {
 	--db-hero-copy: #c4c8cc;
 	--db-hero-heading: #fff;
-	background-image:
-		radial-gradient(circle at 82% 28%, color-mix(in srgb, #6485c7 18%, transparent) 0, transparent 34%),
-		radial-gradient(circle at 88% 72%, color-mix(in srgb, #008710 16%, transparent) 0, transparent 38%);
 }
 
 .docspress-preset-jetpack .docspress-hero--layout-editorial.docspress-hero--paper::before,

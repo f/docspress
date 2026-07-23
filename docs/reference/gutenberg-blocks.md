@@ -15,7 +15,7 @@ Use `docspress/hero` as the editable introduction on a WordPress front Page. Edi
 - Optional custom colors and opt-in grid or orbit decorations.
 - Optional backdrop text behind the image in the editorial composition.
 
-The editorial spotlight supports a dark midnight treatment and a warm paper treatment. Use paper when the hero should feel lighter than the surrounding documentation shell. With the Jetpack preset, paper uses the brand's clean sans-serif headline, green action, and restrained blue-green glow on a borderless canvas that follows the site's light or dark mode.
+The editorial spotlight supports a dark midnight treatment and a warm paper treatment. Use paper when the hero should feel lighter than the surrounding documentation shell. With the Jetpack preset, paper uses the brand's clean sans-serif headline and green action on a flat, borderless canvas that follows the site's light or dark mode.
 
 Empty action labels or URLs hide that action. Removing the image keeps the hero usable as a text-only block. The image renders without an added card or image background, preserving transparent artwork.
 
