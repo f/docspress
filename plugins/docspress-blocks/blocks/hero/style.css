@@ -268,12 +268,21 @@ a.docspress-hero__button--secondary:hover {
 	--db-hero-accent: #008710;
 	--db-hero-copy: #32373c;
 	--db-hero-heading: #000;
-	--db-hero-panel: #fff;
-	border-color: transparent;
+	--db-hero-panel: transparent;
+	border: 0;
+	border-radius: 0;
 	background-image:
 		radial-gradient(circle at 82% 28%, color-mix(in srgb, #a9c6ff 28%, transparent) 0, transparent 34%),
 		radial-gradient(circle at 88% 72%, color-mix(in srgb, #bde9c4 36%, transparent) 0, transparent 38%);
 	box-shadow: none;
+}
+
+html[data-theme="dark"] .docspress-preset-jetpack .docspress-hero--layout-editorial.docspress-hero--paper {
+	--db-hero-copy: #c4c8cc;
+	--db-hero-heading: #fff;
+	background-image:
+		radial-gradient(circle at 82% 28%, color-mix(in srgb, #6485c7 18%, transparent) 0, transparent 34%),
+		radial-gradient(circle at 88% 72%, color-mix(in srgb, #008710 16%, transparent) 0, transparent 38%);
 }
 
 .docspress-preset-jetpack .docspress-hero--layout-editorial.docspress-hero--paper::before,
@@ -332,6 +341,17 @@ a.docspress-hero__button--secondary:hover {
 	font-weight: 700;
 	letter-spacing: -0.055em;
 	line-height: 0.97;
+}
+
+.docspress-preset-jetpack .docspress-hero--layout-editorial.docspress-hero--paper .docspress-hero__button--primary,
+.docspress-blocks--preset-jetpack.docspress-hero--layout-editorial.docspress-hero--paper .docspress-hero__button--primary {
+	border-color: #008710;
+	background: #008710;
+}
+
+.docspress-preset-jetpack .docspress-hero--layout-editorial.docspress-hero--paper a.docspress-hero__button--primary:hover,
+.docspress-blocks--preset-jetpack.docspress-hero--layout-editorial.docspress-hero--paper a.docspress-hero__button--primary:hover {
+	background: #006b0d;
 }
 
 .docspress-hero--layout-editorial .docspress-hero__description,
