@@ -3,7 +3,7 @@ Theme Name: DocsPress
 Theme URI: https://github.com/Automattic/docspress
 Author: Fatih Kadir Akın
 Description: A focused, Docusaurus-inspired documentation theme for WordPress and Docspress.
-Version: 0.7.3
+Version: 0.7.4
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -1951,10 +1951,15 @@ body.command-search-open {
 	font-size: 26px;
 }
 
-.cancel-reply {
+.cancel-reply,
+.comment-reply-title small {
+	display: inline-block;
 	margin-left: 10px;
 	font-family: var(--dp-font-ui);
 	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0;
+	vertical-align: middle;
 }
 
 .comment-notes,
