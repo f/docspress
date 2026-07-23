@@ -46,6 +46,8 @@ The theme generates `/llms.txt` with the site title, description, and absolute l
 
 Markdown responses preserve the exact synchronized source, including frontmatter, and use the `text/markdown` content type. Only published, file-backed DocsPress Pages are exposed. Generated placeholders and hand-authored WordPress Pages return `404`. Pages synchronized before this feature become available after the next DocsPress run refreshes their management metadata.
 
+See [Make documentation AI-friendly](../guides/ai-friendly-documentation.md) for the discovery workflow, response examples, verification commands, and publishing boundaries.
+
 ## Sidebar frontmatter
 
 Markdown-backed Pages can set `sidebar_position` to a signed integer and `sidebar_collapsed` to a boolean. Position maps to native WordPress Page order and applies to the automatic Page tree when **Page order, then title** is selected. Collapse defaults apply to both automatic navigation and Page-backed items in a custom sidebar menu; custom menu ordering remains controlled in WordPress.

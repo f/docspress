@@ -20,7 +20,7 @@ With `root-slug: docs`, these files map to:
 
 Both `index.md` and `README.md` are treated as a folder index. Do not place both in the same directory: they normalize to the same route and DocsPress stops with an error.
 
-When the DocsPress theme is active, every file-backed Page also exposes the exact source at the Page path with `.md` instead of the trailing slash. For example, `/docs/reference/action-inputs.md` returns the original Markdown and frontmatter. The theme lists these source endpoints in `/llms.txt`; generated placeholder Pages are omitted because they have no source file.
+When the DocsPress theme is active, every file-backed Page also exposes the exact source at the Page path with `.md` instead of the trailing slash. For example, `/docs/reference/action-inputs.md` returns the original Markdown and frontmatter. The theme lists these source endpoints in `/llms.txt`; generated placeholder Pages are omitted because they have no source file. See [Make documentation AI-friendly](../guides/ai-friendly-documentation.md) for the discovery and verification workflow.
 
 ## Titles and headings
 

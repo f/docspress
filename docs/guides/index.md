@@ -8,6 +8,7 @@ Move from a reviewed manual draft to maintainable synchronization in either dire
 
 ## Available guides
 
+- [Make documentation AI-friendly](ai-friendly-documentation.md) explains how `llms.txt` and exact per-Page Markdown routes make published documentation easier for agents and retrieval systems to discover and consume.
 - [Customize the theme in WordPress](customize-theme.md) is a visual tour of the DocsPress Customizer, including design presets, navigation, command search, and the remaining reading controls.
 - [GitHub to WordPress](github-to-wordpress.md) explains how merged Markdown creates, updates, or removes managed WordPress Pages.
 - [WordPress to GitHub](wordpress-to-github.md) explains how Gutenberg edits become Markdown changes on a rolling pull request.
