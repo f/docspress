@@ -73,6 +73,8 @@
 			mediaId: { type: 'number', default: 0 },
 			mediaUrl: { type: 'string', default: '' },
 			mediaAlt: { type: 'string', default: '' },
+			visualLabel: { type: 'string', default: '' },
+			layout: { type: 'string', default: 'split' },
 			mediaPosition: { type: 'string', default: 'right' },
 			mediaWidth: { type: 'number', default: 44 },
 			imageScale: { type: 'number', default: 100 },
@@ -92,6 +94,7 @@
 			const classes = [
 				'docspress-hero',
 				`docspress-hero--${ attributes.tone }`,
+				`docspress-hero--layout-${ attributes.layout }`,
 				`docspress-hero--media-${ attributes.mediaPosition }`,
 				`docspress-hero--height-${ attributes.height }`,
 				`docspress-hero--align-${ attributes.textAlign }`,
@@ -131,6 +134,11 @@
 				? el(
 					'div',
 					{ className: 'docspress-hero__visual' },
+					attributes.visualLabel && el(
+						'span',
+						{ className: 'docspress-hero__visual-label', 'aria-hidden': true },
+						attributes.visualLabel
+					),
 					image
 				)
 				: null;
@@ -144,6 +152,15 @@
 					el(
 						PanelBody,
 						{ title: __( 'Layout', 'docspress-blocks' ), initialOpen: true },
+						el( SelectControl, {
+							label: __( 'Composition', 'docspress-blocks' ),
+							value: attributes.layout,
+							options: [
+								{ label: __( 'Split panel', 'docspress-blocks' ), value: 'split' },
+								{ label: __( 'Editorial spotlight', 'docspress-blocks' ), value: 'editorial' }
+							],
+							onChange: ( layout ) => setAttributes( { layout } )
+						} ),
 						el( SelectControl, {
 							label: __( 'Color style', 'docspress-blocks' ),
 							value: attributes.tone,
@@ -222,6 +239,12 @@
 							label: __( 'Alternative text', 'docspress-blocks' ),
 							value: attributes.mediaAlt,
 							onChange: ( mediaAlt ) => setAttributes( { mediaAlt } )
+						} ),
+						el( TextControl, {
+							label: __( 'Backdrop label', 'docspress-blocks' ),
+							help: __( 'Optional decorative text behind the image in the editorial composition.', 'docspress-blocks' ),
+							value: attributes.visualLabel,
+							onChange: ( visualLabel ) => setAttributes( { visualLabel } )
 						} ),
 						el( RangeControl, {
 							label: __( 'Image scale', 'docspress-blocks' ),

@@ -233,6 +233,180 @@ a.docspress-hero__button--secondary:hover {
 	align-items: center;
 }
 
+.docspress-hero__visual-label {
+	display: none;
+}
+
+.docspress-hero--layout-editorial {
+	--db-hero-copy: #c9d0c6;
+	--db-hero-heading: #f5f7f2;
+	--db-hero-panel: #101411;
+	--db-hero-visual: transparent;
+	isolation: isolate;
+	grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+	min-height: 500px;
+	border-color: color-mix(in srgb, var(--db-hero-heading) 14%, transparent);
+	background-color: var(--db-hero-panel);
+	background-image:
+		radial-gradient(circle at 76% 48%, color-mix(in srgb, var(--db-hero-accent) 16%, transparent) 0, transparent 27%),
+		linear-gradient(112deg, transparent 0 68%, color-mix(in srgb, var(--db-hero-heading) 3%, transparent) 68% 100%);
+	box-shadow: 0 28px 80px color-mix(in srgb, #000 20%, transparent);
+}
+
+.docspress-hero--layout-editorial:not(.docspress-hero--no-grid)::before {
+	position: absolute;
+	z-index: 0;
+	inset: 0;
+	background-image:
+		linear-gradient(90deg, color-mix(in srgb, var(--db-hero-heading) 5%, transparent) 1px, transparent 1px),
+		linear-gradient(color-mix(in srgb, var(--db-hero-heading) 4%, transparent) 1px, transparent 1px);
+	background-position: -1px -1px;
+	background-size: 54px 54px;
+	mask-image: linear-gradient(90deg, transparent, #000 62%, #000);
+	content: "";
+	pointer-events: none;
+}
+
+.docspress-hero--layout-editorial.docspress-hero--height-compact {
+	min-height: 430px;
+}
+
+.docspress-hero--layout-editorial.docspress-hero--height-tall {
+	min-height: 620px;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__copy {
+	z-index: 2;
+	padding: clamp(48px, 6.2vw, 76px);
+}
+
+.docspress-hero--layout-editorial .docspress-hero__eyebrow {
+	margin-bottom: clamp(24px, 3vw, 36px);
+	color: color-mix(in srgb, var(--db-hero-heading) 72%, transparent);
+	letter-spacing: 0.15em;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__eyebrow::before {
+	width: 34px;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__title {
+	max-width: 760px;
+	font-size: clamp(52px, 6.5vw, 82px);
+	letter-spacing: -0.06em;
+	line-height: 0.94;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__description,
+.docspress-preset-wordpress .docspress-hero--layout-editorial .docspress-hero__description,
+.docspress-preset-wordpress-com .docspress-hero--layout-editorial .docspress-hero__description,
+.docspress-preset-jetpack .docspress-hero--layout-editorial .docspress-hero__description,
+.docspress-blocks--preset-wordpress.docspress-hero--layout-editorial .docspress-hero__description,
+.docspress-blocks--preset-wordpress-com.docspress-hero--layout-editorial .docspress-hero__description,
+.docspress-blocks--preset-jetpack.docspress-hero--layout-editorial .docspress-hero__description {
+	max-width: 610px;
+	margin-top: 26px;
+	color: var(--db-hero-copy);
+	font-size: clamp(16px, 1.5vw, 19px);
+	line-height: 1.55;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__actions {
+	gap: 18px;
+	margin-top: 34px;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__button {
+	min-height: 46px;
+	padding-inline: 20px;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__button--primary {
+	box-shadow: 0 10px 28px color-mix(in srgb, var(--db-hero-accent) 24%, transparent);
+}
+
+.docspress-hero--layout-editorial .docspress-hero__button--secondary {
+	padding-inline: 4px;
+	border-color: transparent;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__button--secondary::after {
+	margin-left: 10px;
+	content: "↗";
+	transition: transform 150ms ease;
+}
+
+.docspress-hero--layout-editorial a.docspress-hero__button--secondary:hover {
+	border-color: transparent;
+	background: transparent;
+}
+
+.docspress-hero--layout-editorial a.docspress-hero__button--secondary:hover::after {
+	transform: translate(2px, -2px);
+}
+
+.docspress-hero--layout-editorial .docspress-hero__visual,
+.docspress-hero--layout-editorial.docspress-hero--media-left .docspress-hero__visual {
+	z-index: 1;
+	min-height: 100%;
+	padding: clamp(40px, 5vw, 68px);
+	border: 0;
+	background: transparent;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__visual::before {
+	width: min(110%, 430px);
+	border: 0;
+	background: repeating-radial-gradient(
+		circle,
+		color-mix(in srgb, var(--db-hero-heading) 10%, transparent) 0 1px,
+		transparent 1px 34px
+	);
+}
+
+.docspress-hero--layout-editorial .docspress-hero__visual::after {
+	position: absolute;
+	top: 14%;
+	bottom: 14%;
+	left: 0;
+	border-left: 1px solid color-mix(in srgb, var(--db-hero-heading) 13%, transparent);
+	content: "";
+}
+
+.docspress-hero--layout-editorial.docspress-hero--media-left .docspress-hero__visual::after {
+	right: 0;
+	left: auto;
+}
+
+.docspress-hero--layout-editorial .docspress-hero__visual-label {
+	position: absolute;
+	z-index: 0;
+	top: 50%;
+	right: clamp(14px, 2vw, 28px);
+	display: block;
+	color: transparent;
+	font-family: var(--dp-font-ui, "Nunito Sans", "Trebuchet MS", sans-serif);
+	font-size: clamp(72px, 9vw, 118px);
+	font-weight: 850;
+	letter-spacing: 0.08em;
+	line-height: 0.72;
+	text-transform: uppercase;
+	transform: translateY(-50%) rotate(180deg);
+	writing-mode: vertical-rl;
+	-webkit-text-stroke: 1px color-mix(in srgb, var(--db-hero-heading) 18%, transparent);
+}
+
+.docspress-hero--layout-editorial .docspress-hero__media {
+	z-index: 2;
+	transform: translateX(-8%) rotate(-5deg);
+	filter: drop-shadow(0 28px 36px color-mix(in srgb, #000 34%, transparent));
+	transition: transform 420ms cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.docspress-hero--layout-editorial:hover .docspress-hero__media {
+	transform: translateX(-8%) rotate(-2deg) scale(1.025);
+}
+
 @media (max-width: 860px) {
 	.docspress-hero,
 	.docspress-hero--media-left {
@@ -256,6 +430,24 @@ a.docspress-hero__button--secondary:hover {
 
 	.docspress-hero__media {
 		width: min(var(--db-hero-image-scale), 380px);
+	}
+
+	.docspress-hero--layout-editorial,
+	.docspress-hero--layout-editorial.docspress-hero--media-left {
+		grid-template-columns: minmax(0, 1fr) minmax(220px, 0.55fr);
+		min-height: 470px;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__copy {
+		padding: 48px 38px;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__visual,
+	.docspress-hero--layout-editorial.docspress-hero--media-left .docspress-hero__visual {
+		order: 0;
+		min-height: 100%;
+		padding: 32px;
+		border-top: 0;
 	}
 }
 
@@ -282,10 +474,64 @@ a.docspress-hero__button--secondary:hover {
 	.docspress-hero__button {
 		width: 100%;
 	}
+
+	.docspress-hero--layout-editorial,
+	.docspress-hero--layout-editorial.docspress-hero--media-left {
+		grid-template-columns: minmax(0, 1fr);
+		min-height: auto;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__copy {
+		padding: 42px 24px 38px;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__title {
+		font-size: clamp(44px, 14vw, 62px);
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__visual,
+	.docspress-hero--layout-editorial.docspress-hero--media-left .docspress-hero__visual {
+		min-height: 245px;
+		padding: 28px;
+		border-top: 1px solid color-mix(in srgb, var(--db-hero-heading) 13%, transparent);
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__visual::after {
+		display: none;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__visual-label {
+		top: auto;
+		right: 20px;
+		bottom: 18px;
+		font-size: clamp(44px, 16vw, 66px);
+		line-height: 1;
+		transform: none;
+		writing-mode: horizontal-tb;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__media {
+		width: min(var(--db-hero-image-scale), 190px);
+		transform: rotate(-5deg);
+	}
+
+	.docspress-hero--layout-editorial:hover .docspress-hero__media {
+		transform: rotate(-2deg) scale(1.025);
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__actions {
+		gap: 8px;
+	}
+
+	.docspress-hero--layout-editorial .docspress-hero__button--secondary {
+		padding-block: 10px;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.docspress-hero__button {
+	.docspress-hero__button,
+	.docspress-hero--layout-editorial .docspress-hero__media,
+	.docspress-hero--layout-editorial .docspress-hero__button--secondary::after {
 		transition: none;
 	}
 }

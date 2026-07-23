@@ -52,6 +52,8 @@ function docspress_blocks_render_hero( $attributes ) {
 	$media_id      = isset( $attributes['mediaId'] ) ? absint( $attributes['mediaId'] ) : 0;
 	$media_url     = isset( $attributes['mediaUrl'] ) ? esc_url( $attributes['mediaUrl'] ) : '';
 	$media_alt     = isset( $attributes['mediaAlt'] ) ? sanitize_text_field( $attributes['mediaAlt'] ) : '';
+	$visual_label  = isset( $attributes['visualLabel'] ) ? sanitize_text_field( $attributes['visualLabel'] ) : '';
+	$layout         = docspress_blocks_allowed_value( isset( $attributes['layout'] ) ? $attributes['layout'] : '', array( 'split', 'editorial' ), 'split' );
 	$media_position = docspress_blocks_allowed_value( isset( $attributes['mediaPosition'] ) ? $attributes['mediaPosition'] : '', array( 'left', 'right' ), 'right' );
 	$height         = docspress_blocks_allowed_value( isset( $attributes['height'] ) ? $attributes['height'] : '', array( 'compact', 'standard', 'tall' ), 'standard' );
 	$tone           = docspress_blocks_allowed_value( isset( $attributes['tone'] ) ? $attributes['tone'] : '', array( 'theme', 'midnight', 'paper', 'brand' ), 'theme' );
@@ -66,6 +68,7 @@ function docspress_blocks_render_hero( $attributes ) {
 	$classes        = array(
 		'docspress-hero',
 		'docspress-hero--' . $tone,
+		'docspress-hero--layout-' . $layout,
 		'docspress-hero--media-' . $media_position,
 		'docspress-hero--height-' . $height,
 		'docspress-hero--align-' . $text_align,
@@ -139,6 +142,7 @@ function docspress_blocks_render_hero( $attributes ) {
 		</div>
 		<?php if ( $has_visual ) : ?>
 			<div class="docspress-hero__visual">
+				<?php if ( $visual_label ) : ?><span class="docspress-hero__visual-label" aria-hidden="true"><?php echo esc_html( $visual_label ); ?></span><?php endif; ?>
 				<?php if ( $image ) : ?><figure class="docspress-hero__media"><?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></figure><?php endif; ?>
 			</div>
 		<?php endif; ?>
@@ -184,6 +188,8 @@ function docspress_blocks_register_hero() {
 				'mediaId'       => array( 'type' => 'number', 'default' => 0 ),
 				'mediaUrl'      => array( 'type' => 'string', 'default' => '' ),
 				'mediaAlt'      => array( 'type' => 'string', 'default' => '' ),
+				'visualLabel'   => array( 'type' => 'string', 'default' => '' ),
+				'layout'        => array( 'type' => 'string', 'default' => 'split' ),
 				'mediaPosition' => array( 'type' => 'string', 'default' => 'right' ),
 				'mediaWidth'    => array( 'type' => 'number', 'default' => 44 ),
 				'imageScale'    => array( 'type' => 'number', 'default' => 100 ),

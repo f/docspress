@@ -4,7 +4,7 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 
 ## Blocks
 
-- **Hero** — a responsive, theme-native homepage introduction with inline editing for every visible text label, configurable actions, transparent artwork, restrained layout controls, and opt-in decorative or color overrides.
+- **Hero** — a responsive, theme-native homepage introduction with inline editing for every visible text label, configurable actions, transparent artwork, split-panel and editorial spotlight compositions, and opt-in decorative or color overrides.
 - **Audience Paths** — one to six starting-point cards that route to independent documentation roots, with spacious and compact layouts, inline copy, destination URLs, symbols, accents, new-tab behavior, responsive columns, and optional presentation overrides.
 - **Colorful Code** — filename chrome, language-aware token colors, line numbers, highlighted ranges, captions, and copy-to-clipboard.
 - **Code Tabs** — up to eight keyboard-accessible examples with independent labels, languages, filenames, and code.
@@ -17,7 +17,7 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 
 The inserter also includes **Homepage hero**, **Documentation starting paths**, **Documentation page starter**, **API request example**, and **AI prompt example** patterns under the **DocsPress** category.
 
-Every block inherits the active DocsPress design preset in both Gutenberg and the published site, including its light or dark tokens, typography, exact radius, borders, and article width. WordPress.org therefore keeps crisp 2px corners, while WordPress.com and Jetpack use their 4px recipes; block styles do not impose a larger minimum radius or a separate card shadow. Hero and Audience Paths default to those theme tokens with clean surfaces and modest type scales; their inverse styles, decorations, and custom colors are explicit opt-ins.
+Every block inherits the active DocsPress design preset in both Gutenberg and the published site, including its light or dark tokens, typography, exact radius, borders, and article width. WordPress.org therefore keeps crisp 2px corners, while WordPress.com and Jetpack use their 4px recipes; block styles do not impose a larger minimum radius or a separate card shadow. Hero and Audience Paths default to those theme tokens with clean surfaces and modest type scales; the Hero's editorial spotlight, inverse styles, decorations, and custom colors are explicit opt-ins.
 
 ## Folder structure
 
@@ -58,7 +58,7 @@ docspress-blocks/
 The blocks are dynamic. WordPress stores concise canonical block comments and the plugin renders accessible markup on the front end. A homepage hero can be serialized with every presentation choice kept in block attributes:
 
 ```html
-<!-- wp:docspress/hero {"title":"Docs that stay connected to your GitHub repo","primaryLabel":"Choose your path","primaryUrl":"#choose-your-path","secondaryLabel":"Latest updates","secondaryUrl":"/#latest-updates","mediaUrl":"https://example.com/hero.png","mediaAlt":"Two project mascots celebrating together.","mediaPosition":"right","height":"standard","tone":"theme","showGrid":false,"showOrbit":false} /-->
+<!-- wp:docspress/hero {"title":"Docs that stay connected to your GitHub repo","primaryLabel":"Choose your path","primaryUrl":"#choose-your-path","secondaryLabel":"Latest updates","secondaryUrl":"/#latest-updates","mediaUrl":"https://example.com/hero.png","mediaAlt":"Two project mascots celebrating together.","visualLabel":"DOCS","layout":"editorial","mediaPosition":"right","height":"standard","tone":"midnight","showGrid":true,"showOrbit":false} /-->
 ```
 
 Starting paths keep each reader’s destination explicit:
