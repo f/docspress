@@ -71,6 +71,7 @@ function docspress_blocks_render_audience_paths( $attributes ) {
 	$columns      = isset( $attributes['columns'] ) ? min( 3, max( 1, absint( $attributes['columns'] ) ) ) : 2;
 	$tone         = docspress_blocks_allowed_value( isset( $attributes['tone'] ) ? $attributes['tone'] : '', array( 'theme', 'paper', 'ink', 'blueprint' ), 'theme' );
 	$text_align   = docspress_blocks_allowed_value( isset( $attributes['textAlign'] ) ? $attributes['textAlign'] : '', array( 'left', 'center' ), 'left' );
+	$compact      = ! empty( $attributes['compact'] );
 	$show_numbers = ! empty( $attributes['showNumbers'] );
 	$classes      = array(
 		'docspress-audience-paths',
@@ -82,6 +83,9 @@ function docspress_blocks_render_audience_paths( $attributes ) {
 
 	if ( ! $show_numbers ) {
 		$classes[] = 'docspress-audience-paths--no-numbers';
+	}
+	if ( $compact ) {
+		$classes[] = 'docspress-audience-paths--compact';
 	}
 
 	$custom_colors = array(
@@ -168,6 +172,7 @@ function docspress_blocks_register_audience_paths() {
 				'columns'      => array( 'type' => 'number', 'default' => 2 ),
 				'tone'         => array( 'type' => 'string', 'default' => 'theme' ),
 				'textAlign'    => array( 'type' => 'string', 'default' => 'left' ),
+				'compact'      => array( 'type' => 'boolean', 'default' => false ),
 				'showNumbers'  => array( 'type' => 'boolean', 'default' => false ),
 				'panelColor'   => array( 'type' => 'string', 'default' => '' ),
 				'textColor'    => array( 'type' => 'string', 'default' => '' ),

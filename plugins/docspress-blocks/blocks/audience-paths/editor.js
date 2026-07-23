@@ -63,6 +63,7 @@
 			columns: { type: 'number', default: 2 },
 			tone: { type: 'string', default: 'theme' },
 			textAlign: { type: 'string', default: 'left' },
+			compact: { type: 'boolean', default: false },
 			showNumbers: { type: 'boolean', default: false },
 			panelColor: { type: 'string', default: '' },
 			textColor: { type: 'string', default: '' },
@@ -76,6 +77,7 @@
 				`docspress-audience-paths--${ attributes.tone }`,
 				`docspress-audience-paths--columns-${ attributes.columns }`,
 				`docspress-audience-paths--align-${ attributes.textAlign }`,
+				attributes.compact ? 'docspress-audience-paths--compact' : '',
 				attributes.showNumbers ? '' : 'docspress-audience-paths--no-numbers',
 				'docspress-audience-paths--editor',
 				presetClass
@@ -151,6 +153,12 @@
 								{ label: __( 'Center', 'docspress-blocks' ), value: 'center' }
 							],
 							onChange: ( textAlign ) => setAttributes( { textAlign } )
+						} ),
+						el( ToggleControl, {
+							label: __( 'Compact layout', 'docspress-blocks' ),
+							help: __( 'Reduce spacing and card height for routing inside documentation pages.', 'docspress-blocks' ),
+							checked: attributes.compact,
+							onChange: ( compact ) => setAttributes( { compact } )
 						} ),
 						el( ToggleControl, {
 							label: __( 'Show path numbers', 'docspress-blocks' ),

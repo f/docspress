@@ -215,6 +215,91 @@ a.docspress-audience-paths__card:focus-visible {
 	transition: transform 150ms ease;
 }
 
+.docspress-audience-paths--compact {
+	margin-block: clamp(1.5rem, 3vw, 2.5rem);
+	padding: clamp(20px, 3vw, 28px);
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__header {
+	max-width: 760px;
+	margin-bottom: 18px;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__eyebrow {
+	margin-bottom: 8px;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__title {
+	font-size: clamp(24px, 3vw, 32px);
+	line-height: 1.1;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__description {
+	margin-top: 8px;
+	font-size: clamp(14px, 1.4vw, 16px);
+	line-height: 1.5;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__grid {
+	gap: 8px;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__card {
+	display: grid;
+	grid-template-areas:
+		"icon copy"
+		"cta cta";
+	grid-template-columns: 32px minmax(0, 1fr);
+	gap: 12px;
+	min-height: 0;
+	padding: 16px;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__number {
+	top: 16px;
+	right: 16px;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__icon {
+	grid-area: icon;
+	width: 32px;
+	min-width: 32px;
+	height: 32px;
+	margin: 0;
+	font-size: 11px;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__card-copy {
+	grid-area: copy;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__card-title {
+	font-size: 17px;
+	letter-spacing: -0.015em;
+	line-height: 1.2;
+}
+
+.docspress-audience-paths--compact.docspress-audience-paths--no-numbers .docspress-audience-paths__card-title {
+	padding-right: 0;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__card-description {
+	display: -webkit-box;
+	margin-top: 4px;
+	overflow: hidden;
+	font-size: 13px;
+	line-height: 1.45;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.docspress-audience-paths--compact .docspress-audience-paths__cta {
+	grid-area: cta;
+	margin: 0;
+	padding-top: 0;
+	font-size: 12px;
+}
+
 a.docspress-audience-paths__card:hover .docspress-audience-paths__cta > span {
 	transform: translate(2px, -2px);
 }
@@ -249,6 +334,12 @@ a.docspress-audience-paths__card:hover .docspress-audience-paths__cta > span {
 
 	.docspress-audience-paths__card {
 		min-height: 215px;
+	}
+
+	.docspress-audience-paths--compact .docspress-audience-paths__card-description {
+		display: block;
+		overflow: visible;
+		-webkit-line-clamp: initial;
 	}
 }
 
