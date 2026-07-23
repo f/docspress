@@ -31,7 +31,7 @@ if ( $is_static_front && have_posts() ) {
 		<?php endif; ?>
 	<?php endif; ?>
 
-	<?php if ( get_theme_mod( 'docspress_homepage_show_latest_posts', true ) ) : ?>
+	<?php if ( get_theme_mod( 'docspress_homepage_show_latest_posts', false ) ) : ?>
 		<section class="homepage-updates" id="latest-updates">
 			<header class="section-heading">
 				<p class="entry-kicker"><?php esc_html_e( 'From the site', 'docspress' ); ?></p>

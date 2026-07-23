@@ -14,7 +14,7 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 - Instant sidebar-only Page filtering for quickly narrowing the visible navigation tree.
 - An automatic “On this page” table of contents from `h2` and `h3` headings.
 - Previous and next links that follow the sidebar order.
-- A Gutenberg-built site homepage with configurable DocsPress Hero and audience-routing blocks, plus native posts, archives, categories, tags, feeds, featured images, and post navigation.
+- A Gutenberg-built site homepage with configurable DocsPress Hero and audience-routing blocks, plus an optional recent-posts grid and native posts, archives, categories, tags, feeds, featured images, and post navigation.
 - Optional WordPress discussions on Pages and posts, including threading, avatars, moderation states, reply links, paging, and comment forms.
 - A generated `/llms.txt` index and exact source Markdown responses for managed Pages.
 - A two-button article action bar for editing in WordPress or proposing changes to the exact source Markdown file on GitHub.

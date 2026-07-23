@@ -358,7 +358,7 @@ function docspress_customize_register( $wp_customize ) {
 			),
 		),
 		'docspress_homepage_show_latest_posts' => array(
-			'default' => true,
+			'default' => false,
 			'sanitize_callback' => 'docspress_sanitize_checkbox',
 			'sanitize_js_callback' => 'rest_sanitize_boolean',
 			'section' => 'docspress_homepage',
