@@ -4,7 +4,7 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 
 ![DocsPress theme showing the Kitchen Sink documentation page](screenshot.png)
 
-[Launch the complete theme demo in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https%3A%2F%2Fraw.githubusercontent.com%2FAutomattic%2Fdocspress%2Fmain%2Ftheme%2Fblueprint-browser.json&page-title=DocsPress%20Theme%20Playground). It creates a temporary site, logs you into the admin, and opens the DocsPress Customizer so you can change homepage, navigation, discussion, color, typography, and layout settings with a live preview.
+[Launch the complete theme demo in WordPress Playground](https://playground.wordpress.net/?blueprint-url=https%3A%2F%2Fraw.githubusercontent.com%2FAutomattic%2Fdocspress%2Fmain%2Ftheme%2Fblueprint-browser.json&page-title=DocsPress%20Theme%20Playground). It creates a temporary site and logs you into the admin. Edit the Home page to customize its Hero and Audience Paths blocks, or open the DocsPress Customizer for navigation, discussion, typography, color, and layout settings with a live preview.
 
 ## What it includes
 
@@ -14,7 +14,7 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 - Instant sidebar-only Page filtering for quickly narrowing the visible navigation tree.
 - An automatic “On this page” table of contents from `h2` and `h3` headings.
 - Previous and next links that follow the sidebar order.
-- A customizable site homepage plus native posts, archives, categories, tags, feeds, featured images, and post navigation.
+- A Gutenberg-built site homepage with configurable DocsPress Hero and audience-routing blocks, plus native posts, archives, categories, tags, feeds, featured images, and post navigation.
 - Optional WordPress discussions on Pages and posts, including threading, avatars, moderation states, reply links, paging, and comment forms.
 - A generated `/llms.txt` index and exact source Markdown responses for managed Pages.
 - A two-button article action bar for editing in WordPress or proposing changes to the exact source Markdown file on GitHub.
@@ -23,7 +23,7 @@ A small, Docusaurus-inspired documentation theme for [Docspress](https://github.
 - A dedicated **DocsPress Theme** Customizer panel with homepage, discussion, post, preset, navigation, search, layout, color, typography, header, article, and footer controls.
 - Automatic Page-tree navigation or fully hand-built WordPress menus for the header, documentation sidebar, and footer.
 - A transparent Octocat/Wapuu hybrid default header mark, while preserving WordPress's standard custom-logo override.
-- The companion DocsPress Blocks plugin with code, prompt, callout, API exchange, terminal session, result, and file-tree blocks plus starter documentation patterns.
+- The companion DocsPress Blocks plugin with homepage Hero and Audience Paths, code, prompt, callout, API exchange, terminal session, result, and file-tree blocks plus starter patterns.
 - Jetpack installed and activated by the Playground blueprint in local Offline Mode.
 - A WordPress Playground blueprint with realistic nested demo Pages and a generated Kitchen Sink stored as Gutenberg block HTML.
 
@@ -47,17 +47,19 @@ Playground mounts and activates the theme and DocsPress Blocks, installs Jetpack
 http://127.0.0.1:9400/
 ```
 
-The Playground content is generated from the repository's `docs/` tree with `npm run playground:docs`, so local preview and production synchronization use the same converted Gutenberg content. The Kitchen Sink remains available at `http://127.0.0.1:9400/docs/reference/kitchen-sink/`; it appends a live component inventory and exercises all eight DocsPress blocks, every semantic state, and meaningful configuration combinations.
+The Playground content is generated from the repository's `docs/` tree with `npm run playground:docs`, so local preview and production synchronization use the same converted Gutenberg content. The Home page contains Hero and Audience Paths blocks linked to the source-backed `/docs/publish-existing-docs/` and `/docs/create-docs-with-ai/` Page roots. The Kitchen Sink remains available at `http://127.0.0.1:9400/docs/reference/kitchen-sink/`; it appends a live component inventory and exercises all eight documentation blocks, every semantic state, and meaningful configuration combinations.
 
 To rebuild the persisted Playground site from scratch, add `--reset`. To keep it from opening a browser automatically, add `--skip-browser`.
 
 ## Install on WordPress
 
 1. Copy this directory to `wp-content/themes/docspress`.
-2. Activate **DocsPress** in **Appearance → Themes**.
-3. Create a root Page such as **Docs** and arrange the documentation beneath it with parent/child Pages.
-4. Open **Appearance → Customize → DocsPress Theme → Navigation** and select that root Page.
-5. Choose automatic Page navigation or select a WordPress menu for the sidebar and header.
+2. Copy `plugins/docspress-blocks/` to `wp-content/plugins/docspress-blocks/`.
+3. Activate **DocsPress Blocks**, then activate **DocsPress**.
+4. Create a root Page such as **Docs** and arrange the documentation beneath it with parent/child Pages.
+5. Choose a front Page under **Settings → Reading**, then add **DocsPress: Hero** and optional **DocsPress: Audience Paths** blocks in its editor.
+6. Open **Appearance → Customize → DocsPress Theme → Navigation** and select the docs root Page.
+7. Choose automatic Page navigation or select a WordPress menu for the sidebar and header.
 
 If no documentation root is configured, the theme uses the current Page’s top-most ancestor. On non-Page views, it lists all published Pages.
 
@@ -68,7 +70,7 @@ The theme exposes a standard `llms.txt` index at `/llms.txt`. It contains the si
 Each linked Page is available as its exact synchronized Markdown source by replacing the trailing slash with `.md`:
 
 ```text
-/docs/getting-started/  → /docs/getting-started.md
+/docs/publish-existing-docs/  → /docs/publish-existing-docs.md
 ```
 
 The response includes the original frontmatter and uses `text/markdown; charset=utf-8`. Placeholder sections, hand-authored WordPress Pages, drafts, and invalid paths return `404` because they do not have source-owned Markdown. Existing managed Pages gain this metadata on their next DocsPress synchronization.
@@ -124,7 +126,9 @@ The dedicated **Command search** section can enable or disable the feature; chan
 
 ### Homepage
 
-WordPress still chooses the front Page under **Settings → Reading**. The **Homepage** theme section then switches that Page between the documentation template and a site landing layout. The landing layout can show the Page title, excerpt or site description, editable primary and secondary actions, Page content, and a configurable recent-post grid.
+WordPress still chooses the front Page under **Settings → Reading**. Edit that Page and add **DocsPress: Hero** to control its copy, actions, transparent artwork, labels, and restrained layout. Add **DocsPress: Audience Paths** to route one to six reader personas into dedicated Page roots. Both blocks inherit the active theme by default; decorative treatments, inverse styles, and custom colors remain optional overrides.
+
+The **Homepage** theme section switches the front Page between the documentation template and a site landing layout, then controls the optional recent-post grid. The landing layout renders the Page’s Gutenberg blocks directly; it does not generate a separate static hero.
 
 Blank action URLs use useful native fallbacks: the primary action opens the configured documentation root, while the secondary action opens the WordPress posts page or recent-post section.
 
@@ -186,7 +190,7 @@ The theme preserves the Page hierarchy generated from nested Markdown folders. S
 
 ### Documentation blocks
 
-The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Colorful Code, Code Tabs, Callout, API Request / Response, Terminal Session, Result, File Tree, and Prompt blocks plus three starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. They inherit theme typography, radius, borders, and content width; free-form block colors are intentionally unavailable. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback. The Kitchen Sink Page is the single-page reference for every available block option and semantic state.
+The companion plugin lives at [`../plugins/docspress-blocks/`](../plugins/docspress-blocks/). It adds Hero, Audience Paths, Colorful Code, Code Tabs, Callout, API Request / Response, Terminal Session, Result, File Tree, and Prompt blocks plus five starter patterns. The blocks automatically follow the active DocsPress, WordPress.org, WordPress.com, Jetpack, or custom preset in both light and dark mode. Documentation blocks inherit semantic colors; Hero and Audience Paths additionally expose intentional landing-page presentation controls. The Playground pages use their canonical serialized `<!-- wp:docspress/* -->` markup, so opening a demo Page in the block editor shows editable native blocks rather than a Classic block or raw HTML fallback. The Kitchen Sink Page is the single-page reference for every documentation-block option and semantic state.
 
 ### Versioned docs
 
@@ -216,7 +220,7 @@ On a public production site, connect Jetpack to WordPress.com and enable **Jetpa
 
 ```text
 .
-├── assets/images/docspress-hybrid-logo.png # Default header mark
+├── assets/images/docspress-mark.svg # Default header mark
 ├── assets/fonts/            # Bundled Nunito Sans, Inter, and EB Garamond WOFF2 subsets
 ├── assets/js/docs.js       # Command search, navigation, dark mode, TOC, copy buttons
 ├── assets/js/customizer-controls.js # Applies discovered preset recipes

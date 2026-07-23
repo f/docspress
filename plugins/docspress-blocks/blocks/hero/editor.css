@@ -1,0 +1,53 @@
+.editor-styles-wrapper .wp-block-docspress-hero {
+	max-width: min(100%, 1120px);
+	margin-inline: auto;
+}
+
+.docspress-hero--editor {
+	cursor: default;
+}
+
+.docspress-hero--editor .docspress-hero__title,
+.docspress-hero--editor .docspress-hero__description,
+.docspress-hero--editor .docspress-hero__eyebrow,
+.docspress-hero--editor .docspress-hero__button {
+	cursor: text;
+}
+
+.docspress-hero--editor .docspress-hero__button {
+	outline: 2px solid transparent;
+	outline-offset: 3px;
+	transition: outline-color 120ms ease, box-shadow 120ms ease;
+}
+
+.docspress-hero--editor .docspress-hero__button:hover,
+.docspress-hero--editor .docspress-hero__button:focus {
+	outline-color: color-mix(in srgb, var(--db-hero-accent) 78%, #fff);
+}
+
+.docspress-hero--editor .docspress-hero__button:focus {
+	box-shadow: 0 0 0 5px color-mix(in srgb, var(--db-hero-accent) 22%, transparent);
+}
+
+.docspress-hero--editor .docspress-hero__media-placeholder {
+	position: relative;
+	z-index: 2;
+	height: auto;
+	min-height: 86px;
+	padding: 18px 24px;
+	border: 1px dashed rgba(255, 255, 255, 0.62);
+	background: rgba(255, 255, 255, 0.12);
+	color: #fff;
+}
+
+.docspress-hero--editor .docspress-hero__media-placeholder:hover {
+	background: rgba(255, 255, 255, 0.2);
+	color: #fff;
+}
+
+.docspress-hero--editor .docspress-hero__eyebrow:empty::after,
+.docspress-hero--editor .docspress-hero__title:empty::after,
+.docspress-hero--editor .docspress-hero__description:empty::after,
+.docspress-hero--editor .docspress-hero__button:empty::after {
+	color: color-mix(in srgb, currentColor 48%, transparent);
+}

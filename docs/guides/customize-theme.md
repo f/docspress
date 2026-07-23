@@ -12,13 +12,17 @@ Open **Design presets** and choose DocsPress, WordPress.org, WordPress.com, or J
 
 ![The Design presets section with the Jetpack preset applied in live preview](https://raw.githubusercontent.com/Automattic/docspress/main/theme/assets/images/customizer/design-preset-jetpack.jpg "Selecting Jetpack immediately updates the preview's typography, colors, and interface details.")
 
-The DocsPress Blocks plugin follows the selected preset in the editor and on the published site. Block colors remain semantic so code, prompts, callouts, API exchanges, terminal sessions, results, and file trees stay legible in light and dark mode.
+The DocsPress Blocks plugin follows the selected preset in the editor and on the published site. Every block surface inherits the preset’s corner radius, borders, light and dark colors, interface type, copy type, and heading type; changing those theme settings updates the blocks instead of leaving a second visual system behind. Documentation-block accents remain semantic so code, prompts, callouts, API exchanges, terminal sessions, results, and file trees stay legible. The design-focused Hero and Audience Paths blocks additionally offer intentional color and layout overrides.
 
 ## Build the site homepage
 
-First choose a static front Page and optional posts page under **Settings → Reading**. Then open **DocsPress Theme → Homepage** and choose either the site landing layout or the familiar documentation Page layout.
+First choose a static front Page and optional posts page under **Settings → Reading**. Edit that front Page, insert **DocsPress: Hero**, and customize it in the block editor. Add **DocsPress: Audience Paths** after it when different readers should enter dedicated documentation roots. The Playground Home page already contains both blocks.
 
-The landing layout uses the front Page title and its excerpt, falling back to the site description. You can change the intro label, show or hide that description, edit both action labels and URLs, include the Page’s Gutenberg content, and show one to six recent posts. A blank primary URL opens the configured documentation root; a blank secondary URL opens the posts page or recent-post section.
+The block canvas edits the eyebrow, title, description, and action labels. Its clean default inherits the active theme’s type, colors, borders, and radius. The sidebar controls actions and URLs, artwork, alternative text, image placement, height, alignment, and optional presentation overrides. Grid, orbit, inverse styles, and custom colors are opt-in. Empty action labels or URLs hide that button; removing the image creates a text-only hero.
+
+Audience Paths edits every visible label directly in the canvas. Add up to six paths, then give each one a Page-root URL, symbol, accent, and optional new-tab behavior in the sidebar. The default split asks whether the repository already has Markdown docs: existing docs lead to `/docs/publish-existing-docs/`, while a source-only project leads to `/docs/create-docs-with-ai/`. Normal child Pages beneath those roots provide each path’s focused sidebar branch.
+
+Open **DocsPress Theme → Homepage** only to switch between the site landing template and the familiar documentation Page template, or to configure the optional one-to-six-post recent grid. The landing template renders the front Page’s Gutenberg blocks directly, so the Hero and any following content remain normal editable Page content.
 
 The [DocsPress browser Playground](https://playground.wordpress.net/?blueprint-url=https%3A%2F%2Fraw.githubusercontent.com%2FAutomattic%2Fdocspress%2Fmain%2Ftheme%2Fblueprint-browser.json&page-title=DocsPress%20Theme%20Playground) opens directly in this logged-in customization environment with representative content already seeded.
 
@@ -62,7 +66,7 @@ Return to the DocsPress Theme panel for the remaining sections:
 
 - **Header** controls the menu, brand suffix, repository link, custom logo, and color-mode switcher.
 - **Layout & reading tools** controls article, sidebar, and table-of-contents widths plus breadcrumbs, previous/next navigation, excerpts, and edit actions.
-- **Homepage** controls the front-page layout, actions, content, and recent posts.
+- **Homepage** selects the front-page template and recent posts; edit the front Page’s DocsPress Hero and Audience Paths blocks for its content, routing, and design.
 - **Posts & archives** controls metadata and taxonomy presentation.
 - **Discussion** controls where conversations appear and how they are labeled.
 - **Light & dark colors** exposes independent semantic palettes for both modes.

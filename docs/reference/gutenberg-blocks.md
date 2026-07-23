@@ -2,7 +2,31 @@
 title: DocsPress Gutenberg blocks
 ---
 
-The DocsPress Blocks plugin registers eight dynamic blocks. Their saved content is a self-closing Gutenberg comment whose attributes are valid JSON.
+The DocsPress Blocks plugin registers two landing-page blocks and eight documentation blocks. Their saved content is a self-closing Gutenberg comment whose attributes are valid JSON.
+
+## Hero
+
+Use `docspress/hero` as the editable introduction on a WordPress front Page. Edit the eyebrow, title, description, and action labels directly in the canvas. The block sidebar also controls:
+
+- Primary and secondary action labels, URLs, and new-tab behavior.
+- A Media Library image or external image URL, alternative text, and image scale.
+- Image side and visual-column width, compact/standard/tall height, and left or centered text.
+- A theme-native default plus optional midnight, paper, or brand-color overrides.
+- Optional custom colors and opt-in grid or orbit decorations.
+
+Empty action labels or URLs hide that action. Removing the image keeps the hero usable as a text-only block. The image renders without an added card or image background, preserving transparent artwork.
+
+<!-- wp:docspress/hero {"eyebrow":"Documentation, publishing, and community","title":"Docs that stay connected to your GitHub repo","description":"Write beside your code. Publish a WordPress experience that guides every reader to the docs written for them.","primaryLabel":"Choose your path","primaryUrl":"#choose-your-path","secondaryLabel":"Latest updates","secondaryUrl":"/#latest-updates","mediaUrl":"https://raw.githubusercontent.com/Automattic/docspress/main/theme/assets/images/homepage-octocat-wapuu.webp","mediaAlt":"The GitHub Octocat and WordPress Wapuu celebrating their documentation workflow together.","mediaPosition":"right","mediaWidth":44,"imageScale":100,"height":"standard","tone":"theme","textAlign":"left","showGrid":false,"showOrbit":false} /-->
+
+## Audience Paths
+
+Use `docspress/audience-paths` to route readers into independent documentation roots. The default paths distinguish a repository that already has Markdown docs from one that still needs documentation, but the block supports one to six fully editable starting points.
+
+Edit the section introduction, every path name, summary, symbol, and call-to-action directly in the canvas. Each path’s sidebar panel controls its destination URL, accent, and new-tab behavior. The default presentation inherits the theme; layout controls provide one to three columns, left or centered text, optional path numbers, subtle/inverse/blueprint variants, and custom colors when a deliberate override is needed.
+
+The published card is a native link, so navigation works without JavaScript and remains keyboard accessible. Point each card at a normal WordPress Page root such as `/docs/publish-existing-docs/` or `/docs/create-docs-with-ai/`; its child Pages then form that path’s branch in the DocsPress sidebar.
+
+<!-- wp:docspress/audience-paths {"anchor":"choose-your-path","align":"wide","eyebrow":"Choose a starting point","title":"Where are your docs today?","description":"Follow the path that matches your repository.","paths":[{"title":"I already have Markdown docs","description":"Connect an existing docs folder to WordPress and begin with a safe draft sync.","url":"/docs/publish-existing-docs/","cta":"Publish existing docs","icon":"MD","accent":"blue","newTab":false},{"title":"I need to create docs","description":"Generate source-grounded documentation with AI, review it, then publish it.","url":"/docs/create-docs-with-ai/","cta":"Create docs with AI","icon":"AI","accent":"gold","newTab":false}],"columns":2,"tone":"theme","textAlign":"left","showNumbers":false} /-->
 
 ## Colorful Code
 
@@ -67,7 +91,7 @@ Use `docspress/prompt` for a reusable AI prompt. `mode` accepts `chat`, `code`, 
 - Use compact JSON with escaped quotes, newlines, backslashes, and control characters.
 - DocsPress converts HTML-sensitive attribute characters to WordPress-safe Unicode escapes during Markdown conversion.
 - Do not add rendered HTML after a dynamic block comment.
-- Do not invent attributes or custom color controls.
+- Do not invent attributes. Documentation blocks use semantic colors; Hero and Audience Paths expose their documented presentation and custom-color controls.
 - Install and activate the matching DocsPress Blocks plugin on WordPress.
 
 Open the [Kitchen Sink](kitchen-sink.md) to inspect every semantic state and meaningful option in one Page.

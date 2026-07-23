@@ -6,6 +6,10 @@ This Page is the acceptance surface for the DocsPress theme and all eight docume
 
 <!-- wp:docspress/callout {"tone":"note","title":"Playground acceptance page","content":"<p>The local Playground appends its live component inventory to this source-backed Page after seeding it.</p>","collapsible":false} /-->
 
+## Audience Paths
+
+<!-- wp:docspress/audience-paths {"eyebrow":"Choose a starting point","title":"Where are your docs today?","description":"Independent documentation roots can meet readers at the state of their repository.","paths":[{"title":"I already have Markdown docs","description":"Connect an existing docs folder and begin with a safe draft sync.","url":"/docs/publish-existing-docs/","cta":"Publish existing docs","icon":"MD","accent":"blue","newTab":false},{"title":"I need to create docs","description":"Generate source-grounded documentation with AI before publishing.","url":"/docs/create-docs-with-ai/","cta":"Create docs with AI","icon":"AI","accent":"gold","newTab":false},{"title":"I'm evaluating DocsPress","description":"Review the product benefits and open a working preview before changing a repository.","url":"/docs/why-docspress/","cta":"Explore why DocsPress","icon":"?","accent":"green","newTab":false}],"columns":3,"tone":"ink","textAlign":"left","showNumbers":true} /-->
+
 ## Colorful Code
 
 <!-- wp:docspress/colorful-code {"language":"yaml","filename":".github/workflows/sync-docs.yml","code":"name: Sync docs\non:\n  push:\n    paths: [\"docs/**\"]\nsteps:\n  - uses: Automattic/docspress@COMMIT_SHA","highlightedLines":"2-4,6","showLineNumbers":true,"caption":"Filename, language, line numbers, highlighted ranges, caption, and copy."} /-->
@@ -62,7 +66,7 @@ This Page is the acceptance surface for the DocsPress theme and all eight docume
 
 ## File Tree
 
-<!-- wp:docspress/file-tree {"root":"Automattic/docspress/","tree":".claude/\n  skills/\ndocs/\n  index.md\n  getting-started/\n  reference/\n    kitchen-sink.md\nplugins/\n  docspress-blocks/\ntheme/\npackage.json","caption":"Nested folders, files, a custom root label, and caption."} /-->
+<!-- wp:docspress/file-tree {"root":"Automattic/docspress/","tree":".claude/\n  skills/\ndocs/\n  index.md\n  publish-existing-docs/\n  create-docs-with-ai/\n  reference/\n    kitchen-sink.md\nplugins/\n  docspress-blocks/\ntheme/\npackage.json","caption":"Nested folders, files, a custom root label, and caption."} /-->
 
 <!-- wp:docspress/file-tree {"root":"docs/","tree":"index.md\nwhy-docspress.md\ntroubleshooting.md","caption":"A compact tree."} /-->
 
@@ -76,4 +80,4 @@ This Page is the acceptance surface for the DocsPress theme and all eight docume
 
 <!-- wp:docspress/prompt {"prompt":"Use $docspress-install to create a phased migration plan from a static documentation site to DocsPress.","model":"Planning agent","mode":"plan","thinking":true,"context":"$docspress-install, docs/, #architecture, https://example.com/current-docs","caption":"Migration plan with a skill reference"} /-->
 
-<!-- wp:docspress/result {"status":"success","title":"Kitchen Sink complete","content":"<p>Every DocsPress block, semantic variant, and meaningful option is represented on this Page.</p>","meta":"8 custom blocks"} /-->
+<!-- wp:docspress/result {"status":"success","title":"Kitchen Sink complete","content":"<p>Every DocsPress documentation block, semantic variant, and meaningful option is represented on this Page. Hero and Audience Paths are the design-focused landing blocks.</p>","meta":"8 documentation blocks · 2 landing blocks"} /-->

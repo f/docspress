@@ -26,4 +26,4 @@ The redirect must use `http` and the hostname must be `localhost` or `127.0.0.1`
 
 <!-- wp:docspress/callout {"tone":"danger","title":"Do not let an agent observe token output","content":"<p>Without <code>--set-secret</code>, the helper prints the access token and a secret-setting command. Use <code>--set-secret</code> in a trusted local terminal.</p>","collapsible":false} /-->
 
-See [Authenticate WordPress](../getting-started/authentication.md) for the recommended invocation.
+See [Authenticate WordPress](../publish-existing-docs/authentication.md) for the recommended invocation.

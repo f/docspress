@@ -13,7 +13,7 @@
 	border: 1px solid color-mix(in srgb, var(--dp-ink, #171a22) 30%, var(--dp-line-strong, #cfd4dc));
 	border-radius: var(--dp-radius, 10px);
 	background: var(--db-terminal-bg);
-	box-shadow: 0 10px 26px color-mix(in srgb, var(--dp-ink, #171a22) 13%, transparent);
+	box-shadow: none;
 	color: var(--db-terminal-text);
 }
 
@@ -72,7 +72,7 @@
 	margin: 0;
 	padding: 3px 7px;
 	border: 1px solid var(--db-terminal-line);
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	border-radius: var(--dp-radius, 10px);
 	background: rgba(255, 255, 255, 0.04);
 	color: var(--db-terminal-text);
 	cursor: pointer;
@@ -146,7 +146,7 @@
 html[data-theme="dark"] .wp-block-docspress-terminal-session {
 	--db-terminal-bg: color-mix(in srgb, var(--dp-canvas, #11141b) 74%, #000);
 	--db-terminal-panel: color-mix(in srgb, var(--dp-paper, #171b23) 70%, #000);
-	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+	box-shadow: none;
 }
 
 @media (max-width: 520px) {

@@ -2,7 +2,7 @@
 title: Install the agent skills
 ---
 
-Install both repository-aware skills so an agent can choose between existing documentation and verified generation from source.
+Install both repository-aware skills so an agent can publish existing documentation now and still generate missing coverage from source when needed.
 
 ## Install the skills
 

@@ -306,7 +306,68 @@ if ( ! $docs_id ) {
 	wp_die( 'The generated documentation does not contain the docs root Page.' );
 }
 
-$home_content = <<<'HTML'
+$publish_existing_id = isset( $ids_by_key['docs/publish-existing-docs'] ) ? $ids_by_key['docs/publish-existing-docs'] : 0;
+$create_docs_id      = isset( $ids_by_key['docs/create-docs-with-ai'] ) ? $ids_by_key['docs/create-docs-with-ai'] : 0;
+if ( ! $publish_existing_id || ! $create_docs_id ) {
+	wp_die( 'The generated documentation does not contain both homepage starting paths.' );
+}
+
+$updates_id = docspress_playground_upsert_content( 'page', 'updates', 'Updates', '' );
+$hero_attributes = array(
+	'eyebrow'         => 'Documentation, publishing, and community',
+	'title'           => 'Docs that stay connected to your GitHub repo',
+	'description'     => 'Write beside your code. Publish a WordPress experience that guides every reader to the docs written for them.',
+	'primaryLabel'    => 'Choose your path',
+	'primaryUrl'      => '#choose-your-path',
+	'secondaryLabel'  => 'Latest updates',
+	'secondaryUrl'    => $updates_id ? get_permalink( $updates_id ) : home_url( '/#latest-updates' ),
+	'mediaUrl'        => get_theme_file_uri( 'assets/images/homepage-octocat-wapuu.webp' ),
+	'mediaAlt'        => 'The GitHub Octocat and WordPress Wapuu celebrating their documentation workflow together.',
+	'mediaPosition'   => 'right',
+	'mediaWidth'      => 44,
+	'imageScale'      => 100,
+	'height'          => 'standard',
+	'tone'            => 'theme',
+	'textAlign'       => 'left',
+	'showGrid'        => false,
+	'showOrbit'       => false,
+);
+$audience_paths_attributes = array(
+	'anchor'      => 'choose-your-path',
+	'align'       => 'wide',
+	'eyebrow'     => 'Choose a starting point',
+	'title'       => 'Where are your docs today?',
+	'description' => 'Follow the path that matches your repository.',
+	'paths'       => array(
+		array(
+			'title'       => 'I already have Markdown docs',
+			'description' => 'Connect an existing docs folder to WordPress and begin with a safe draft sync.',
+			'url'         => get_permalink( $publish_existing_id ),
+			'cta'         => 'Publish existing docs',
+			'icon'        => 'MD',
+			'accent'      => 'blue',
+			'newTab'      => false,
+		),
+		array(
+			'title'       => 'I need to create docs',
+			'description' => 'Generate source-grounded documentation with AI, review it, then publish it.',
+			'url'         => get_permalink( $create_docs_id ),
+			'cta'         => 'Create docs with AI',
+			'icon'        => 'AI',
+			'accent'      => 'gold',
+			'newTab'      => false,
+		),
+	),
+	'columns'     => 2,
+	'tone'        => 'theme',
+	'textAlign'   => 'left',
+	'showNumbers' => false,
+);
+$home_content = '<!-- wp:docspress/hero ' . serialize_block_attributes( $hero_attributes ) . ' /-->'
+	. "\n\n"
+	. '<!-- wp:docspress/audience-paths ' . serialize_block_attributes( $audience_paths_attributes ) . ' /-->'
+	. "\n\n"
+	. <<<'HTML'
 <!-- wp:heading {"level":2} -->
 <h2 class="wp-block-heading">One WordPress site, every publishing surface</h2>
 <!-- /wp:heading -->
@@ -338,13 +399,12 @@ HTML;
 $home_id = docspress_playground_upsert_content(
 	'page',
 	'home',
-	'Docs that stay connected',
+	'Docs connected to your GitHub repo',
 	$home_content,
 	array(
-		'post_excerpt' => 'A complete WordPress theme for documentation, updates, and the conversations around them.',
+		'post_excerpt' => 'Write beside your code and guide every reader to the documentation path written for them.',
 	)
 );
-$updates_id = docspress_playground_upsert_content( 'page', 'updates', 'Updates', '' );
 
 $release_post_id = docspress_playground_upsert_content(
 	'post',
@@ -506,6 +566,8 @@ update_option(
 		'release_post'            => $release_post_id,
 		'demo_comment_count'      => $release_post_id ? get_comments_number( $release_post_id ) : 0,
 		'docs_page'               => $docs_id,
+		'publish_existing_page'   => $publish_existing_id,
+		'create_docs_page'        => $create_docs_id,
 		'kitchen_sink_page'       => $kitchen_sink_id,
 		'design_preset'           => get_theme_mod( 'docspress_design_preset', 'docspress' ),
 	)

@@ -31,7 +31,7 @@ $locked_color_mode   = $show_color_toggle ? '' : $default_color_mode;
 				} else {
 					printf(
 						'<img class="brand-default-logo" src="%1$s" width="256" height="256" alt="" loading="eager" decoding="async" fetchpriority="high">',
-						esc_url( get_theme_file_uri( 'assets/images/docspress-hybrid-logo.png' ) )
+						esc_url( get_theme_file_uri( 'assets/images/docspress-mark.svg' ) )
 					);
 				}
 				?>

@@ -1,0 +1,301 @@
+.docspress-hero {
+	--db-hero-accent: var(--dp-blue, #3858e9);
+	--db-hero-copy: var(--dp-copy, #4f5666);
+	--db-hero-heading: var(--dp-ink, #171a22);
+	--db-hero-panel: var(--dp-paper, #fff);
+	--db-hero-visual: transparent;
+	--db-hero-media-width: 44%;
+	--db-hero-image-scale: 100%;
+	position: relative;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(280px, var(--db-hero-media-width));
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 460px;
+	margin-block: clamp(1.5rem, 4vw, 3rem);
+	overflow: hidden;
+	border: 1px solid var(--dp-line, #dcdcde);
+	border-radius: var(--dp-radius, 10px);
+	background: var(--db-hero-panel);
+	box-shadow: none;
+	color: var(--db-hero-copy);
+	font-family: var(--dp-font-ui, "Nunito Sans", "Trebuchet MS", sans-serif);
+}
+
+.docspress-hero--midnight {
+	--db-hero-copy: #d6dced;
+	--db-hero-heading: #fff;
+	--db-hero-panel: #141d34;
+}
+
+.docspress-hero--brand {
+	--db-hero-copy: color-mix(in srgb, #fff 82%, var(--dp-blue, #3858e9));
+	--db-hero-heading: #fff;
+	--db-hero-panel: var(--dp-blue, #3858e9);
+	--db-hero-visual: color-mix(in srgb, var(--dp-blue, #3858e9) 86%, #000);
+}
+
+.docspress-hero--height-compact {
+	min-height: 380px;
+}
+
+.docspress-hero--height-tall {
+	min-height: 560px;
+}
+
+.docspress-hero__copy {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
+	min-width: 0;
+	padding: clamp(38px, 5vw, 60px);
+}
+
+.docspress-hero__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	width: fit-content;
+	margin: 0 0 18px;
+	color: var(--db-hero-copy);
+	font-size: 11px;
+	font-weight: 800;
+	letter-spacing: 0.1em;
+	line-height: 1.5;
+	text-transform: uppercase;
+}
+
+.docspress-hero__eyebrow::before {
+	width: 20px;
+	height: 2px;
+	background: var(--db-hero-accent);
+	content: "";
+}
+
+.docspress-hero__title {
+	max-width: 680px;
+	margin: 0;
+	color: var(--db-hero-heading);
+	font-family: var(--dp-font-heading, var(--dp-font-ui, "Nunito Sans", "Trebuchet MS", sans-serif));
+	font-size: clamp(40px, 5vw, 62px);
+	font-weight: var(--dp-heading-weight, 750);
+	letter-spacing: -0.045em;
+	line-height: 1;
+	text-wrap: balance;
+}
+
+.docspress-hero__description {
+	max-width: 580px;
+	margin: clamp(28px, 2.5vw, 34px) 0 0;
+	color: var(--db-hero-copy);
+	font-family: var(--dp-font-copy, var(--dp-font-ui, "Nunito Sans", "Trebuchet MS", sans-serif));
+	font-size: clamp(16px, 1.6vw, 19px);
+	line-height: 1.6;
+}
+
+.docspress-preset-wordpress .docspress-hero__description,
+.docspress-preset-wordpress-com .docspress-hero__description,
+.docspress-preset-jetpack .docspress-hero__description,
+.docspress-blocks--preset-wordpress.docspress-hero .docspress-hero__description,
+.docspress-blocks--preset-wordpress-com.docspress-hero .docspress-hero__description,
+.docspress-blocks--preset-jetpack.docspress-hero .docspress-hero__description {
+	margin-top: clamp(38px, 3vw, 44px);
+}
+
+.docspress-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 28px;
+}
+
+.docspress-hero__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	min-height: 44px;
+	padding: 10px 16px;
+	border: 1px solid var(--dp-line-strong, var(--dp-line, #dcdcde));
+	border-radius: var(--dp-radius, 10px);
+	font-size: 14px;
+	font-weight: 750;
+	text-decoration: none;
+	transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+
+a.docspress-hero__button:hover {
+	text-decoration: none;
+	transform: translateY(-1px);
+}
+
+.docspress-hero__button--primary {
+	border-color: var(--db-hero-accent);
+	background: var(--db-hero-accent);
+	color: #fff;
+}
+
+a.docspress-hero__button--primary:hover {
+	background: color-mix(in srgb, var(--db-hero-accent) 88%, #000);
+	color: #fff;
+}
+
+.docspress-hero__button--secondary {
+	border-color: color-mix(in srgb, var(--db-hero-heading) 24%, transparent);
+	background: transparent;
+	color: var(--db-hero-heading);
+}
+
+a.docspress-hero__button--secondary:hover {
+	border-color: color-mix(in srgb, var(--db-hero-heading) 48%, transparent);
+	background: color-mix(in srgb, var(--db-hero-heading) 5%, transparent);
+	color: var(--db-hero-heading);
+}
+
+.docspress-hero__visual {
+	position: relative;
+	display: grid;
+	place-items: center;
+	box-sizing: border-box;
+	min-width: 0;
+	padding: clamp(36px, 4vw, 52px);
+	overflow: hidden;
+	border-left: 1px solid var(--dp-line, #dcdcde);
+	background-color: var(--db-hero-visual);
+}
+
+.docspress-hero:not(.docspress-hero--no-grid) .docspress-hero__visual {
+	background-image:
+		linear-gradient(color-mix(in srgb, var(--db-hero-heading) 5%, transparent) 1px, transparent 1px),
+		linear-gradient(90deg, color-mix(in srgb, var(--db-hero-heading) 5%, transparent) 1px, transparent 1px);
+	background-size: 28px 28px;
+}
+
+.docspress-hero__visual::before {
+	position: absolute;
+	width: min(74%, 340px);
+	aspect-ratio: 1;
+	border: 1px solid color-mix(in srgb, var(--db-hero-heading) 16%, transparent);
+	border-radius: 50%;
+	content: "";
+	pointer-events: none;
+}
+
+.docspress-hero--no-orbit .docspress-hero__visual::before {
+	display: none;
+}
+
+.docspress-hero__media {
+	position: relative;
+	z-index: 1;
+	width: var(--db-hero-image-scale);
+	max-width: 430px;
+	margin: 0;
+}
+
+.docspress-hero__image {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.docspress-hero--media-left {
+	grid-template-columns: minmax(280px, var(--db-hero-media-width)) minmax(0, 1fr);
+}
+
+.docspress-hero--media-left .docspress-hero__visual {
+	order: -1;
+	border-right: 1px solid var(--dp-line, #dcdcde);
+	border-left: 0;
+}
+
+.docspress-hero--align-center .docspress-hero__copy {
+	align-items: center;
+	text-align: center;
+}
+
+.docspress-hero--align-center .docspress-hero__actions {
+	justify-content: center;
+}
+
+.docspress-hero--no-visual {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+.docspress-hero--no-visual .docspress-hero__copy {
+	align-items: flex-start;
+}
+
+.docspress-hero--no-visual.docspress-hero--align-center .docspress-hero__copy {
+	align-items: center;
+}
+
+@media (max-width: 860px) {
+	.docspress-hero,
+	.docspress-hero--media-left {
+		grid-template-columns: minmax(0, 1fr);
+		min-height: auto;
+	}
+
+	.docspress-hero__copy {
+		padding: 44px 34px;
+	}
+
+	.docspress-hero__visual,
+	.docspress-hero--media-left .docspress-hero__visual {
+		order: 0;
+		min-height: 380px;
+		padding: 44px;
+		border-top: 1px solid var(--dp-line, #dcdcde);
+		border-right: 0;
+		border-left: 0;
+	}
+
+	.docspress-hero__media {
+		width: min(var(--db-hero-image-scale), 380px);
+	}
+}
+
+@media (max-width: 600px) {
+	.docspress-hero__copy {
+		padding: 36px 24px 40px;
+	}
+
+	.docspress-hero__visual,
+	.docspress-hero--media-left .docspress-hero__visual {
+		min-height: 320px;
+		padding: 42px 26px;
+	}
+
+	.docspress-hero__title {
+		font-size: clamp(38px, 12vw, 52px);
+	}
+
+	.docspress-hero__actions {
+		display: grid;
+		width: 100%;
+	}
+
+	.docspress-hero__button {
+		width: 100%;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.docspress-hero__button {
+		transition: none;
+	}
+}
+
+@media print {
+	.docspress-hero {
+		box-shadow: none;
+	}
+
+	.docspress-hero__actions {
+		display: none !important;
+	}
+}

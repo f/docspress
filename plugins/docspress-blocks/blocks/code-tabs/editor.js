@@ -17,6 +17,7 @@
 		el,
 		languages,
 		presetClass,
+		themeStyle,
 		useBlockProps,
 		useState
 	} = shared;
@@ -51,7 +52,8 @@
 			const activeIndex = Math.min( selected, tabs.length - 1 );
 			const active = tabs[ activeIndex ];
 			const blockProps = useBlockProps( {
-				className: `docspress-code-tabs docspress-code-tabs--editor ${ presetClass }`
+				className: `docspress-code-tabs docspress-code-tabs--editor ${ presetClass }`,
+				style: themeStyle
 			} );
 
 			function updateTab( key, value ) {

@@ -13,7 +13,7 @@
 	--db-code-string: var(--db-preset-code-string, #137c44);
 	--db-code-number: var(--db-preset-code-number, #a84f00);
 	--db-code-comment: var(--dp-muted, #6f7685);
-	--db-code-shadow: 0 8px 24px color-mix(in srgb, var(--dp-ink, #171a22) 8%, transparent);
+	--db-code-shadow: none;
 	box-sizing: border-box;
 	width: 100%;
 	min-width: 0;
@@ -29,7 +29,7 @@ html[data-theme="dark"] .wp-block-docspress-code-tabs {
 	--db-code-border: var(--dp-line-strong, #434c5b);
 	--db-code-text: var(--dp-ink, #f3f5f8);
 	--db-code-muted: var(--dp-muted, #929aab);
-	--db-code-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+	--db-code-shadow: none;
 }
 
 .docspress-preset-docspress,
@@ -135,7 +135,7 @@ html[data-theme="dark"] .docspress-preset-jetpack {
 	min-height: 30px;
 	align-items: center;
 	padding: 0 10px;
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--db-code-accent) 11%, var(--db-code-panel));
 	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-code-accent) 24%, transparent);
 	color: var(--db-code-text);
@@ -152,7 +152,7 @@ html[data-theme="dark"] .docspress-preset-jetpack {
 	margin: 0;
 	padding: 3px 7px;
 	border: 1px solid var(--db-code-border);
-	border-radius: max(2px, calc(var(--dp-radius, 10px) - 3px));
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--db-code-panel) 76%, transparent);
 	box-shadow: none;
 	color: var(--db-code-text);

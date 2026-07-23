@@ -23,7 +23,7 @@ The response contains the site title and description followed by absolute links 
 
 ## Documentation
 
-- [Getting started](https://docs.example.com/docs/getting-started.md)
+- [Publish existing docs](https://docs.example.com/docs/publish-existing-docs.md)
 - [API reference](https://docs.example.com/docs/reference/api.md)
 ```
 
@@ -56,8 +56,8 @@ Check discovery, content type, and one source route after publishing:
 
 ```bash
 curl https://docs.example.com/llms.txt
-curl --head https://docs.example.com/docs/getting-started.md
-curl https://docs.example.com/docs/getting-started.md
+curl --head https://docs.example.com/docs/publish-existing-docs.md
+curl https://docs.example.com/docs/publish-existing-docs.md
 ```
 
 Expect `text/plain; charset=utf-8` for `llms.txt` and `text/markdown; charset=utf-8` for each Page source.

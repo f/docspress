@@ -11,7 +11,7 @@ Use GitHub-to-WordPress synchronization when reviewed Markdown on the repository
 | GitHub is the only editing source | `publish` | Treat Markdown as authoritative and update managed WordPress Pages. |
 | Authors edit in GitHub and WordPress | `reconcile` | Publish GitHub-only changes while preserving WordPress-only changes for a pull request. |
 
-Start with the [manual two-way dry run](../getting-started/first-sync.md). Use the automatic workflow below only after its draft Page tree is approved.
+Start with the [manual two-way dry run](../publish-existing-docs/first-sync.md). Use the automatic workflow below only after its draft Page tree is approved.
 
 ## Publish merged Markdown
 

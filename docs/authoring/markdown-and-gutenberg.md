@@ -42,6 +42,8 @@ DocsPress preserves the image URL; it does not upload repository files to the Wo
 <!-- wp:docspress/code-tabs {"tabs":[{"label":"Source code","language":"plaintext","filename":"Use","code":"DocsPress: Colorful Code\nOne example with a filename, highlighting, line numbers, caption, and copy."},{"label":"Alternatives","language":"plaintext","filename":"Use","code":"DocsPress: Code Tabs\nEquivalent package-manager, language, platform, or API-client examples."},{"label":"Commands","language":"plaintext","filename":"Use","code":"DocsPress: Terminal Session\nA copyable command separated from its observed output."}],"showLineNumbers":false,"caption":"Choose blocks by meaning, not decoration."} /-->
 
 - Use **Callout** for a note, tip, warning, danger, or success message.
+- Use **Hero** for a fully editable WordPress homepage introduction; unlike documentation blocks, it intentionally exposes layout and color controls.
+- Use **Audience Paths** to send readers into independent Page roots based on a useful starting state, such as publishing existing Markdown or creating documentation from source.
 - Use **API Request / Response** to keep one verified HTTP exchange together.
 - Use **Result** to summarize a verified outcome after a procedure.
 - Use **File Tree** for relevant repository or generated structure.
@@ -55,7 +57,7 @@ DocsPress Blocks are dynamic. Store one self-closing comment with compact valid 
 <!-- wp:docspress/result {"status":"success","title":"Checks passed","content":"<p>The examples match the source.</p>","meta":"24 tests"} /-->
 ```
 
-Escape quotes, backslashes, control characters, and newlines within JSON strings. DocsPress additionally normalizes HTML-sensitive characters in block attributes to the Unicode escapes WordPress expects before synchronization. Do not add unsupported attributes or colors. The active theme preset owns visual tokens in light and dark modes.
+Escape quotes, backslashes, control characters, and newlines within JSON strings. DocsPress additionally normalizes HTML-sensitive characters in block attributes to the Unicode escapes WordPress expects before synchronization. Do not add unsupported attributes. Documentation blocks use preset-owned semantic colors; Hero and Audience Paths accept only their documented presentation attributes.
 
 <!-- wp:docspress/callout {"tone":"warning","title":"The plugin is required","content":"<p>WordPress must have the matching DocsPress Blocks plugin installed and active to render <code>wp:docspress/*</code> blocks.</p>","collapsible":false} /-->
 

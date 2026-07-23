@@ -62,7 +62,7 @@ While that pull request is open, `reconcile` leaves the WordPress-only Page unto
 
 The Action exports counters for created, updated, deleted, unchanged, proposed, skipped, and conflict operations plus `summary-json` for downstream jobs.
 
-The [first synchronization walkthrough](../getting-started/first-sync.md) shows the run overview and generated Sync Summary with tightly cropped screenshots. Use the same counters to review every automatic run.
+The [first synchronization walkthrough](../publish-existing-docs/first-sync.md) shows the run overview and generated Sync Summary with tightly cropped screenshots. Use the same counters to review every automatic run.
 
 ## Pin and update intentionally
 

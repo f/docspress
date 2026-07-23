@@ -2,7 +2,7 @@
 title: Run your first synchronization
 ---
 
-Follow these steps once to connect GitHub and WordPress safely. The starting workflow is ready for both synchronization directions, but the first run only calculates changes; it does not write Pages, branches, or pull requests.
+Follow these steps once to connect an existing Markdown tree to WordPress safely. The starting workflow is ready for both synchronization directions, but the first run only calculates changes; it does not write Pages, branches, or pull requests.
 
 ## 1. Add the WordPress secret
 

@@ -11,7 +11,7 @@
 	border: 1px solid var(--db-tree-border);
 	border-radius: var(--dp-radius, 10px);
 	background: var(--db-tree-surface);
-	box-shadow: 0 7px 22px color-mix(in srgb, var(--dp-ink, #171a22) 6%, transparent);
+	box-shadow: none;
 	color: var(--dp-copy, #2c3338);
 }
 
@@ -132,5 +132,5 @@
 
 html[data-theme="dark"] .wp-block-docspress-file-tree {
 	--db-tree-panel: color-mix(in srgb, var(--dp-canvas, #11141b) 82%, #000);
-	box-shadow: 0 9px 26px rgba(0, 0, 0, 0.2);
+	box-shadow: none;
 }

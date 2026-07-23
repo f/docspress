@@ -4,6 +4,8 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 
 ## Blocks
 
+- **Hero** — a responsive, theme-native homepage introduction with inline editing for every visible text label, configurable actions, transparent artwork, restrained layout controls, and opt-in decorative or color overrides.
+- **Audience Paths** — one to six simple starting-point cards that route to independent documentation roots, with inline copy, destination URLs, symbols, accents, new-tab behavior, responsive columns, and optional presentation overrides.
 - **Colorful Code** — filename chrome, language-aware token colors, line numbers, highlighted ranges, captions, and copy-to-clipboard.
 - **Code Tabs** — up to eight keyboard-accessible examples with independent labels, languages, filenames, and code.
 - **Callout** — note, tip, warning, danger, and success tones, with an optional collapsible presentation.
@@ -13,9 +15,9 @@ Documentation-focused Gutenberg blocks for the DocsPress theme. The plugin has n
 - **File Tree** — an indentation-aware repository view with accessible file and folder entries.
 - **Prompt** — a first-class, copyable AI prompt with model, mode, optional Thinking state, highlighted `$skill-name` references, classified context chips, and an editable caption.
 
-The inserter also includes **Documentation page starter**, **API request example**, and **AI prompt example** patterns under the **DocsPress** category.
+The inserter also includes **Homepage hero**, **Documentation starting paths**, **Documentation page starter**, **API request example**, and **AI prompt example** patterns under the **DocsPress** category.
 
-Block colors are intentionally not author-configurable. Every block inherits the active DocsPress design preset, its light or dark tokens, typography, radius, borders, and article width. Only meaningful semantic states—such as callout tone, HTTP method, and result status—are exposed in the editor.
+Every block inherits the active DocsPress design preset in both Gutenberg and the published site, including its light or dark tokens, typography, exact radius, borders, and article width. WordPress.org therefore keeps crisp 2px corners, while WordPress.com and Jetpack use their 4px recipes; block styles do not impose a larger minimum radius or a separate card shadow. Hero and Audience Paths default to those theme tokens with clean surfaces and modest type scales; their inverse styles, decorations, and custom colors are explicit opt-ins.
 
 ## Folder structure
 
@@ -24,6 +26,8 @@ Every block owns its registration, renderer, editor UI, front-end styles, and ed
 ```text
 docspress-blocks/
 ├── blocks/
+│   ├── hero/
+│   ├── audience-paths/
 │   ├── colorful-code/
 │   │   ├── block.php
 │   │   ├── editor.js
@@ -51,7 +55,19 @@ docspress-blocks/
 
 ## Gutenberg serialization
 
-The blocks are dynamic. WordPress stores concise canonical block comments and the plugin renders accessible markup on the front end. A colorful workflow example looks like this:
+The blocks are dynamic. WordPress stores concise canonical block comments and the plugin renders accessible markup on the front end. A homepage hero can be serialized with every presentation choice kept in block attributes:
+
+```html
+<!-- wp:docspress/hero {"title":"Docs that stay connected to your GitHub repo","primaryLabel":"Choose your path","primaryUrl":"#choose-your-path","secondaryLabel":"Latest updates","secondaryUrl":"/#latest-updates","mediaUrl":"https://example.com/hero.png","mediaAlt":"Two project mascots celebrating together.","mediaPosition":"right","height":"standard","tone":"theme","showGrid":false,"showOrbit":false} /-->
+```
+
+Starting paths keep each reader’s destination explicit:
+
+```html
+<!-- wp:docspress/audience-paths {"anchor":"choose-your-path","align":"wide","paths":[{"title":"I already have Markdown docs","description":"Connect an existing docs folder to WordPress and begin with a safe draft sync.","url":"/docs/publish-existing-docs/","cta":"Publish existing docs","icon":"MD","accent":"blue","newTab":false},{"title":"I need to create docs","description":"Generate source-grounded documentation with AI, review it, then publish it.","url":"/docs/create-docs-with-ai/","cta":"Create docs with AI","icon":"AI","accent":"gold","newTab":false}]} /-->
+```
+
+A colorful workflow example looks like this:
 
 ```html
 <!-- wp:docspress/colorful-code {"language":"yaml","filename":".github/workflows/docs.yml","highlightedLines":"5-6","code":"name: Publish docs\nsteps:\n  - uses: actions/checkout@v4\n  - uses: Automattic/docspress@main"} /-->
@@ -95,7 +111,7 @@ Prompts remain readable, crawlable HTML instead of screenshots or iframes:
 <!-- wp:docspress/prompt {"prompt":"Use $docspress-install to review this synchronization logic and propose the smallest safe patch.","model":"GPT-5","mode":"code","thinking":true,"context":"$docspress-install, @repository, src/sync.js, test/sync.test.js","caption":"Synchronization review prompt"} /-->
 ```
 
-The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML and uses all eight blocks. Its Kitchen Sink Page covers every semantic state and meaningful configuration combination, while its live component table lists every plugin installed by the blueprint.
+The theme's Playground seed at [`../../theme/playground/setup.php`](../../theme/playground/setup.php) creates every example Page as serialized Gutenberg block HTML. The Home page uses Hero and Audience Paths with working publish-existing and create-with-AI roots, while the Kitchen Sink covers every semantic state and meaningful configuration combination across all eight documentation blocks. Its live component table lists every plugin installed by the blueprint.
 
 ## Run with the theme
 

@@ -15,6 +15,7 @@
 		el,
 		languages,
 		presetClass,
+		themeStyle,
 		useBlockProps
 	} = shared;
 	const icon = el(
@@ -41,7 +42,8 @@
 		supports: { anchor: true, html: false },
 		edit: function ColorfulCodeEdit( { attributes, setAttributes } ) {
 			const blockProps = useBlockProps( {
-				className: `docspress-code docspress-code--editor ${ presetClass }`
+				className: `docspress-code docspress-code--editor ${ presetClass }`,
+				style: themeStyle
 			} );
 
 			return el(

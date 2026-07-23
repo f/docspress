@@ -12,17 +12,18 @@ The companion theme turns the managed Page hierarchy into a Docusaurus-inspired 
 - `⌘K` or `Ctrl+K` command search across the configured docs tree.
 - Sidebar filtering, breadcrumbs, right-hand table of contents, and previous/next navigation.
 - WordPress edit and exact GitHub Markdown proposal actions.
-- A custom site homepage and dedicated post, archive, search, and singular templates.
+- A block-built custom site homepage and dedicated post, archive, search, and singular templates.
 - Optional native WordPress discussions with threaded replies and accessible forms.
 - Responsive navigation, light/dark mode, copy buttons, and print styles.
 
 ## Install and configure
 
-1. Copy `theme/` to `wp-content/themes/docspress`.
-2. Activate **DocsPress**.
+1. Copy `theme/` to `wp-content/themes/docspress` and `plugins/docspress-blocks/` to `wp-content/plugins/docspress-blocks`.
+2. Activate **DocsPress Blocks**, then activate **DocsPress**.
 3. Open **Appearance → Customize → DocsPress Theme**.
 4. Choose the synchronized root Page under **Navigation → Documentation root**.
-5. Keep the Action input `create-h1: false` because the theme renders the Page title.
+5. Add **DocsPress: Hero** and optional **DocsPress: Audience Paths** blocks to the front Page selected in **Settings → Reading**.
+6. Keep the Action input `create-h1: false` because the documentation template renders the Page title.
 
 <!-- wp:docspress/callout {"tone":"note","title":"Theme and sync are independent","content":"<p>The Action can synchronize Pages without this theme. The theme can render hand-authored Page trees without the Action. Use both for the complete workflow.</p>","collapsible":false} /-->
 
@@ -32,7 +33,7 @@ The companion theme turns the managed Page hierarchy into a Docusaurus-inspired 
 | --- | --- |
 | Design presets | DocsPress, WordPress.org, WordPress.com, Jetpack, or individually customized tokens. |
 | Navigation | Docs root, Page tree or menu, order, depth, root visibility, filter, version-selector visibility. |
-| Homepage | Landing or documentation layout, intro label, description, actions, Page content, recent posts. |
+| Homepage | Landing or documentation layout and the optional recent-post section. Hero content and audience routing live in the front Page’s DocsPress blocks. |
 | Header | Menu, brand suffix, color switcher/default mode, repository link, custom logo. |
 | Command search | Labels, dimensions, radius, backdrop, count, paths, excerpts, keyboard legend. |
 | Layout and reading tools | Article/sidebar/TOC widths, density, TOC, breadcrumbs, previous/next, excerpt, edit actions. |
@@ -47,7 +48,7 @@ The default footer is `Documentation powered by WordPress and {site_title} · {y
 
 ## Homepage, posts, and discussion
 
-Choose the front Page and posts page in **Settings → Reading**. The DocsPress **Homepage** section can render the front Page as a site landing page with calls to action, optional Page content, and recent posts, or preserve the standard three-column documentation layout.
+Choose the front Page and posts page in **Settings → Reading**. Add **DocsPress: Hero** to the front Page and customize its text, actions, image, layout, decorations, and colors in the block editor. Add **DocsPress: Audience Paths** when readers with different starting states should enter distinct Page roots. The DocsPress **Homepage** theme section can render that Page’s Gutenberg blocks as a site landing page with optional recent posts, or preserve the standard three-column documentation layout.
 
 Posts, archives, categories, tags, authors, search results, feeds, featured images, and previous/next post navigation use native WordPress data and dedicated templates. Their visible metadata is configurable under **Posts & archives**.
 

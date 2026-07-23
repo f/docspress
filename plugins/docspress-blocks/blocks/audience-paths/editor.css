@@ -1,0 +1,49 @@
+.editor-styles-wrapper .wp-block-docspress-audience-paths {
+	max-width: min(100%, 1120px);
+	margin-inline: auto;
+}
+
+.docspress-audience-paths--editor {
+	cursor: default;
+}
+
+.docspress-audience-paths--editor .docspress-audience-paths__eyebrow,
+.docspress-audience-paths--editor .docspress-audience-paths__title,
+.docspress-audience-paths--editor .docspress-audience-paths__description,
+.docspress-audience-paths--editor .docspress-audience-paths__icon,
+.docspress-audience-paths--editor .docspress-audience-paths__card-title,
+.docspress-audience-paths--editor .docspress-audience-paths__card-description,
+.docspress-audience-paths--editor .docspress-audience-paths__cta {
+	cursor: text;
+}
+
+.docspress-audience-paths--editor .docspress-audience-paths__card {
+	padding-bottom: 58px;
+}
+
+.docspress-audience-paths--editor .docspress-audience-paths__card:focus-within {
+	border-color: var(--db-path-card-accent);
+	box-shadow:
+		inset 0 4px 0 var(--db-path-card-accent),
+		0 0 0 3px color-mix(in srgb, var(--db-path-card-accent) 18%, transparent);
+}
+
+.docspress-audience-paths__route {
+	position: absolute;
+	right: 18px;
+	bottom: 15px;
+	left: 18px;
+	display: block;
+	overflow: hidden;
+	padding-top: 10px;
+	border-top: 1px dashed color-mix(in srgb, var(--db-paths-line) 82%, var(--db-path-card-accent));
+	color: color-mix(in srgb, var(--db-paths-copy) 72%, transparent);
+	font-size: 10px;
+	line-height: 1.3;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.docspress-audience-paths--editor [data-rich-text-placeholder]::after {
+	opacity: 0.55;
+}

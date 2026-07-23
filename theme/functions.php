@@ -187,40 +187,6 @@ function docspress_post_meta( $post_id = 0, $compact = false ) {
 }
 
 /**
- * Return the configured homepage primary action URL.
- *
- * @return string
- */
-function docspress_homepage_primary_url() {
-	$url = get_theme_mod( 'docspress_homepage_primary_url', '' );
-	if ( $url ) {
-		return esc_url_raw( $url );
-	}
-
-	$root_id = docspress_get_docs_root_id();
-	return $root_id ? get_permalink( $root_id ) : home_url( '/' );
-}
-
-/**
- * Return the configured homepage secondary action URL.
- *
- * @return string
- */
-function docspress_homepage_secondary_url() {
-	$url = get_theme_mod( 'docspress_homepage_secondary_url', '' );
-	if ( $url ) {
-		return esc_url_raw( $url );
-	}
-
-	$posts_page_id = absint( get_option( 'page_for_posts' ) );
-	if ( $posts_page_id ) {
-		return get_permalink( $posts_page_id );
-	}
-
-	return get_theme_mod( 'docspress_homepage_show_latest_posts', true ) ? home_url( '/#latest-updates' ) : '';
-}
-
-/**
  * Resolve the root page for the documentation tree.
  *
  * @return int

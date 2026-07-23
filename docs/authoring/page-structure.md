@@ -71,7 +71,7 @@ When a nested file has no section index, DocsPress creates a managed placeholder
 With `rewrite-links: true`, known relative or root-relative Markdown links become WordPress routes. External URLs, anchors, protocol URLs, and unknown files remain unchanged.
 
 ```markdown
-[Start here](../getting-started/index.md)
+[Publish existing docs](../publish-existing-docs/index.md)
 [Action inputs](/docs/reference/action-inputs.md)
 [WordPress](https://wordpress.org/)
 ```

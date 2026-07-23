@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img">
+	<defs>
+		<clipPath id="docspress-mark-left">
+			<rect width="128" height="256"/>
+		</clipPath>
+	</defs>
+	<path fill="#fec408" stroke="#111820" stroke-linecap="round" stroke-linejoin="round" stroke-width="10" d="M28 106c-5-21-3-48 10-59 13-12 41 0 60 9 10-7 23-11 38-11 17 0 32 4 44 12 20-10 46-21 59-9 12 11 11 39 5 60 7 15 9 32 6 49-8 47-51 75-116 75-63 0-106-26-114-70-4-21-1-40 8-56Z"/>
+	<path fill="#151b22" d="M28 106c-5-21-3-48 10-59 13-12 41 0 60 9 10-7 23-11 38-11 17 0 32 4 44 12 20-10 46-21 59-9 12 11 11 39 5 60 7 15 9 32 6 49-8 47-51 75-116 75-63 0-106-26-114-70-4-21-1-40 8-56Z" clip-path="url(#docspress-mark-left)"/>
+	<path fill="#303b48" d="m45 55 42 18-53 23c-3-17 0-33 11-41Z"/>
+	<path fill="#f28c13" d="m228 56-40 18 50 23c4-17 2-33-10-41Z"/>
+	<path fill="#fff" d="M38 135c5-43 43-70 90-70v158c-50-1-85-21-91-61-1-9-1-18 1-27Z"/>
+	<path fill="none" stroke="#0073aa" stroke-width="4" d="M128 47v180"/>
+	<ellipse cx="88" cy="132" fill="#101820" rx="16" ry="24"/>
+	<ellipse cx="172" cy="132" fill="#101820" rx="16" ry="24"/>
+	<ellipse cx="83" cy="124" fill="#fff" rx="5" ry="8"/>
+	<ellipse cx="167" cy="124" fill="#fff" rx="5" ry="8"/>
+	<path fill="#101820" d="M118 157c0-7 20-7 20 0 0 5-5 9-10 9s-10-4-10-9Z"/>
+	<path fill="none" stroke="#101820" stroke-linecap="round" stroke-width="7" d="M128 165c-2 20-23 27-38 14m38-14c2 20 23 27 38 14"/>
+	<ellipse cx="66" cy="168" fill="#f3a0a1" rx="13" ry="7"/>
+	<ellipse cx="191" cy="168" fill="#f28c13" rx="13" ry="7"/>
+	<path fill="none" stroke="#101820" stroke-linecap="round" stroke-width="5" d="M45 154 15 146m31 22-31 4m196-18 30-8m-31 22 31 4"/>
+</svg>

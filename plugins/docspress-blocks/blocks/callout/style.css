@@ -14,7 +14,7 @@
 	border: 1px solid var(--db-callout-border);
 	border-radius: var(--dp-radius, 10px);
 	background: var(--db-callout-surface);
-	box-shadow: 0 2px 12px color-mix(in srgb, var(--dp-ink, #171a22) 4%, transparent);
+	box-shadow: none;
 	color: var(--dp-copy, #2c3338);
 }
 
@@ -55,7 +55,7 @@ html[data-theme="dark"] .docspress-callout--success {
 	width: 26px;
 	height: 26px;
 	place-items: center;
-	border-radius: max(2px, calc(var(--dp-radius, 10px) - 4px));
+	border-radius: var(--dp-radius, 10px);
 	border: 1px solid color-mix(in srgb, var(--db-callout-accent) 22%, transparent);
 	background: color-mix(in srgb, var(--db-callout-accent) 11%, transparent);
 	color: var(--db-callout-accent);
@@ -113,7 +113,7 @@ details.docspress-callout > summary::marker {
 }
 
 details.docspress-callout > summary:focus-visible {
-	border-radius: calc(var(--dp-radius, 10px) - 1px);
+	border-radius: var(--dp-radius, 10px);
 	outline: 2px solid color-mix(in srgb, var(--db-callout-accent) 58%, transparent);
 	outline-offset: -2px;
 }

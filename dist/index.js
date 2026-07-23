@@ -90970,6 +90970,38 @@ const CUSTOM_BLOCK_DEFAULTS = {
     responseBody: "{\n  \"id\": 42,\n  \"slug\": \"getting-started\"\n}",
     responseBodyFormat: "json"
   },
+  "docspress/audience-paths": {
+    eyebrow: "Choose a starting point",
+    title: "Where are your docs today?",
+    description: "Follow the path that matches your repository.",
+    paths: [
+      {
+        title: "I already have Markdown docs",
+        description: "Connect an existing docs folder to WordPress and begin with a safe draft sync.",
+        url: "/docs/publish-existing-docs/",
+        cta: "Publish existing docs",
+        icon: "MD",
+        accent: "blue",
+        newTab: false
+      },
+      {
+        title: "I need to create docs",
+        description: "Generate source-grounded documentation with AI, review it, then publish it.",
+        url: "/docs/create-docs-with-ai/",
+        cta: "Create docs with AI",
+        icon: "AI",
+        accent: "gold",
+        newTab: false
+      }
+    ],
+    columns: 2,
+    tone: "theme",
+    textAlign: "left",
+    showNumbers: false,
+    panelColor: "",
+    textColor: "",
+    accentColor: ""
+  },
   "docspress/callout": {
     tone: "note",
     title: "Good to know",
@@ -90997,6 +91029,32 @@ const CUSTOM_BLOCK_DEFAULTS = {
     root: "project/",
     tree: "docs/\n  getting-started.md\n  api/\n    endpoints.md\npackage.json",
     caption: ""
+  },
+  "docspress/hero": {
+    eyebrow: "Documentation, publishing, and community",
+    title: "Docs that stay connected to your GitHub repo",
+    description: "Write beside your code. Publish a WordPress experience that guides every reader to the docs written for them.",
+    primaryLabel: "Browse documentation",
+    primaryUrl: "",
+    primaryNewTab: false,
+    secondaryLabel: "Latest updates",
+    secondaryUrl: "",
+    secondaryNewTab: false,
+    mediaId: 0,
+    mediaUrl: "",
+    mediaAlt: "",
+    mediaPosition: "right",
+    mediaWidth: 44,
+    imageScale: 100,
+    height: "standard",
+    tone: "theme",
+    textAlign: "left",
+    showGrid: false,
+    showOrbit: false,
+    panelColor: "",
+    visualColor: "",
+    textColor: "",
+    accentColor: ""
   },
   "docspress/prompt": {
     prompt: "Use $docspress-install to review this repository's documentation setup. Return a short plan before writing code.",

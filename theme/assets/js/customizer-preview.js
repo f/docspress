@@ -65,9 +65,6 @@
 	bindText('docspress_toc_title', '[data-customize-toc-title]');
 	bindText('docspress_wordpress_edit_label', '[data-customize-wordpress-edit-label]');
 	bindText('docspress_github_edit_label', '[data-customize-github-edit-label]');
-	bindText('docspress_homepage_kicker', '[data-customize-homepage-kicker]');
-	bindText('docspress_homepage_primary_label', '[data-customize-homepage-primary-label]');
-	bindText('docspress_homepage_secondary_label', '[data-customize-homepage-secondary-label]');
 	bindText('docspress_homepage_posts_title', '[data-customize-homepage-posts-title]');
 	bindText('docspress_discussion_title', '[data-customize-discussion-title]');
 	bindText('docspress_comment_form_title', '[data-customize-comment-form-title]');

@@ -14,7 +14,7 @@
 	border: 1px solid var(--db-result-border);
 	border-radius: var(--dp-radius, 10px);
 	background: var(--db-result-surface);
-	box-shadow: 0 3px 14px color-mix(in srgb, var(--dp-ink, #171a22) 5%, transparent);
+	box-shadow: none;
 	color: var(--dp-copy, #2c3338);
 }
 

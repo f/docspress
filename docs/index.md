@@ -6,7 +6,11 @@ sidebar_collapsed: false
 
 DocsPress keeps documentation beside the code that explains it, then publishes that Markdown as native WordPress Pages and Gutenberg blocks.
 
-<!-- wp:docspress/callout {"tone":"tip","title":"The shortest path","content":"<p>Give your coding agent the DocsPress skills. It can inspect an existing repository, generate missing documentation from verified source, and prepare the WordPress synchronization workflow.</p>","collapsible":false} /-->
+## Choose a starting point
+
+<!-- wp:docspress/audience-paths {"eyebrow":"Start here","title":"Where are your docs today?","description":"Choose the workflow that matches the current state of your repository.","paths":[{"title":"I already have Markdown docs","description":"Connect an existing docs folder to WordPress and begin with a safe draft sync.","url":"/docs/publish-existing-docs/","cta":"Publish existing docs","icon":"MD","accent":"blue","newTab":false},{"title":"I need to create docs","description":"Generate source-grounded documentation with AI, review it, then publish it.","url":"/docs/create-docs-with-ai/","cta":"Create docs with AI","icon":"AI","accent":"gold","newTab":false}],"columns":2,"tone":"theme","textAlign":"left","showNumbers":false} /-->
+
+Both paths use repository-aware skills and end with the same reviewed Markdown-to-WordPress workflow. The difference is whether a usable documentation tree already exists.
 
 ## Install DocsPress with your coding agent
 
@@ -14,15 +18,11 @@ Install both skills into the repository that owns the documentation:
 
 <!-- wp:docspress/terminal-session {"title":"Install DocsPress skills","shell":"bash","prompt":"$","command":"npx skills add Automattic/docspress --all --full-depth\nnpx skills list","output":""} /-->
 
-Then give the agent this prompt:
-
-<!-- wp:docspress/prompt {"prompt":"Use $docspress-install to inspect this repository and publish its existing Markdown documentation with DocsPress. If no usable documentation exists, use $generate-docs-from-source to derive a comprehensive docs/ tree from source code and tests first. Configure a manual draft dry run, preserve unrelated changes, and never expose credentials.","model":"Coding agent","mode":"code","thinking":true,"context":"$docspress-install, $generate-docs-from-source, @repository, skills-lock.json, docs/, .github/workflows/","caption":"Copy this prompt into Claude Code, Codex, or another repository-aware agent."} /-->
-
-If the repository already has Markdown docs, the installer reuses them. If it does not, the generator builds a verified `docs/` hierarchy before handing publication back to the installer.
+Then follow [Publish existing docs](publish-existing-docs/index.md) or [Create docs with AI](create-docs-with-ai/index.md). Each path provides a focused, copy-ready agent prompt.
 
 ## How DocsPress works
 
-<!-- wp:docspress/file-tree {"root":"your-repository/","tree":".claude/\n  skills/\n    docspress-install/\n    generate-docs-from-source/\n.github/\n  workflows/\n    sync-docs.yml\ndocs/\n  index.md\n  getting-started/\n    index.md\n    first-sync.md\n  guides/\n    github-to-wordpress.md\n    wordpress-to-github.md","caption":"Markdown publishes as WordPress Pages; reviewed Gutenberg edits return through managed pull requests."} /-->
+<!-- wp:docspress/file-tree {"root":"your-repository/","tree":".claude/\n  skills/\n    docspress-install/\n    generate-docs-from-source/\n.github/\n  workflows/\n    sync-docs.yml\ndocs/\n  index.md\n  publish-existing-docs/\n    index.md\n    first-sync.md\n  create-docs-with-ai/\n    index.md\n    review-and-publish.md","caption":"Choose a starting workflow, then publish the reviewed Markdown tree as WordPress Pages."} /-->
 
 <!-- wp:list {"ordered":true} -->
 <ol class="wp-block-list"><!-- wp:list-item -->
@@ -42,7 +42,7 @@ If the repository already has Markdown docs, the installer reuses them. If it do
 <!-- /wp:list-item --></ol>
 <!-- /wp:list -->
 
-Read [Getting started](getting-started/index.md) for the safe first-run sequence or [Authoring documentation](authoring/index.md) for the Markdown contract.
+Read [Publish existing docs](publish-existing-docs/index.md) for the safe synchronization sequence, [Create docs with AI](create-docs-with-ai/index.md) when documentation must be generated first, or [Authoring documentation](authoring/index.md) for the Markdown contract.
 
 See [Why DocsPress?](why-docspress.md) for a practical comparison with Docusaurus and the cases where keeping WordPress as the publishing surface removes an entire parallel docs stack.
 
@@ -60,7 +60,11 @@ Read [GitHub to WordPress](guides/github-to-wordpress.md) and [WordPress to GitH
 
 <!-- wp:list -->
 <ul class="wp-block-list"><!-- wp:list-item -->
-<li><a href="/docs/getting-started/">Getting started</a>: install the skills, authenticate, and run the first safe sync.</li>
+<li><a href="/docs/publish-existing-docs/">Publish existing docs</a>: connect a Markdown tree, authenticate, and run the first safe sync.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><a href="/docs/create-docs-with-ai/">Create docs with AI</a>: generate a source-grounded documentation tree, review it, and hand it to the publishing workflow.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->

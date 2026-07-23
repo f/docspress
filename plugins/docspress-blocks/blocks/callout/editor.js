@@ -12,6 +12,7 @@
 		__,
 		el,
 		presetClass,
+		themeStyle,
 		useBlockProps
 	} = shared;
 	const icon = el(
@@ -37,7 +38,8 @@
 		supports: { anchor: true, html: false },
 		edit: function CalloutEdit( { attributes, setAttributes } ) {
 			const blockProps = useBlockProps( {
-				className: `docspress-callout docspress-callout--${ attributes.tone } docspress-callout--editor ${ presetClass }`
+				className: `docspress-callout docspress-callout--${ attributes.tone } docspress-callout--editor ${ presetClass }`,
+				style: themeStyle
 			} );
 			const toneIcon = el( 'span', { className: 'docspress-callout__icon', 'aria-hidden': true }, attributes.tone.slice( 0, 1 ).toUpperCase() );
 			const title = el( RichText, {

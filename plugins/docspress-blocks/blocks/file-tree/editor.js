@@ -2,7 +2,7 @@
 	'use strict';
 
 	const { registerBlockType } = blocks;
-	const { Fragment, InspectorControls, PanelBody, PlainText, RichText, TextControl, __, el, presetClass, useBlockProps } = shared;
+	const { Fragment, InspectorControls, PanelBody, PlainText, RichText, TextControl, __, el, presetClass, themeStyle, useBlockProps } = shared;
 	const icon = el(
 		'svg',
 		{ viewBox: '0 0 24 24', width: 24, height: 24, fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 },
@@ -23,7 +23,10 @@
 		},
 		supports: { anchor: true, html: false },
 		edit: function FileTreeEdit( { attributes, setAttributes } ) {
-			const blockProps = useBlockProps( { className: `docspress-file-tree docspress-file-tree--editor ${ presetClass }` } );
+			const blockProps = useBlockProps( {
+				className: `docspress-file-tree docspress-file-tree--editor ${ presetClass }`,
+				style: themeStyle
+			} );
 
 			return el(
 				Fragment,

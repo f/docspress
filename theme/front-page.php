@@ -19,47 +19,9 @@ if ( $is_static_front && have_posts() ) {
 	$front_page = get_post();
 }
 
-$hero_title       = $front_page ? get_the_title( $front_page ) : get_bloginfo( 'name' );
-$hero_description = '';
-if ( $front_page && has_excerpt( $front_page ) ) {
-	$hero_description = get_the_excerpt( $front_page );
-} else {
-	$hero_description = get_bloginfo( 'description' );
-}
-
-$primary_label   = get_theme_mod( 'docspress_homepage_primary_label', __( 'Browse documentation', 'docspress' ) );
-$secondary_label = get_theme_mod( 'docspress_homepage_secondary_label', __( 'Latest updates', 'docspress' ) );
-$primary_url     = docspress_homepage_primary_url();
-$secondary_url   = docspress_homepage_secondary_url();
 ?>
 <main class="homepage-main" id="main-content">
-	<section class="homepage-hero">
-		<div class="homepage-hero-copy">
-			<?php $kicker = get_theme_mod( 'docspress_homepage_kicker', __( 'Documentation, publishing, and community', 'docspress' ) ); ?>
-			<?php if ( $kicker ) : ?>
-				<p class="homepage-kicker" data-customize-homepage-kicker><?php echo esc_html( $kicker ); ?></p>
-			<?php endif; ?>
-			<h1><?php echo esc_html( $hero_title ); ?></h1>
-			<?php if ( $hero_description && get_theme_mod( 'docspress_homepage_show_description', true ) ) : ?>
-				<p class="homepage-description"><?php echo esc_html( $hero_description ); ?></p>
-			<?php endif; ?>
-			<?php if ( ( $primary_label && $primary_url ) || ( $secondary_label && $secondary_url ) ) : ?>
-				<div class="homepage-actions">
-					<?php if ( $primary_label && $primary_url ) : ?>
-						<a class="homepage-button homepage-button-primary" href="<?php echo esc_url( $primary_url ); ?>" data-customize-homepage-primary-label><?php echo esc_html( $primary_label ); ?></a>
-					<?php endif; ?>
-					<?php if ( $secondary_label && $secondary_url ) : ?>
-						<a class="homepage-button homepage-button-secondary" href="<?php echo esc_url( $secondary_url ); ?>" data-customize-homepage-secondary-label><?php echo esc_html( $secondary_label ); ?></a>
-					<?php endif; ?>
-				</div>
-			<?php endif; ?>
-		</div>
-		<div class="homepage-hero-mark" aria-hidden="true">
-			<span><?php echo docspress_icon( 'book' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-		</div>
-	</section>
-
-	<?php if ( $front_page && get_theme_mod( 'docspress_homepage_show_page_content', true ) ) : ?>
+	<?php if ( $front_page ) : ?>
 		<?php $front_content = trim( get_the_content( null, false, $front_page ) ); ?>
 		<?php if ( $front_content ) : ?>
 			<section class="homepage-content entry-content">

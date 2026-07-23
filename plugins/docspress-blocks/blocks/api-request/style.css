@@ -15,7 +15,7 @@
 	border: 1px solid var(--db-api-border);
 	border-radius: var(--dp-radius, 10px);
 	background: var(--db-api-surface);
-	box-shadow: 0 8px 24px color-mix(in srgb, var(--dp-ink, #171a22) 7%, transparent);
+	box-shadow: none;
 	color: var(--dp-ink, #171a22);
 }
 
@@ -62,7 +62,7 @@
 	align-items: center;
 	justify-content: center;
 	padding: 0 8px;
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 5px));
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--db-api-accent) 11%, transparent);
 	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-api-accent) 22%, transparent);
 	color: color-mix(in srgb, var(--db-api-accent) 80%, var(--dp-ink, #171a22));
@@ -97,7 +97,7 @@
 	margin: 0;
 	padding: 3px 8px;
 	border: 1px solid var(--db-api-border);
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	border-radius: var(--dp-radius, 10px);
 	background: var(--dp-paper, #fff);
 	color: var(--dp-ink, #171a22);
 	cursor: pointer;
@@ -142,7 +142,7 @@
 	align-items: center;
 	padding: 0 6px;
 	border: 1px solid color-mix(in srgb, var(--db-api-accent) 18%, var(--db-api-border));
-	border-radius: max(2px, calc(var(--dp-radius, 10px) - 6px));
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--db-api-accent) 5%, var(--dp-paper, #fff));
 	color: color-mix(in srgb, var(--db-api-accent) 70%, var(--db-api-muted));
 	font-size: 0.6rem;
@@ -217,7 +217,7 @@ html[data-theme="dark"] .wp-block-docspress-api-request {
 	--db-api-string: #a7e48d;
 	--db-api-number: #ffd078;
 	--db-api-literal: #c7a8ff;
-	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+	box-shadow: none;
 }
 
 @media (max-width: 620px) {

@@ -35,6 +35,39 @@ function docspress_blocks_register_patterns() {
 	);
 
 	register_block_pattern(
+		'docspress/homepage-hero',
+		array(
+			'title'       => __( 'Homepage hero', 'docspress-blocks' ),
+			'description' => __( 'An editable DocsPress hero with two actions, optional media, and responsive layout controls.', 'docspress-blocks' ),
+			'categories'  => array( 'docspress' ),
+			'content'     => docspress_blocks_serialize(
+				'docspress/hero',
+				array(
+					'primaryLabel' => 'Choose your path',
+					'primaryUrl'   => '#choose-your-path',
+					'secondaryUrl' => '/#latest-updates',
+				)
+			),
+		)
+	);
+
+	register_block_pattern(
+		'docspress/audience-onboarding',
+		array(
+			'title'       => __( 'Documentation starting paths', 'docspress-blocks' ),
+			'description' => __( 'Route readers based on whether they already have Markdown docs or need to create them.', 'docspress-blocks' ),
+			'categories'  => array( 'docspress' ),
+			'content'     => docspress_blocks_serialize(
+				'docspress/audience-paths',
+				array(
+					'anchor' => 'choose-your-path',
+					'align'  => 'wide',
+				)
+			),
+		)
+	);
+
+	register_block_pattern(
 		'docspress/documentation-page-starter',
 		array(
 			'title'       => __( 'Documentation page starter', 'docspress-blocks' ),

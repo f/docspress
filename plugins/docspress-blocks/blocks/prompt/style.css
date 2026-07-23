@@ -12,7 +12,7 @@
 	border: 1px solid var(--db-prompt-border);
 	border-radius: var(--dp-radius, 10px);
 	background: var(--db-prompt-surface);
-	box-shadow: 0 8px 24px color-mix(in srgb, var(--dp-ink, #171a22) 7%, transparent);
+	box-shadow: none;
 	color: var(--dp-copy, #2c3338);
 }
 
@@ -43,7 +43,7 @@
 	height: 27px;
 	flex: 0 0 27px;
 	place-items: center;
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 5px));
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--db-prompt-accent) 11%, transparent);
 	box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--db-prompt-accent) 23%, transparent);
 	color: var(--db-prompt-accent);
@@ -70,7 +70,7 @@
 	gap: 4px;
 	padding: 0 8px;
 	border: 1px solid var(--db-prompt-border);
-	border-radius: 999px;
+	border-radius: var(--dp-radius, 10px);
 	background: var(--dp-paper, #fff);
 	color: var(--db-prompt-muted);
 	font: 660 0.66rem/1 var(--dp-font-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
@@ -103,7 +103,7 @@
 
 .docspress-prompt__skill-ref {
 	padding: 0.06em 0.26em;
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 6px));
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--db-prompt-accent) 10%, transparent);
 	color: var(--db-prompt-accent);
 	font-family: var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
@@ -126,7 +126,7 @@
 	overflow: hidden;
 	padding: 0 8px;
 	border: 1px solid var(--db-prompt-border);
-	border-radius: 999px;
+	border-radius: var(--dp-radius, 10px);
 	background: color-mix(in srgb, var(--dp-paper, #fff) 82%, transparent);
 	color: var(--dp-copy, #2c3338);
 	font: 570 0.68rem/1 var(--dp-font-mono, "SFMono-Regular", Consolas, monospace);
@@ -189,7 +189,7 @@
 	margin: 0;
 	padding: 3px 9px;
 	border: 1px solid var(--db-prompt-border);
-	border-radius: max(3px, calc(var(--dp-radius, 10px) - 4px));
+	border-radius: var(--dp-radius, 10px);
 	background: var(--dp-paper, #fff);
 	box-shadow: none;
 	color: var(--dp-ink, #171a22);
@@ -215,7 +215,7 @@
 
 html[data-theme="dark"] .wp-block-docspress-prompt {
 	--db-prompt-panel: color-mix(in srgb, var(--dp-canvas, #11141b) 82%, #000);
-	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+	box-shadow: none;
 }
 
 @media (max-width: 620px) {

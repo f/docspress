@@ -2,7 +2,7 @@
 	'use strict';
 
 	const { registerBlockType } = blocks;
-	const { Fragment, InspectorControls, PanelBody, PlainText, RichText, SelectControl, TextControl, ToggleControl, __, el, presetClass, useBlockProps } = shared;
+	const { Fragment, InspectorControls, PanelBody, PlainText, RichText, SelectControl, TextControl, ToggleControl, __, el, presetClass, themeStyle, useBlockProps } = shared;
 	const icon = el(
 		'svg',
 		{ viewBox: '0 0 24 24', width: 24, height: 24, fill: 'none', stroke: 'currentColor', strokeWidth: 1.8 },
@@ -42,6 +42,7 @@
 		edit: function PromptEdit( { attributes, setAttributes } ) {
 			const blockProps = useBlockProps( {
 				className: `docspress-prompt docspress-prompt--editor ${ presetClass }`,
+				style: themeStyle,
 				'data-mode': attributes.mode,
 				'aria-label': __( 'AI prompt example', 'docspress-blocks' )
 			} );

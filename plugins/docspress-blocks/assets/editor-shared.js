@@ -1,14 +1,17 @@
 ( function ( blockEditor, components, element, i18n ) {
 	'use strict';
 
-	const { InspectorControls, PlainText, RichText, useBlockProps } = blockEditor;
-	const { Button, ButtonGroup, PanelBody, SelectControl, TextControl, ToggleControl } = components;
+	const { InspectorControls, MediaUpload, MediaUploadCheck, PanelColorSettings, PlainText, RichText, useBlockProps } = blockEditor;
+	const { Button, ButtonGroup, PanelBody, RangeControl, SelectControl, TextControl, ToggleControl } = components;
 	const { Fragment, createElement: el, useState } = element;
 	const { __ } = i18n;
 	const designPreset = window.docspressBlocksSettings && window.docspressBlocksSettings.preset
 		? window.docspressBlocksSettings.preset.replace( /[^a-z0-9-]/g, '' )
 		: 'custom';
 	const presetClass = `docspress-blocks--preset-${ designPreset }`;
+	const themeStyle = window.docspressBlocksSettings && window.docspressBlocksSettings.tokens
+		? window.docspressBlocksSettings.tokens
+		: {};
 
 	const languages = [
 		{ label: 'Bash', value: 'bash' },
@@ -57,8 +60,12 @@
 		CodeSettings,
 		Fragment,
 		InspectorControls,
+		MediaUpload,
+		MediaUploadCheck,
 		PanelBody,
+		PanelColorSettings,
 		PlainText,
+		RangeControl,
 		RichText,
 		SelectControl,
 		TextControl,
@@ -67,6 +74,7 @@
 		el,
 		languages,
 		presetClass,
+		themeStyle,
 		useBlockProps,
 		useState
 	};

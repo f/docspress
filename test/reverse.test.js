@@ -50,6 +50,43 @@ function replaceCustomBlock(body, name, mutate) {
 
 const customBlockCases = [
   {
+    name: "docspress/audience-paths",
+    omit: "showNumbers",
+    change: ["tone", "ink"],
+    attributes: {
+      eyebrow: "Choose a starting point",
+      title: "Where are your docs today?",
+      description: "Follow the path that matches your repository.",
+      paths: [
+        {
+          title: "I already have Markdown docs",
+          description: "Connect an existing docs folder to WordPress.",
+          url: "/docs/publish-existing-docs/",
+          cta: "Publish existing docs",
+          icon: "MD",
+          accent: "blue",
+          newTab: false
+        },
+        {
+          title: "I need to create docs",
+          description: "Generate source-grounded documentation with AI.",
+          url: "/docs/create-docs-with-ai/",
+          cta: "Create docs with AI",
+          icon: "AI",
+          accent: "gold",
+          newTab: false
+        }
+      ],
+      columns: 2,
+      tone: "theme",
+      textAlign: "left",
+      showNumbers: false,
+      panelColor: "",
+      textColor: "",
+      accentColor: ""
+    }
+  },
+  {
     name: "docspress/api-request",
     omit: "endpoint",
     change: ["method", "PATCH"],
@@ -110,6 +147,37 @@ const customBlockCases = [
       root: "project/",
       tree: "docs/\n  index.md",
       caption: ""
+    }
+  },
+  {
+    name: "docspress/hero",
+    omit: "showGrid",
+    change: ["tone", "paper"],
+    attributes: {
+      eyebrow: "Documentation, publishing, and community",
+      title: "Docs that stay connected to your GitHub repo",
+      description: "Write beside your code. Publish a WordPress experience that guides every reader to the docs written for them.",
+      primaryLabel: "Browse documentation",
+      primaryUrl: "/docs/",
+      primaryNewTab: false,
+      secondaryLabel: "Latest updates",
+      secondaryUrl: "/#latest-updates",
+      secondaryNewTab: false,
+      mediaId: 0,
+      mediaUrl: "https://example.com/hero.png",
+      mediaAlt: "Two project mascots celebrating together.",
+      mediaPosition: "right",
+      mediaWidth: 44,
+      imageScale: 100,
+      height: "standard",
+      tone: "theme",
+      textAlign: "left",
+      showGrid: false,
+      showOrbit: false,
+      panelColor: "",
+      visualColor: "",
+      textColor: "",
+      accentColor: ""
     }
   },
   {

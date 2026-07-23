@@ -3,7 +3,7 @@ Theme Name: DocsPress
 Theme URI: https://github.com/Automattic/docspress
 Author: Fatih Kadir Akın
 Description: A focused, Docusaurus-inspired documentation theme for WordPress and Docspress.
-Version: 0.7.0
+Version: 0.7.1
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 7.4
@@ -1718,138 +1718,23 @@ body.command-search-open {
 	color: var(--dp-blue-dark);
 }
 
-/* The homepage uses the same tokens as the documentation shell, but reads as a site entrance. */
-.homepage-hero {
-	position: relative;
-	display: grid;
-	grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
-	gap: 64px;
-	align-items: center;
-	min-height: 480px;
-	padding: clamp(44px, 7vw, 84px);
-	overflow: hidden;
-	border: 1px solid var(--dp-line);
-	border-radius: calc(var(--dp-radius) * 1.6);
-	background:
-		radial-gradient(circle at 78% 24%, color-mix(in srgb, var(--dp-blue) 14%, transparent) 0 2px, transparent 3px) 0 0 / 18px 18px,
-		linear-gradient(135deg, color-mix(in srgb, var(--dp-blue-soft) 68%, var(--dp-paper)), var(--dp-paper) 58%);
-}
-
-.homepage-hero::after {
-	position: absolute;
-	right: -86px;
-	bottom: -120px;
-	width: 330px;
-	height: 330px;
-	border: 78px solid color-mix(in srgb, var(--dp-blue) 10%, transparent);
-	border-radius: 50%;
-	content: "";
-}
-
-.homepage-hero-copy {
-	position: relative;
-	z-index: 1;
-}
-
-.homepage-kicker {
-	margin: 0 0 18px;
-	color: var(--dp-blue-dark);
-	font-size: 12px;
-	font-weight: 900;
-	letter-spacing: 0.11em;
-	text-transform: uppercase;
-}
-
-.homepage-hero h1 {
-	max-width: 780px;
-	margin: 0;
-	color: var(--dp-ink);
-	font-family: var(--dp-font-heading);
-	font-size: clamp(50px, 7vw, 88px);
-	font-weight: var(--dp-heading-weight);
-	letter-spacing: -0.06em;
-	line-height: 0.96;
-}
-
-.homepage-description {
-	max-width: 650px;
-	margin: 28px 0 0;
-	color: var(--dp-copy);
-	font-family: var(--dp-font-copy);
-	font-size: clamp(18px, 2vw, 22px);
-	line-height: 1.55;
-}
-
-.homepage-actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 12px;
-	margin-top: 34px;
-}
-
-.homepage-button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-height: 48px;
-	padding: 11px 19px;
-	border: 1px solid var(--dp-line-strong);
-	border-radius: max(7px, var(--dp-radius));
-	font-size: 14px;
-	font-weight: 800;
-	text-decoration: none;
-	transition: transform 150ms ease, box-shadow 150ms ease, border-color 150ms ease;
-}
-
-.homepage-button:hover {
-	transform: translateY(-2px);
-	box-shadow: var(--dp-shadow);
-	text-decoration: none;
-}
-
-.homepage-button-primary {
-	border-color: var(--dp-blue);
-	background: var(--dp-blue);
-	color: #fff;
-}
-
-.homepage-button-primary:hover {
-	color: #fff;
-}
-
-.homepage-button-secondary {
-	background: var(--dp-paper);
-	color: var(--dp-ink);
-}
-
-.homepage-hero-mark {
-	position: relative;
-	z-index: 1;
-	display: grid;
-	place-items: center;
-}
-
-.homepage-hero-mark span {
-	display: grid;
-	place-items: center;
-	width: clamp(180px, 22vw, 270px);
-	aspect-ratio: 1;
-	border: 1px solid color-mix(in srgb, var(--dp-blue) 36%, var(--dp-line));
-	border-radius: 38% 62% 54% 46% / 46% 38% 62% 54%;
-	background: var(--dp-blue);
-	box-shadow: 24px 28px 0 color-mix(in srgb, var(--dp-blue) 14%, transparent);
-	color: #fff;
-	transform: rotate(4deg);
-}
-
-.homepage-hero-mark svg {
-	width: 48%;
-	height: 48%;
-}
-
 .homepage-content {
+	width: 100%;
+	margin: 0;
+}
+
+.homepage-content > :not(.wp-block-docspress-hero, .alignwide, .alignfull) {
 	width: min(100%, var(--dp-content-width));
-	margin: 76px auto 0;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.homepage-content > .wp-block-docspress-hero {
+	margin-block: 0;
+}
+
+.homepage-content > .wp-block-docspress-hero + * {
+	margin-top: 76px;
 }
 
 .homepage-updates {
@@ -2316,15 +2201,6 @@ body.command-search-open {
 		padding: 48px 0 70px;
 	}
 
-	.homepage-hero {
-		grid-template-columns: 1fr;
-		min-height: auto;
-	}
-
-	.homepage-hero-mark {
-		display: none;
-	}
-
 	.homepage-card-grid {
 		grid-template-columns: 1fr;
 	}
@@ -2436,22 +2312,6 @@ body.command-search-open {
 		width: 100%;
 	}
 
-	.homepage-hero {
-		padding: 34px 24px 38px;
-	}
-
-	.homepage-hero h1 {
-		font-size: clamp(44px, 15vw, 64px);
-	}
-
-	.homepage-actions {
-		display: grid;
-	}
-
-	.homepage-button {
-		width: 100%;
-	}
-
 	.comment-list .children {
 		margin-left: 8px;
 		padding-left: 12px;
@@ -2503,7 +2363,7 @@ body.command-search-open {
 	}
 
 	.comments-area,
-	.homepage-actions {
+	.docspress-hero__actions {
 		display: none !important;
 	}
 
